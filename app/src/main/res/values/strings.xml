@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Literarium</string>
+    <string name="error_network_problem">service not available
+        due to network problems</string>
+    <string name="error_invalid_geo_coordinates">invalid geographical
+    coordinates specified</string>
+    <string name="error_no_address_found">no address found</string>
+    <string name="title_activity_map_quest_sample">mapQuestSample</string>
+</resources>
