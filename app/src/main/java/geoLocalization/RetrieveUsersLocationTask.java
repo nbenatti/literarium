@@ -43,6 +43,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
     private Exception lastThrown;
 
+
     @Override
     protected List<UserData> doInBackground(Void... voids) {
 
