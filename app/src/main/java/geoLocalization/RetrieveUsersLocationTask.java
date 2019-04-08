@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +38,10 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
     /**
      * public IP of the server
      */
-    private final String SERVER_IP = "95.236.97.101";
-    private final int SERVER_PORT = 6000;
+    private final String SERVER_IP = /*"95.236.93.207"*/"192.168.1.7";
+    private final int SERVER_PORT = 6000;   // TCP port
     private final String REQUEST_NAME = "GEOLOCALIZATION";
+    private final int CONN_TIMEOUT = 5000;  // ms
 
     private Exception lastThrown;
 
@@ -55,6 +57,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
             // send request
             Socket s = new Socket(SERVER_IP, SERVER_PORT);
+            s.setSoTimeout(CONN_TIMEOUT);
             PrintWriter out =  new PrintWriter( s.getOutputStream(), true );
             out.println(REQUEST_NAME);
 
@@ -112,9 +115,14 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
             }
 
         }
+        catch (SocketTimeoutException e) {
+
+            lastThrown = e;
+        }
         catch (UnknownHostException e) {
 
             // display message on UI
+            lastThrown = e;
         }
         catch (IOException | SAXException | ParserConfigurationException e) {
             lastThrown = e;
@@ -127,7 +135,12 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
     protected void onPostExecute(List<UserData> ris) {
 
         // check if the task has thrown any exception and, if yes, rethrow
-        if(lastThrown != null) {}
+        if(lastThrown != null) {
+            if(lastThrown instanceof SocketTimeoutException) {
+
+                ((GeoLocalizationActivity)ref).handleSocketTimeout((SocketTimeoutException)lastThrown);
+            }
+        }
 
         // don't need to check the actual type of ref because the doInBackground() method already does the job
         IListableActivity concreteAct = (IListableActivity)ref;

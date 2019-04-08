@@ -1,41 +1,25 @@
 package geoLocalization;
 
-import android.annotation.SuppressLint;
+import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
-import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
+import com.example.com.db.DbManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.util.Arrays;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-/**
- * this service
- * listens for incoming requests<br/>
- * to fetch its geographical coordinates.
- */
-public class LocationSender extends AsyncTask {
-    /**
-     * reference to the activity to update the View
-     */
-    @SuppressLint("StaticFieldLeak")
-    private GeoLocalizationActivity main;
+public class ListenForLocationRequests extends IntentService {
 
     /**
      * server UDP port for nearby service
      */
     private final int PORT = 6000;
+    private final String SERVER_IP = /*"95.236.93.207"*/"192.168.1.7";
     private final int MINUTE = 1000*60;
 
     private FusedLocationProviderClient locationClient;
@@ -43,16 +27,18 @@ public class LocationSender extends AsyncTask {
     private LocationRequest lr;
     private LocationResultReceiver resultReceiver;
 
+    /**
+     * output data of the process.
+     */
     private UserData userData;
 
-    public LocationSender(GeoLocalizationActivity main) {
-        this.main = main;
-    }
+    public ListenForLocationRequests() {
 
-    @Override
-    protected void onPreExecute() {
+        super(null);
 
-        locationClient = LocationServices.getFusedLocationProviderClient(main);
+        Log.d("ListenForLocationReq", "service created");
+
+        /*locationClient = LocationServices.getFusedLocationProviderClient(this);
         resultReceiver = new LocationResultReceiver(this, new Handler());
         // define the callback
         locationCallback = new LocationCallback() {
@@ -65,20 +51,32 @@ public class LocationSender extends AsyncTask {
 
                 Location loc = locationResult.getLocations().get(0);
 
-                Log.d("DEBUG", "got location: " + loc);
+                Log.d("ListenForLocationReq", "got location: " + loc);
 
                 // start reverse geocoding service (auto-closes)
                 startRevGeocodingIntentService(loc);
             }
-        };
+        };*/
+    }
+
+    public ListenForLocationRequests(String name) {
+        super(name);
     }
 
     @Override
-    protected Object doInBackground(Object[] objects) {
+    protected void onHandleIntent(Intent intent) {
 
-        Log.d("locationSender", "task started");
+        Log.d("ListenForLocationReq", "service started");
 
-        DatagramSocket dsock = null;
+        getRealTimeLocation();
+
+        // connect to the webservice and store the location on the DB
+
+
+        // send the data to the server
+        //Log.d("ListenForLocationReq", "SERVICE OUTPUT: " + userData.toString());
+
+        /*DatagramSocket dsock = null;
 
         try {
             dsock = new DatagramSocket(PORT);
@@ -90,9 +88,11 @@ public class LocationSender extends AsyncTask {
 
         DatagramPacket dgram = new DatagramPacket(recBuf, recBuf.length);
 
-        while(true) {
+        boolean stop = false;
 
-            Log.d("locationSender", "waiting for dgrams...");
+        while(!stop) {
+
+            Log.d("ListenForLocationReq", "waiting for dgrams...");
 
             // === receive command ===
             try {
@@ -105,14 +105,13 @@ public class LocationSender extends AsyncTask {
 
             String recString = new String(Arrays.copyOfRange(recBuf, 0, dgram.getLength()));
 
-            Log.d("locationSender", "received command: " + recString);
+            Log.d("ListenForLocationReq", "received command: " + recString);
 
             SocketAddress clientAddress = dgram.getSocketAddress();
 
-            Log.d("locationSender", "client address: " + clientAddress);
+            Log.d("ListenForLocationReq", "client address: " + clientAddress);
 
             // === get <address, GPS coordinates> and send them back to the server ===
-
             getRealTimeLocation();
 
             Log.d("locationSender", "final data: " + userData);
@@ -126,20 +125,16 @@ public class LocationSender extends AsyncTask {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
+        }*/
 
-    @Override
-    protected void onPostExecute(Object o) {
 
-        Log.d("locationSender", "task finished");
     }
 
     protected void startRevGeocodingIntentService(Location location) {
-        Intent intent = new Intent(main, FetchAddressIntentService.class);
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
         intent.putExtra(Constants.RECEIVER, resultReceiver);
         intent.putExtra(Constants.LOCATION_DATA, location);
-        main.startService(intent);
+        startService(intent);
     }
 
     public void getRealTimeLocation() {
@@ -151,6 +146,8 @@ public class LocationSender extends AsyncTask {
                 setFastestInterval(10 * MINUTE);
 
         try {
+            if(locationClient == null)
+                Log.d("ListenForLocationReq", "OCIO DE PT.2");
             locationClient.requestLocationUpdates(this.lr, this.locationCallback, null);
         }
         catch (SecurityException e) {
@@ -159,7 +156,7 @@ public class LocationSender extends AsyncTask {
     }
 
     /**
-     * gets user's data back from the ResultReceiver
+     * gets user data back from the ResultReceiver
      */
     protected void fillUserData(UserData ud) {
 

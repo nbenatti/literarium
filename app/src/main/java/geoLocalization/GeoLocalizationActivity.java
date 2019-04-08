@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
@@ -15,13 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.com.literarium.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -30,6 +28,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapquest.mapping.MapQuest;
 import com.mapquest.mapping.maps.MapView;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,28 +124,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 mapBox.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(itemLocation), 13));
             }
         });
-
-        // instantiate location objects
-        isRequestingLocationUpdates = false;
-        locationClient = LocationServices.getFusedLocationProviderClient(this);
-        resultReceiver = new LocationResultReceiver(this, new Handler());
-        // define the callback
-        locationCallback = new LocationCallback() {
-
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-
-                if(locationResult == null)
-                    return;
-
-                Location location = locationResult.getLocations().get(0);
-
-                Log.d("DEBUG", "got location: " + location.toString());
-
-                // start reverse geocoding service (auto-closes)
-                startRevGeocodingIntentService(location);
-            }
-        };
     }
 
     @Override
@@ -194,6 +171,9 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
      *
      */
     public void populateList(List<? extends Cloneable> dataList) {
+
+        if(dataList.size() == 0)
+            return;
 
         List<UserData> userDataList = null;
 
@@ -248,5 +228,11 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     private void stopLocationUpdates() {
         isRequestingLocationUpdates = false;
         locationClient.removeLocationUpdates(locationCallback);
+    }
+
+    // == handle exceptions ==
+    protected void handleSocketTimeout(SocketTimeoutException e) {
+
+        Toast.makeText(this, "server not responding...", Toast.LENGTH_LONG).show();
     }
 }

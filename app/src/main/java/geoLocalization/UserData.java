@@ -6,6 +6,10 @@ import org.w3c.dom.Element;
 
 import java.util.Objects;
 
+/**
+ * this class represents the data sent to the server
+ * to build the location report.
+ */
 public class UserData implements Cloneable, XMLSerializable {
 
     /**
@@ -81,7 +85,7 @@ public class UserData implements Cloneable, XMLSerializable {
     @Override
     public Element encode() {
 
-        Document doc = XMLUtils.getNewDocInstance();
+        /*Document doc = XMLUtils.getNewDocInstance();
 
         Element root = doc.createElement("phoneData");
 
@@ -98,6 +102,28 @@ public class UserData implements Cloneable, XMLSerializable {
         root.appendChild(userName);
         root.appendChild(geoTag);
         root.appendChild(streetAddress);
+
+        return root;*/
+        Document doc = XMLUtils.getNewDocInstance();
+
+        Element root = doc.createElement("Rilevation");
+
+        Element addr = doc.createElement("streetAddress");
+        addr.setTextContent(this.address);
+
+        Element gl = doc.createElement("location");
+
+        Element glLat = doc.createElement("latitude");
+        glLat.setTextContent(String.valueOf(this.location.getLatitude()));
+
+        Element glLon = doc.createElement("longitude");
+        glLon.setTextContent(String.valueOf(this.location.getLongitude()));
+
+        gl.appendChild(glLat);
+        gl.appendChild(glLon);
+
+        root.appendChild(addr);
+        root.appendChild(gl);
 
         return root;
     }

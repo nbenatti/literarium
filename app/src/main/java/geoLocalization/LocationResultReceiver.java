@@ -77,7 +77,7 @@ public class LocationResultReceiver extends ResultReceiver {
             }
             else if(context != null) {
 
-                // really....don't pass a Context
+                // really...don't pass a Context
             }
         }
         catch (ClassCastException e) {
