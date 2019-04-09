@@ -37,7 +37,7 @@
             android:exported="false" />
 
         <service
-            android:name="geoLocalization.ListenForLocationRequests"
+            android:name="geoLocalization.LocationSenderService"
             android:exported="false"/>
     </application>
 

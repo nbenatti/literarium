@@ -3,7 +3,12 @@ package geoLocalization;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +28,13 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+/**
+ *
+ * @author Nicolas Benatti
+ */
 public class XMLUtils {
 
-    /**
-     * simply builds an instance of a Document.
-     * @return a brand new Document.
-     */
-    public static Document getNewDocInstance() {
+    private static DocumentBuilder getNewDocBuilder() {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;
@@ -41,7 +46,36 @@ public class XMLUtils {
             ex.printStackTrace();
         }
 
-        doc = docBuilder.newDocument();
+        return docBuilder;
+    }
+
+    /**
+     * simply builds an instance of a Document.
+     * @return a brand new Document.
+     */
+    public static Document getNewDocInstance() {
+
+        DocumentBuilder docBuilder = getNewDocBuilder();
+
+        Document doc = docBuilder.newDocument();
+
+        return doc;
+    }
+
+    public static Document getNewDocFromStream(InputStream in) throws SAXException, IOException {
+
+        DocumentBuilder docBuilder = getNewDocBuilder();
+
+        Document doc = docBuilder.parse(in);
+
+        return doc;
+    }
+
+    public static Document getNewDocFromString(String in) throws SAXException, IOException {
+
+        DocumentBuilder docBuilder = getNewDocBuilder();
+
+        Document doc = docBuilder.parse(in);
 
         return doc;
     }

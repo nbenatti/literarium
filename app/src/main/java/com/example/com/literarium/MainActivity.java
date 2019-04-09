@@ -10,7 +10,7 @@ import android.view.View;
 import java.util.Calendar;
 
 import geoLocalization.GeoLocalizationActivity;
-import geoLocalization.ListenForLocationRequests;
+import geoLocalization.LocationSenderService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         /*SendIpAddressTask sendIpAddressTask = new SendIpAddressTask(this);
         sendIpAddressTask.execute();*/
 
-        scheduleService(10, ListenForLocationRequests.class);
+        scheduleService(10, LocationSenderService.class);
     }
 
     public void startGeolocalization(View b) {
@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         // start the scheduled service
         alarmManager.setRepeating(
-                AlarmManager.RTC,
+                AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                minutes*1000,
                 pendingIntent);
     }
 

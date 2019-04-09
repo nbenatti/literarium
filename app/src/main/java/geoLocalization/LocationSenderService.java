@@ -3,23 +3,38 @@ package geoLocalization;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.com.db.DbManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ListenForLocationRequests extends IntentService {
+import javax.xml.transform.TransformerException;
+
+public class LocationSenderService extends IntentService {
 
     /**
      * server UDP port for nearby service
      */
-    private final int PORT = 6000;
-    private final String SERVER_IP = /*"95.236.93.207"*/"192.168.1.7";
+    //private final int PORT = 6000;
+    private final String WEBSERVICE_URL = "http://192.168.1.7/literarium_api/insert_geo_data.php";
     private final int MINUTE = 1000*60;
 
     private FusedLocationProviderClient locationClient;
@@ -32,9 +47,9 @@ public class ListenForLocationRequests extends IntentService {
      */
     private UserData userData;
 
-    public ListenForLocationRequests() {
+    public LocationSenderService() {
 
-        super(null);
+        super("ListenForLocationRequests");
 
         Log.d("ListenForLocationReq", "service created");
 
@@ -59,7 +74,7 @@ public class ListenForLocationRequests extends IntentService {
         };*/
     }
 
-    public ListenForLocationRequests(String name) {
+    public LocationSenderService(String name) {
         super(name);
     }
 
@@ -68,10 +83,32 @@ public class ListenForLocationRequests extends IntentService {
 
         Log.d("ListenForLocationReq", "service started");
 
-        getRealTimeLocation();
+        //getRealTimeLocation();
+
 
         // connect to the webservice and store the location on the DB
+        URL url = null;
+        InputStream webServiceStream = null;
+        Document response = null;
 
+        try {
+
+            String address = "Via circonvallazione fosse, Viadana, MN";
+
+            url = new URL(WEBSERVICE_URL + "?userid=1&latitudine=40.0&longitudine=10.5&indirizzo="+ URLEncoder.encode(address));
+            webServiceStream = url.openStream();
+
+            response = XMLUtils.getNewDocFromStream(webServiceStream);
+            Log.d("ListenForLocationReq", "webservice response: \n" + XMLUtils.docToString(response));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
 
         // send the data to the server
         //Log.d("ListenForLocationReq", "SERVICE OUTPUT: " + userData.toString());
@@ -128,6 +165,11 @@ public class ListenForLocationRequests extends IntentService {
         }*/
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("ListenForLocationReq", "service destroyed");
     }
 
     protected void startRevGeocodingIntentService(Location location) {
