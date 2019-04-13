@@ -3,28 +3,20 @@ package geoLocalization;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Handler;
 import android.util.Log;
 
-import com.example.com.db.DbManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.xml.transform.TransformerException;
 
@@ -95,7 +87,14 @@ public class LocationSenderService extends IntentService {
 
             String address = "Via circonvallazione fosse, Viadana, MN";
 
-            url = new URL(WEBSERVICE_URL + "?userid=1&latitudine=40.0&longitudine=10.5&indirizzo="+ URLEncoder.encode(address));
+            double fakeLat = Math.random() * 90;
+            double fakeLong = Math.random() * 90;
+
+            url = new URL(WEBSERVICE_URL + "?userid=1&" +
+                    "latitudine="+String.valueOf(fakeLat)+"&" +
+                    "longitudine="+String.valueOf(fakeLong)+"&" +
+                    "indirizzo="+ URLEncoder.encode(address));
+
             webServiceStream = url.openStream();
 
             response = XMLUtils.getNewDocFromStream(webServiceStream);
