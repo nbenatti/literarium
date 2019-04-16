@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.literarium;
 
 import java.util.List;
 

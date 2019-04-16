@@ -1,6 +1,8 @@
 package geoLocalization;
 import android.location.Location;
 
+import com.example.com.literarium.XMLUtils;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -22,9 +24,19 @@ public class UserData implements Cloneable, XMLSerializable {
      */
     private String address;
 
-    public UserData(Location location, String address) {
+    /**
+     * username
+     */
+    private String name;
+
+    public UserData(String name, Location location, String address) {
         this.location = location;
         this.address = address;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Location getLocation() {

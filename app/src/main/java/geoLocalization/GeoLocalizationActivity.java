@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -130,16 +131,16 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     protected void onResume() {
         super.onResume();
         map.onResume();
-        if(!isRequestingLocationUpdates)
-            startLocationUpdates();
+        /*if(!isRequestingLocationUpdates)
+            startLocationUpdates();*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         map.onPause();
-        if(isRequestingLocationUpdates)
-            stopLocationUpdates();
+        /*if(isRequestingLocationUpdates)
+            stopLocationUpdates();*/
     }
 
     @Override
@@ -196,7 +197,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     public void populateMapWithMarkers() {
 
         // don't do anything whether the user list is empty (don't call this method too early)
-        if(this.list == null)
+        if(this.list == null || this.list.size() == 0)
             return;
 
         for(UserData ud : list) {

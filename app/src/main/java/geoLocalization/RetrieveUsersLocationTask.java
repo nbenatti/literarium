@@ -7,6 +7,12 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.com.literarium.HttpRequest;
+import com.example.com.literarium.IListableActivity;
+import com.example.com.literarium.RequestManager;
+import com.example.com.literarium.RequestType;
+import com.example.com.literarium.XMLUtils;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,18 +20,18 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InvalidClassException;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+/**
+ * TODO: consider switching to a single webservice architecture, deleting the Java server.
+ */
 public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserData>> {
 
     @SuppressLint("StaticFieldLeak")
@@ -39,12 +45,13 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
      * public IP of the server
      */
     private final String SERVER_IP = /*"95.236.93.207"*/"192.168.1.7";
+
     private final int SERVER_PORT = 6000;   // TCP port
-    private final String REQUEST_NAME = "GEOLOCALIZATION";
+
+    private final String REQUEST_NAME = "geolocalizationReport";
     private final int CONN_TIMEOUT = 5000;  // ms
 
     private Exception lastThrown;
-
 
     @Override
     protected List<UserData> doInBackground(Void... voids) {
@@ -53,79 +60,83 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
         List<UserData> userDataList = new ArrayList<>();
 
+        // send request
+        // TODO: send XML data instead of raw string.
+        /*Socket s = new Socket(SERVER_IP, SERVER_PORT);
+        s.setSoTimeout(CONN_TIMEOUT);
+        PrintWriter out =  new PrintWriter( s.getOutputStream(), true );
+        out.println(REQUEST_NAME);
+
+        // get data
+        DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document xmlResponse = docBuilder.parse(s.getInputStream());
+        s.close();*/
+
+        //Document xmlResponse = null;
+        String requestUrl = null;
         try {
+            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, 2);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        HttpRequest request = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
+        //Log.d("RetrieveUsrLocationTask", requestUrl);
+        request.send();
+        Document xmlResponse = request.getResult();
 
-            // send request
-            Socket s = new Socket(SERVER_IP, SERVER_PORT);
-            s.setSoTimeout(CONN_TIMEOUT);
-            PrintWriter out =  new PrintWriter( s.getOutputStream(), true );
-            out.println(REQUEST_NAME);
 
-            // get data
-            DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document xmlResponse = docBuilder.parse(s.getInputStream());
-            s.close();
-            Log.d("RetrieveUsrLocationTask", "xml response: " + xmlResponse.getDocumentElement().getTextContent());
+        Log.d("RetrieveUsrLocationTask", "xml response: " + xmlResponse.getDocumentElement().getTextContent());
 
-            // process data
-            if(ref instanceof Activity) {
+        // process data
+        if(ref instanceof Activity) {
 
-                Activity callerAct = (Activity) ref;
+            Activity callerAct = (Activity) ref;
 
-                // check if the passed context is an activity which can display a list of items
-                if(IListableActivity.class.isAssignableFrom(callerAct.getClass())) {
+            // check if the passed context is an activity which can display a list of items
+            // that is, if it implements IListableActivity
+            if(IListableActivity.class.isAssignableFrom(callerAct.getClass())) {
 
-                    IListableActivity concreteAct = (IListableActivity)callerAct;
+                IListableActivity concreteAct = (IListableActivity)callerAct;
 
-                    // aid lists
-                    List<Node> addressList = null;
-                    List<Node> locationList = null;
+                // aid lists
+                List<Node> addressList = null;
+                List<Node> locationList = null;
+                List<Node> usernameList = null;
 
-                    // extract relevant data from the XML response
-                    try {
-                        addressList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/GeoLocalizationResult/Rilevation/streetAddress"));
-                        locationList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/GeoLocalizationResult/Rilevation/location"));
-                    } catch (XPathExpressionException e) {
-                        e.printStackTrace();
-                    }
-
-                    for(int i = 0; i < addressList.size(); ++i) {
-
-                        Log.d("RetrieveUsrLocationTask", "address: " + addressList.get(i).getTextContent());
-                        Log.d("RetrieveUsrLocationTask", "location: " + locationList.get(i).getTextContent());
-
-                        Element locationNode = (Element)locationList.get(i);
-
-                        String lat = locationNode.getElementsByTagName("latitude").item(0).getTextContent();
-                        String lon = locationNode.getElementsByTagName("longitude").item(0).getTextContent();
-
-                        Location tmpLoc = new Location("");
-                        tmpLoc.setLatitude(Double.parseDouble(lat));
-                        tmpLoc.setLongitude(Double.parseDouble(lon));
-
-                        userDataList.add(new UserData(tmpLoc, addressList.get(i).getTextContent()));
-                    }
-
-                    Log.d("RetrieveUsrLocationTask", "final data: " + userDataList.toString());
+                // extract relevant data from the XML response
+                try {
+                    addressList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/response/rilevation/streetAddress"));
+                    locationList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/response/rilevation/location"));
+                    usernameList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "response/rilevation/username"));
+                } catch (XPathExpressionException e) {
+                    e.printStackTrace();
                 }
+
+                for(int i = 0; i < addressList.size(); ++i) {
+
+                    Log.d("RetrieveUsrLocationTask", "address: " + addressList.get(i).getTextContent());
+                    Log.d("RetrieveUsrLocationTask", "location: " + locationList.get(i).getTextContent());
+
+                    Element locationNode = (Element)locationList.get(i);
+                    String lat = locationNode.getElementsByTagName("latitude").item(0).getTextContent();
+                    String lon = locationNode.getElementsByTagName("longitude").item(0).getTextContent();
+                    Log.d("RetrieveUsrLocationTask", "raw location: " + lat+", "+lon);
+
+                    Location tmpLoc = new Location("");
+                    tmpLoc.setLatitude(Double.parseDouble(lat));
+                    tmpLoc.setLongitude(Double.parseDouble(lon));
+
+                    String username = ((Element)usernameList.get(i)).getTextContent().trim();
+
+                    userDataList.add(new UserData(username, tmpLoc, addressList.get(i).getTextContent()));
+                }
+
+                Log.d("RetrieveUsrLocationTask", "final data: " + userDataList.toString());
             }
-            else {
-                Log.d("RetrieveUsrLocationTask", "ERROR: the passed context is not a listableActivity, or is not possible to cast");
-                lastThrown = new InvalidClassException("ERROR: the passed context is not a listableActivity, or is not possible to cast");
-            }
-
         }
-        catch (SocketTimeoutException e) {
-
-            lastThrown = e;
-        }
-        catch (UnknownHostException e) {
-
-            // display message on UI
-            lastThrown = e;
-        }
-        catch (IOException | SAXException | ParserConfigurationException e) {
-            lastThrown = e;
+        else {
+            Log.d("RetrieveUsrLocationTask", "ERROR: the passed context is not a listableActivity, or is not possible to cast");
+            lastThrown = new InvalidClassException("ERROR: the passed context is not a listableActivity, or is not possible to cast");
         }
 
         return userDataList;

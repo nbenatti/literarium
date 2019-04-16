@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 
+import com.example.com.literarium.XMLUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -85,15 +86,15 @@ public class LocationSenderService extends IntentService {
 
         try {
 
-            String address = "Via circonvallazione fosse, Viadana, MN";
+            String address = "Via Roma, Viadana, MN";
 
             double fakeLat = Math.random() * 90;
             double fakeLong = Math.random() * 90;
 
-            url = new URL(WEBSERVICE_URL + "?userid=1&" +
+            url = new URL(WEBSERVICE_URL + "?userid=2&" +
                     "latitudine="+String.valueOf(fakeLat)+"&" +
                     "longitudine="+String.valueOf(fakeLong)+"&" +
-                    "indirizzo="+ URLEncoder.encode(address));
+                    "indirizzo="+ URLEncoder.encode(address, java.nio.charset.StandardCharsets.UTF_8.toString()));
 
             webServiceStream = url.openStream();
 

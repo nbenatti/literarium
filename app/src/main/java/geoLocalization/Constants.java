@@ -3,7 +3,7 @@ package geoLocalization;
 /**
  * definition of some constants to handle:<br>
  *     results of the operations<br>
- *     keys for object-passing between intentService and Activities (or both Activities)
+ *     keys for object-passing between intentService and Activities (or both Activities)<br>
  */
 public final class Constants {
     public static final int SUCCESS_RESULT = 0;

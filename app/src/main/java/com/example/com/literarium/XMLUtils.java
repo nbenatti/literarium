@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.literarium;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

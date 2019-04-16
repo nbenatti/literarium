@@ -47,9 +47,9 @@ public class UserListAdapter extends ArrayAdapter<UserData> {
 
             // fill the layout with data
             if(userName != null)
-                userName.setText(usrData.getAddress());
+                userName.setText(usrData.getName());
             if(userAddress != null)
-                userAddress.setText(printGeoCoordinates(usrData.getLocation()));
+                userAddress.setText(/*printGeoCoordinates(usrData.getLocation())*/usrData.getAddress());
         }
 
         return v;
