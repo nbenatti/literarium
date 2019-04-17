@@ -28,10 +28,11 @@ public class RequestManager {
         if(type == RequestType.GEO_REPORT)
             req = "http://192.168.1.7/literarium_api/geo_report.php?userid="+ URLEncoder.encode(urlEncodedArgs[0], java.nio.charset.StandardCharsets.UTF_8.toString());
         else if(type == RequestType.LOG_POSITION)
-            req = "http://192.168.1.7/literarium_api/insert_geo_data.php?userid="+urlEncodedArgs[0]
+            req = "http://192.168.1.7/literarium_api/insert_geo_data.php?"
+                    +"userid="+urlEncodedArgs[0]
                     +"&latitudine="+urlEncodedArgs[1]
                     +"&longitudine="+urlEncodedArgs[2]
-                    +"&indirizzo"+urlEncodedArgs[3];
+                    +"&indirizzo="+urlEncodedArgs[3];
 
         return req;
     }

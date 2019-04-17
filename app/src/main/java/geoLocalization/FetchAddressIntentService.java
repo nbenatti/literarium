@@ -37,10 +37,10 @@ public class FetchAddressIntentService extends IntentService {
         resultReceiver.send(resultCode, b);
     }
 
-    private void deliverResultToReceiver(int resultCode, UserData content) {
+    private void deliverResultToReceiver(int resultCode, LocationPackage content) {
 
         Bundle b = new Bundle();
-        b.putString(Constants.RESULT_DATA, content.getAddress());
+        b.putString(Constants.RESULT_DATA, content.getStreetAddress());
         b.putParcelable(Constants.LOCATION_DATA, content.getLocation());
         resultReceiver.send(resultCode, b);
     }
@@ -98,10 +98,10 @@ public class FetchAddressIntentService extends IntentService {
             String encodedAddress = fetchedAddress.getAddressLine(0).trim();
 
             // packetize coordinates and address in a single object
-            UserData ud = new UserData(location, encodedAddress);
+            LocationPackage lp = new LocationPackage(location, encodedAddress);
 
             // deliver result
-            deliverResultToReceiver(Constants.SUCCESS_RESULT, ud);
+            deliverResultToReceiver(Constants.SUCCESS_RESULT, lp);
         }
     }
 }

@@ -1,29 +1,91 @@
 package com.example.com.literarium;
 
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.location.Location;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 
+import geoLocalization.Constants;
+import geoLocalization.FetchAddressIntentService;
 import geoLocalization.GeoLocalizationActivity;
+import geoLocalization.LocationResultReceiver;
 import geoLocalization.LocationSenderService;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final int MINUTE = 1000*60;
+    private final int SECOND = MINUTE / 60;
+
+    /**
+     * client to interact with the GPS module of the phone
+     * and fetch location data
+     */
+    private static FusedLocationProviderClient locationClient;
+
+    /**
+     * callback method te execute when the location arrives from the location client.
+     */
+    private LocationCallback locationCallback;
+
+    /**
+     * request that is sent to the location client.
+     */
+    private LocationRequest lr;
+
+    /**
+     * gets the final data and stores it on the central DB.
+     */
+    private LocationResultReceiver resultReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        locationClient = LocationServices.getFusedLocationProviderClient(this);
+        resultReceiver = new LocationResultReceiver(this, new Handler());
+        // define the callback
+        locationCallback = new LocationCallback() {
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+
+                if(locationResult == null)
+                    return;
+
+                Location loc = locationResult.getLocations().get(0);
+
+                Log.d("LocationSenderService", "got location: " + loc);
+
+                // start reverse geocoding service (auto-closes)
+                startRevGeocodingIntentService(loc);
+            }
+        };
+
         // send my IP to the server
         /*SendIpAddressTask sendIpAddressTask = new SendIpAddressTask(this);
         sendIpAddressTask.execute();*/
 
-        scheduleService(10, LocationSenderService.class);
+        //scheduleService(10, LocationSenderService.class);
+        /*Intent locationSender = new Intent(this, LocationSenderService.class);
+        startService(locationSender);*/
+
+        // start to periodically query the GPS
+        getRealTimeLocation();
     }
 
     public void startGeolocalization(View b) {
@@ -62,5 +124,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    public static FusedLocationProviderClient getLocationClient() {
+
+        return locationClient;
+    }
+
+    protected void startRevGeocodingIntentService(Location location) {
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, resultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA, location);
+        startService(intent);
+    }
+
+    public void getRealTimeLocation() {
+
+        // builder pattern
+        lr = LocationRequest.create().
+                setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY).
+                setInterval(MINUTE).
+                setFastestInterval(10 * SECOND);
+
+        try {
+            locationClient.requestLocationUpdates(this.lr, this.locationCallback, null);
+        }
+        catch (SecurityException e) {
+            e.printStackTrace();
+        }
     }
 }

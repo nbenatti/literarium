@@ -1,6 +1,7 @@
 package geoLocalization;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,17 +12,18 @@ public class LocationResultReceiver extends ResultReceiver {
 
     private Context context;
 
-    private LocationSender callingTask;
+    private LocationSenderService callingTask;
 
     // NOTE: you should pass an activity context rather than an application context
     // so pass 'this' instead of getApplicationContext()
-    public LocationResultReceiver(LocationSender at, Handler handler) {
+    public LocationResultReceiver(LocationSenderService at, Handler handler) {
 
         super(handler);
         callingTask = at;
         context = null;
     }
 
+    // it is provided but not
     public LocationResultReceiver(Context ctx, Handler handler) {
 
         super(handler);
@@ -73,11 +75,17 @@ public class LocationResultReceiver extends ResultReceiver {
 
             if(callingTask != null) {
                 // pass the data back to the calling task
-                callingTask.fillUserData(new UserData(location, addressOutput));
+                //callingTask.fillUserData(new LocationPackage(location, addressOutput));
             }
             else if(context != null) {
 
-                // really...don't pass a Context
+                // start the intent service which stores the data on the DB
+                Intent locationSender = new Intent(context, LocationSenderService.class);
+                Bundle locationData = new Bundle();
+                locationData.putString(Constants.RESULT_DATA, addressOutput);
+                locationData.putParcelable(Constants.LOCATION_DATA, location);
+                locationSender.putExtras(locationData);
+                context.startService(locationSender);
             }
         }
         catch (ClassCastException e) {
