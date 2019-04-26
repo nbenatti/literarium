@@ -1,8 +1,9 @@
 package com.example.com.literarium;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
@@ -11,6 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.com.localDb.Book;
+import com.example.com.localDb.BookDAO;
+import com.example.com.localDb.LocalDatabase;
+import com.example.com.localDb.PopulateDbTask;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -18,12 +23,12 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
+import java.util.List;
 
 import geoLocalization.Constants;
 import geoLocalization.FetchAddressIntentService;
 import geoLocalization.GeoLocalizationActivity;
 import geoLocalization.LocationResultReceiver;
-import geoLocalization.LocationSenderService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,12 +85,12 @@ public class MainActivity extends AppCompatActivity {
         /*SendIpAddressTask sendIpAddressTask = new SendIpAddressTask(this);
         sendIpAddressTask.execute();*/
 
-        //scheduleService(10, LocationSenderService.class);
-        /*Intent locationSender = new Intent(this, LocationSenderService.class);
-        startService(locationSender);*/
-
         // start to periodically query the GPS
         getRealTimeLocation();
+
+        // try to populate the local db
+        PopulateDbTask populateDbTask = new PopulateDbTask(this);
+        populateDbTask.execute();
     }
 
     public void startGeolocalization(View b) {

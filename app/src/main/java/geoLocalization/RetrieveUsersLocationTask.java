@@ -29,9 +29,6 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-/**
- * TODO: consider switching to a single webservice architecture, deleting the Java server.
- */
 public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserData>> {
 
     @SuppressLint("StaticFieldLeak")
@@ -75,7 +72,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
         //Document xmlResponse = null;
         String requestUrl = null;
         try {
-            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, 2);
+            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, 1);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

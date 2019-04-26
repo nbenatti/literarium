@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appTitleDimension">25dp</dimen>
+    <dimen name="titleDimension">20dp</dimen>
+    <dimen name="subtitleDimension">17dp</dimen>
+    <dimen name="textDimension">15dp</dimen>
+    <dimen name="generalMargin">10dp</dimen>
+    <dimen name="innerMargin">5dp</dimen>
+    <dimen name="textPadding">3dp</dimen>
+    <dimen name="biographyDimension">100dp</dimen>
+</resources>

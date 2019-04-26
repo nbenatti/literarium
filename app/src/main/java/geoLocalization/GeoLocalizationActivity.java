@@ -48,15 +48,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
      */
     private ArrayList<UserData> list;
 
-    private FusedLocationProviderClient locationClient;
-    private LocationCallback locationCallback;
-    private LocationRequest lr;
-
-    private final int MINUTE = 1000*60;
-    private boolean isRequestingLocationUpdates;
-
-    private LocationResultReceiver resultReceiver;
-
     //private Location lastLocation;
 
     @Override
@@ -89,11 +80,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         /*SendIpAddressTask sendIpAddressTask = new SendIpAddressTask(this);
         sendIpAddressTask.execute();*/
 
-
-        // listen for explore requests
-        // TODO: this must be done in the mainActivity of the app
-        /*LocationSender locationSender = new LocationSender(this);
-        locationSender.execute();*/
 
         // send request to server, to retrieve location of other phones
         RetrieveUsersLocationTask rult = new RetrieveUsersLocationTask(this);
@@ -131,16 +117,12 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     protected void onResume() {
         super.onResume();
         map.onResume();
-        /*if(!isRequestingLocationUpdates)
-            startLocationUpdates();*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         map.onPause();
-        /*if(isRequestingLocationUpdates)
-            stopLocationUpdates();*/
     }
 
     @Override
@@ -158,13 +140,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
             default:
                 break;
         }
-    }
-
-    protected void startRevGeocodingIntentService(Location location) {
-        Intent intent = new Intent(this, FetchAddressIntentService.class);
-        intent.putExtra(Constants.RECEIVER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA, location);
-        startService(intent);
     }
 
     /**
@@ -207,28 +182,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
             newMarker.title(ud.getAddress());
             mapBox.addMarker(newMarker);
         }
-    }
-
-    public void getRealTimeLocation() {
-
-        // builder pattern
-        lr = LocationRequest.create().
-                setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY).
-                setInterval(MINUTE).
-                setFastestInterval(10 * MINUTE);
-
-        startLocationUpdates();
-    }
-
-    @SuppressLint("MissingPermission")
-    private void startLocationUpdates() {
-        isRequestingLocationUpdates = true;
-        locationClient.requestLocationUpdates(this.lr, this.locationCallback, null);
-    }
-
-    private void stopLocationUpdates() {
-        isRequestingLocationUpdates = false;
-        locationClient.removeLocationUpdates(locationCallback);
     }
 
     // == handle exceptions ==
