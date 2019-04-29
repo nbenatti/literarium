@@ -1,9 +1,7 @@
 package geoLocalization;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,9 +16,6 @@ import android.widget.Toast;
 
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -53,6 +48,8 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Log.d("GeoLocalizationActivity", "activity created");
+
         super.onCreate(savedInstanceState);
         MapQuest.start(getApplicationContext());
 
@@ -66,6 +63,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         map.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
+                Log.d("GeoLocalizationActivity", "map initialized");
                 mapBox = mapboxMap;
                 map.setStreetMode();
             }
@@ -117,12 +115,34 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     protected void onResume() {
         super.onResume();
         map.onResume();
+        Log.d("GeoLocalizationActivity", "activity resumed, map" + ((mapBox==null)?" null":" not null"));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         map.onPause();
+        Log.d("GeoLocalizationActivity", "activity paused, map" + ((mapBox==null)?" null":" not null"));
+    }
+
+    /*@Override
+    protected void onStop() {
+        super.onStop();
+        map.onStop();
+        Log.d("GeoLocalizationActivity", "activity stopped, map" + ((mapBox==null)?" null":" not null"));
+    }*/
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        map.onDestroy();
+        Log.d("GeoLocalizationActivity", "activity destroyed, map" + ((mapBox==null)?" null":" not null"));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        map.onSaveInstanceState(outState);
     }
 
     @Override
@@ -156,12 +176,12 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         if(dataList.get(0) instanceof UserData)
             userDataList = (List<UserData>)dataList;
 
-        Log.d("debug", "populating list");
+        Log.d("GeoLocalizationActivity", "populating list");
         for(UserData ud : userDataList) {
             list.add(ud);
         }
 
-        Log.d("debug", "data in the list" + list.toString());
+        Log.d("GeoLocalizationActivity", "data in the list" + list.toString());
 
         ((UserListAdapter)(usersList.getAdapter())).notifyDataSetChanged();
     }
@@ -174,6 +194,15 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         // don't do anything whether the user list is empty (don't call this method too early)
         if(this.list == null || this.list.size() == 0)
             return;
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(mapBox == null)
+            Log.d("GeoLocalizationActivity", "map is null");
 
         for(UserData ud : list) {
 

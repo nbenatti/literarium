@@ -3,30 +3,22 @@ package geoLocalization;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
+import com.example.com.literarium.Globals;
 import com.example.com.literarium.HttpRequest;
-import com.example.com.literarium.MainActivity;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
 import com.example.com.literarium.XMLUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import javax.xml.transform.TransformerException;
 
@@ -88,7 +80,7 @@ public class LocationSenderService extends IntentService {
             try {
                 requestUrl = RequestManager.formatRequest(
                         RequestType.LOG_POSITION,
-                        2,
+                        Globals.getInstance().getUserLocalData().getUserId(),
                         locationPackage.getLocation().getLatitude(),
                         locationPackage.getLocation().getLongitude(),
                         locationPackage.getStreetAddress());
@@ -109,7 +101,7 @@ public class LocationSenderService extends IntentService {
 
             response = XMLUtils.getNewDocFromStream(webServiceStream);*/
             response = request.getResult();
-            Log.d("ListenForLocationReq", "webservice response: \n" + XMLUtils.docToString(response));
+            Log.d("LocationSenderService", "webservice response: \n" + XMLUtils.docToString(response));
 
         } catch (TransformerException e) {
             e.printStackTrace();

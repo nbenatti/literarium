@@ -1,20 +1,16 @@
 package com.example.com.literarium;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
-import com.example.com.localDb.Book;
-import com.example.com.localDb.BookDAO;
-import com.example.com.localDb.LocalDatabase;
 import com.example.com.localDb.PopulateDbTask;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -23,14 +19,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
-import java.util.List;
 
 import geoLocalization.Constants;
 import geoLocalization.FetchAddressIntentService;
 import geoLocalization.GeoLocalizationActivity;
 import geoLocalization.LocationResultReceiver;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private final int MINUTE = 1000*60;
     private final int SECOND = MINUTE / 60;
@@ -56,10 +51,17 @@ public class MainActivity extends AppCompatActivity {
      */
     private LocationResultReceiver resultReceiver;
 
+    /* == GUI components == */
+    private TextView welcomeMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //getActionBar().hide();
+
+        welcomeMessage = findViewById(R.id.welcomeMessage);
+        welcomeMessage.setText(Globals.getInstance().getUserLocalData().getUserName()+"!");
 
         locationClient = LocationServices.getFusedLocationProviderClient(this);
         resultReceiver = new LocationResultReceiver(this, new Handler());

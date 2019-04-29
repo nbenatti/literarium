@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.com.literarium.Globals;
 import com.example.com.literarium.HttpRequest;
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.RequestManager;
@@ -16,17 +17,13 @@ import com.example.com.literarium.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserData>> {
@@ -72,7 +69,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
         //Document xmlResponse = null;
         String requestUrl = null;
         try {
-            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, 1);
+            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, Globals.getInstance().getUserLocalData().getUserId());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -83,6 +80,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
 
         Log.d("RetrieveUsrLocationTask", "xml response: " + xmlResponse.getDocumentElement().getTextContent());
+        Log.d("RetrieveUsrLocationTask", "url: " + requestUrl);
 
         // process data
         if(ref instanceof Activity) {

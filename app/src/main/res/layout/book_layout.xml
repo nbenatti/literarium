@@ -78,19 +78,21 @@
 
                         <!-- Book title -->
                         <TextView
+                            android:id="@+id/bookTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/textPadding"
-                            android:text="Book title"
+                            android:hint="Book title"
                             android:textSize="@dimen/titleDimension"
                             android:textColor="@color/litBlue"/>
 
                         <!-- Author -->
                         <TextView
+                            android:id="@+id/bookAuthor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/textPadding"
-                            android:text="By author name"
+                            android:hint="By author name"
                             android:textSize="@dimen/subtitleDimension"
                             android:textColor="@color/litBlue"/>
 
@@ -103,16 +105,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="Publish date:"
+                                android:text="Published in:"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
 
                             <TextView
+                                android:id="@+id/bookPublishDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="DD/MM/YYYY"
+                                android:hint="YYYY"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="3"
                                 android:textColor="@color/litBlue"/>
@@ -134,10 +137,11 @@
                                 android:textColor="@color/litBlue"/>
 
                             <TextView
+                                android:id="@+id/bookRating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="0/0"
+                                android:hint="0/0"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
@@ -170,6 +174,7 @@
                                 android:background="@color/litBlue">
 
                                 <ImageButton
+                                    android:id="@+id/saveBookButton"
                                     android:scaleType="fitCenter"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"

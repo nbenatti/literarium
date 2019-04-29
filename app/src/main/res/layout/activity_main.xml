@@ -56,12 +56,36 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Welcome Pippo!"
+                android:text="Welcome"
                 android:textSize="@dimen/titleDimension"
-                android:gravity="center"
+                android:gravity="right"
                 android:textColor="@color/litYellow"
                 android:textStyle="bold"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/welcomeMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="username"
+                android:textSize="@dimen/titleDimension"
+                android:gravity="left"
+                android:textColor="@color/litYellow"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_weight="1"/>
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="!"
+                android:textSize="@dimen/titleDimension"
+                android:gravity="left"
+                android:textColor="@color/litYellow"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_weight=""/>-->
 
         </LinearLayout>
 
