@@ -91,8 +91,8 @@ public class MainActivity extends Activity {
         getRealTimeLocation();
 
         // try to populate the local db
-        PopulateDbTask populateDbTask = new PopulateDbTask(this);
-        populateDbTask.execute();
+        /*PopulateDbTask populateDbTask = new PopulateDbTask(this);
+        populateDbTask.execute();*/
     }
 
     public void startGeolocalization(View b) {
