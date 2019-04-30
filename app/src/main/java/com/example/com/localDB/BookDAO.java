@@ -1,4 +1,4 @@
-package localDB;
+package com.example.com.localDB;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -11,16 +11,16 @@ import java.util.List;
 @Dao
 public interface BookDAO {
     @Insert
-    public void insert(Book... books);
+    public void insert(localDB.Book... books);
     @Update
-    public void update(Book... books);
+    public void update(localDB.Book... books);
     @Delete
-    public void delete(Book book);
+    public void delete(localDB.Book book);
     
     @Query("SELECT * FROM book")
-    public List<Book> getAllBooks();
+    public List<localDB.Book> getAllBooks();
     @Query("SELECT * FROM book WHERE status = 'saved'")
-    public List<Book> getSavedBooks();
+    public List<localDB.Book> getSavedBooks();
     @Query("SELECT * FROM book WHERE status = 'sent'")
-    public List<Book> getSentBooks();
+    public List<localDB.Book> getSentBooks();
 }

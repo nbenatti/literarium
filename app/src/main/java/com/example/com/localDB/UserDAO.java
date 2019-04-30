@@ -1,4 +1,4 @@
-package com.example.com.localDb;
+package com.example.com.localDB;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

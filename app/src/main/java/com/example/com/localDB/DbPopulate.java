@@ -1,4 +1,4 @@
-package com.example.com.localDb;
+package com.example.com.localDB;
 
 public class DbPopulate {
 
