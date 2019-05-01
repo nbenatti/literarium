@@ -7,10 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.com.localDB.*;
+import com.example.com.localDB.Book;
 
 import java.util.List;
-
-import localDB.LocalDatabase;
 
 /**
  * saves the book into the local db
@@ -22,9 +21,9 @@ public class SaveBookTask extends AsyncTask {
     private LocalDatabase db;
     private BookDAO bookDao;
 
-    private localDB.Book bookToSave;
+    private Book bookToSave;
 
-    public SaveBookTask(Context ctx, localDB.Book b) {
+    public SaveBookTask(Context ctx, com.example.com.localDB.Book b) {
         this.ctx = ctx;
     }
 
@@ -59,10 +58,10 @@ public class SaveBookTask extends AsyncTask {
         db.close();
     }
 
-    private void insertBook(localDB.Book b) {
+    private void insertBook(com.example.com.localDB.Book b) {
 
         bookDao.insert(b);
-        List<localDB.Book> res = bookDao.getAllBooks();
+        List<com.example.com.localDB.Book> res = bookDao.getAllBooks();
         Log.d("LOCAL_DB", res.get(0).toString());
     }
 }

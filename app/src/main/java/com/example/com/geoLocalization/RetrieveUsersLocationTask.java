@@ -70,6 +70,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
         String requestUrl = null;
         try {
             requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, Globals.getInstance().getUserLocalData().getUserId());
+            Log.d("RetrieveUsrLocationTask", requestUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
