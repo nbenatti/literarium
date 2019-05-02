@@ -2,13 +2,16 @@ package com.example.com.literarium;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.example.com.dataAcquisition.Book;
+import com.example.com.dataAcquisition.URLRequestFormatter;
+import com.example.com.dataAcquisition.XmlDataParser;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -23,14 +26,17 @@ public class GetBookDataTask extends AsyncTask {
 
     private int bookId;
 
-    public GetBookDataTask(Context ref) {
+    public GetBookDataTask(Context ref, int bookId) {
+
         this.ref = ref;
+        this.bookId = bookId;
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
 
-        String requestUrl = URLRequestFormatter.format(RequestType.SEARCH_BOOKS);
+        String requestUrl = URLRequestFormatter.format(RequestType.BOOK_SHOW, String.valueOf(bookId));
+        Log.d("GetBookDataTask", requestUrl);
 
         httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();

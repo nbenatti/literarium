@@ -1,15 +1,13 @@
-package localDB;
+package com.example.com.localDB;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "book")
+@Entity(tableName = "book", primaryKeys = {"bookId", "userId"})
 public class Book {
-    @PrimaryKey
     @NonNull
     private Integer bookId;
-    @PrimaryKey
     @NonNull
     private Integer userId;
     @NonNull
@@ -20,6 +18,15 @@ public class Book {
     private Integer numPages;
     @NonNull
     private Boolean status;
+
+    public Book(@NonNull Integer bookId, @NonNull Integer userId, @NonNull String title, @NonNull String description, @NonNull Integer numPages, @NonNull Boolean status) {
+        this.bookId = bookId;
+        this.userId = userId;
+        this.title = title;
+        this.description = description;
+        this.numPages = numPages;
+        this.status = status;
+    }
 
     @NonNull
     public Integer getBookId() {
@@ -73,5 +80,17 @@ public class Book {
 
     public void setStatus(@NonNull Boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + bookId +
+                ", userId=" + userId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", numPages=" + numPages +
+                ", status=" + status +
+                '}';
     }
 }

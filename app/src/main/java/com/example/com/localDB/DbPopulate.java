@@ -1,5 +1,6 @@
 package com.example.com.localDB;
 
+
 public class DbPopulate {
 
     public static void main(String[] args) {

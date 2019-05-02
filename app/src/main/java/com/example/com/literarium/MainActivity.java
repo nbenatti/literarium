@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -19,10 +20,10 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 
-import geoLocalization.Constants;
-import geoLocalization.FetchAddressIntentService;
-import geoLocalization.GeoLocalizationActivity;
-import geoLocalization.LocationResultReceiver;
+import com.example.com.geoLocalization.Constants;
+import com.example.com.geoLocalization.FetchAddressIntentService;
+import com.example.com.geoLocalization.GeoLocalizationActivity;
+import com.example.com.geoLocalization.LocationResultReceiver;
 
 public class MainActivity extends Activity {
 
@@ -58,6 +59,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //getActionBar().hide();
+
+        LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
+        noConnectionBanner.setVisibility(View.INVISIBLE);
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText(Globals.getInstance().getUserLocalData().getUserName()+"!");
@@ -158,5 +162,11 @@ public class MainActivity extends Activity {
         catch (SecurityException e) {
             e.printStackTrace();
         }
+    }
+
+    public void goToSearchLayout(View v) {
+
+        Intent i = new Intent(this, ShowBookActivity.class);
+        startActivity(i);
     }
 }

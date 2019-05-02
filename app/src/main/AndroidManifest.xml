@@ -28,6 +28,13 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".ShowBookActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,33 +43,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ShowBookActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-            </intent-filter>
-        </activity>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
 
-        <activity android:name="geoLocalization.GeoLocalizationActivity">
+        <activity android:name="com.example.com.geoLocalization.GeoLocalizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
 
         <!-- SERVICES -->
         <service
-            android:name="geoLocalization.FetchAddressIntentService"
+            android:name="com.example.com.geoLocalization.FetchAddressIntentService"
             android:exported="false" />
         <service
-            android:name="geoLocalization.LocationSenderService"
+            android:name="com.example.com.geoLocalization.LocationSenderService"
             android:exported="false" />
     </application>
 

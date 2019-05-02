@@ -11,16 +11,16 @@ import java.util.List;
 @Dao
 public interface BookDAO {
     @Insert
-    public void insert(localDB.Book... books);
+    public void insert(Book... books);
     @Update
-    public void update(localDB.Book... books);
+    public void update(Book... books);
     @Delete
-    public void delete(localDB.Book book);
+    public void delete(Book b);
     
     @Query("SELECT * FROM book")
-    public List<localDB.Book> getAllBooks();
-    @Query("SELECT * FROM book WHERE status = 'saved'")
-    public List<localDB.Book> getSavedBooks();
-    @Query("SELECT * FROM book WHERE status = 'sent'")
-    public List<localDB.Book> getSentBooks();
+    public List<Book> getAllBooks();
+    @Query("SELECT * FROM book WHERE status = 1")
+    public List<Book> getSavedBooks();
+    @Query("SELECT * FROM book WHERE status = 0")
+    public List<Book> getSentBooks();
 }

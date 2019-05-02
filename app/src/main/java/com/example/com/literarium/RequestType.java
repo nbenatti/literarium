@@ -5,6 +5,7 @@ public enum RequestType {
     AUTHOR_BOOKS,
     SEARCH_AUTHOR,
     SEARCH_BOOKS,
+    BOOK_SHOW,
     SERIES_LIST,
     SERIES_SHOW,
     SERIES_WORK,

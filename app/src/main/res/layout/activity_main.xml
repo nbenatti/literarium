@@ -31,13 +31,14 @@
             android:background="@color/litBlue"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/textPadding"
-            android:text="Book" />
+            android:text="Book"
+            android:onClick="goToSearchLayout"/>
 
-        <Button
+        <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Geo report"
-            android:onClick="startGeolocalization"/>
+            android:onClick="startGeolocalization"/>-->
 
     </LinearLayout>
 
@@ -46,46 +47,93 @@
         android:layout_height="match_parent"
         android:background="@color/litGrey">
 
-        <!-- Welcome name bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/litBlue"
-            android:layout_marginVertical="5dp">
+            android:orientation="vertical">
 
-            <TextView
+            <!-- Welcome name bar -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Welcome"
-                android:textSize="@dimen/titleDimension"
-                android:gravity="right"
-                android:textColor="@color/litYellow"
-                android:textStyle="bold"
-                android:padding="5dp"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content"
+                android:background="@color/litBlue"
+                android:layout_marginVertical="5dp">
 
-            <TextView
-                android:id="@+id/welcomeMessage"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Welcome"
+                    android:textSize="@dimen/titleDimension"
+                    android:gravity="right"
+                    android:textColor="@color/litYellow"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/welcomeMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="username"
+                    android:textSize="@dimen/titleDimension"
+                    android:gravity="left"
+                    android:textColor="@color/litYellow"
+                    android:textStyle="bold"
+                    android:paddingVertical="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <!-- Latest books -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="username"
-                android:textSize="@dimen/titleDimension"
-                android:gravity="left"
-                android:textColor="@color/litYellow"
-                android:textStyle="bold"
-                android:padding="5dp"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
 
-            <!--<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="!"
-                android:textSize="@dimen/titleDimension"
-                android:gravity="left"
-                android:textColor="@color/litYellow"
-                android:textStyle="bold"
-                android:padding="5dp"
-                android:layout_weight=""/>-->
+                <ExpandableListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/litBlue">
+                </ExpandableListView>
+
+            </LinearLayout>
+
+            <!-- this block appears if there's no network connection -->
+            <LinearLayout
+                android:id="@+id/noConnectionBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:background="@color/litBlue"
+                android:orientation="vertical">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/no_connection_icon"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Oops!"
+                    android:textColor="@color/litYellow"
+                    android:textSize="@dimen/titleDimension"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="There's a problem with your connection"
+                    android:textStyle="bold"
+                    android:textColor="@color/litYellow"
+                    android:padding="5dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

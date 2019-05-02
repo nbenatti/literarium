@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 import android.accounts.NetworkErrorException;
 import android.content.Context;

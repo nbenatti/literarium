@@ -121,7 +121,12 @@ public class XMLUtils {
         XPath xpath = xpf.newXPath();
         XPathExpression expr = xpath.compile(xPathExpr);
 
-        return (NodeList)expr.evaluate(doc, XPathConstants.NODESET);
+        NodeList res = (NodeList)expr.evaluate(doc, XPathConstants.NODESET);
+
+        if(res.getLength() == 0)
+            return null;
+        else
+            return res;
     }
 
     /**

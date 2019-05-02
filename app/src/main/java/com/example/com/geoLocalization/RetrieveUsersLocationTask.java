@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -151,6 +151,13 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
         // don't need to check the actual type of ref because the doInBackground() method already does the job
         IListableActivity concreteAct = (IListableActivity)ref;
+
+        // wait for the map to become available...(hopefully it works)
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         concreteAct.populateList(ris);
         concreteAct.populateMapWithMarkers();

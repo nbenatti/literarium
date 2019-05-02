@@ -1,12 +1,13 @@
-package com.example.com.literarium;
+package com.example.com.dataAcquisition;
 
 import android.os.Parcelable;
 
 public class Book {
 
+    private int id;
     private String title;
     private String isbn;
-    private String imageURL, smallImageURL, largeImageURL;
+    private String imageURL;
     private int publicationYear;
     private String publisher;
     private String description;
@@ -14,21 +15,24 @@ public class Book {
     private int numPages;
     private String author;
 
-    public Book(String title, String isbn,
-                String imageURL, String smallImageURL, String largeImageURL,
+    public Book(int id, String title, String isbn,
+                String imageURL,
                 int publicationYear, String publisher, String description,
                 String amazonBuyLink, int numPages, String author) {
+        this.id = id;
         this.title = title;
         this.isbn = isbn;
         this.imageURL = imageURL;
-        this.smallImageURL = smallImageURL;
-        this.largeImageURL = largeImageURL;
         this.publicationYear = publicationYear;
         this.publisher = publisher;
         this.description = description;
         this.amazonBuyLink = amazonBuyLink;
         this.numPages = numPages;
         this.author = author;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getAuthor() {
@@ -45,14 +49,6 @@ public class Book {
 
     public String getImageURL() {
         return imageURL;
-    }
-
-    public String getSmallImageURL() {
-        return smallImageURL;
-    }
-
-    public String getLargeImageURL() {
-        return largeImageURL;
     }
 
     public int getPublicationYear() {
