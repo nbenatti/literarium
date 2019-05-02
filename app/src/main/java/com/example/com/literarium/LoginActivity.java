@@ -36,14 +36,18 @@ public class LoginActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        userName.setText("");
-        password.setText("");
+        resetUserInput();
     }
 
     public void login(View v) {
 
         LoginTask loginTask = new LoginTask(this, userName.getText().toString().trim(), password.getText().toString().trim());
         loginTask.execute();
+    }
+
+    private void resetUserInput() {
+        userName.setText("");
+        password.setText("");
     }
 
     /**
@@ -61,5 +65,6 @@ public class LoginActivity extends Activity {
     public void handleLoginFailure() {
 
         Toast.makeText(this, "wrong credentials!", Toast.LENGTH_SHORT).show();
+        resetUserInput();
     }
 }

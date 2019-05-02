@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 import android.Manifest;
 import android.app.Activity;
@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.com.dataAcquisition.Book;
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -28,6 +29,10 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * shows a map with the last location of the users.<br/>
+ * the user can then decide wether to share a book with one user.
+ */
 public class GeoLocalizationActivity extends Activity implements IListableActivity {
 
     private MapView map;
@@ -43,7 +48,10 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
      */
     private ArrayList<UserData> list;
 
-    //private Location lastLocation;
+    /**
+     * book the user has decided to share.
+     */
+    private Book toShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,19 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
 
         // inflate the wiew
         setContentView(R.layout.geolocalization_activity);
+
+        // get the book data
+        Bundle bookData = getIntent().getExtras();
+        toShare = new Book(bookData.getInt("bookId"),
+                            bookData.getString("bookTitle"),
+                            bookData.getString("bookIsbn"),
+                            bookData.getString("bookImageUrl"),
+                            bookData.getInt("bookPubYear"),
+                            bookData.getString("bookPublisher"),
+                            bookData.getString("bookDescription"),
+                            bookData.getString("bookAmazonBuyLink"),
+                            bookData.getInt("bookNumPages"),
+                            bookData.getString("bookAuthor"));
 
         // get UI components
         usersList = findViewById(R.id.usersList);
@@ -140,6 +161,12 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     }
 
     @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        map.onLowMemory();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         map.onSaveInstanceState(outState);
@@ -201,8 +228,9 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
             e.printStackTrace();
         }
 
-        if(mapBox == null)
+        if(mapBox == null) {
             Log.d("GeoLocalizationActivity", "map is null");
+        }
 
         for(UserData ud : list) {
 
@@ -213,7 +241,14 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         }
     }
 
+    public void shareBook(View v) {
+
+        // connect to the webservice and update the DB
+
+    }
+
     // == handle exceptions ==
+    //TODO: remove
     protected void handleSocketTimeout(SocketTimeoutException e) {
 
         Toast.makeText(this, "server not responding...", Toast.LENGTH_LONG).show();

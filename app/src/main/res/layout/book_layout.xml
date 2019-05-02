@@ -63,6 +63,7 @@
                         android:layout_gravity="center">
 
                         <ImageView
+                            android:id="@+id/bookCover"
                             android:layout_width="150dp"
                             android:layout_height="180dp"
                             android:src="@drawable/book_cover_template" />
@@ -164,6 +165,7 @@
                                     android:layout_height="30dp"
                                     android:background="@drawable/share_icon"
                                     android:layout_margin="@dimen/textPadding"
+                                    android:onClick="goToGeolocalization"
                                     />
 
                             </LinearLayout>
@@ -180,6 +182,7 @@
                                     android:layout_height="30dp"
                                     android:background="@drawable/save_icon"
                                     android:layout_margin="@dimen/textPadding"
+                                    android:onClick="saveBook"
                                     />
 
                             </LinearLayout>
@@ -225,17 +228,21 @@
             <!-- Description -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/biographyDimension"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/generalMargin"
                 android:background="@drawable/border">
 
 
                 <TextView
+                    android:id="@+id/bookDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Description"
                     android:layout_margin="@dimen/innerMargin"
+                    android:ellipsize="marquee"
+                    android:hint="Description"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     android:textSize="@dimen/textDimension"
+                    android:scrollHorizontally="true"
                     android:textColorHint="@color/litBlue"
                     android:textColor="@color/litBlue"
                     />

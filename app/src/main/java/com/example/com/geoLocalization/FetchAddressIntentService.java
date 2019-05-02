@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 import android.app.IntentService;
 import android.content.Intent;

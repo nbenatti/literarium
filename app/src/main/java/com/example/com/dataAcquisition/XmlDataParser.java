@@ -1,4 +1,6 @@
-package com.example.com.literarium;
+package com.example.com.dataAcquisition;
+
+import com.example.com.literarium.XMLUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,11 +44,10 @@ public class XmlDataParser {
 
         Document doc = XMLUtils.getNewDocFromStream(in);
 
+        String id = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/id")).get(0).getTextContent();
         String title = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/title")).get(0).getTextContent();
         String isbn = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/isbn")).get(0).getTextContent();
         String imageURL = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/image_url")).get(0).getTextContent();
-        String smallImageURL = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/small_image_url")).get(0).getTextContent();
-        String largeImageURL = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/large_image_url")).get(0).getTextContent();
         String publicationYear = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/publication_year")).get(0).getTextContent();
         String publisher = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/publisher")).get(0).getTextContent();
         String description = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/description")).get(0).getTextContent();
@@ -55,11 +56,10 @@ public class XmlDataParser {
         String author = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/authors/author/name")).get(0).getTextContent();
 
 
-        return new Book(title,
+        return new Book(Integer.parseInt(id),
+                title,
                 isbn,
                 imageURL,
-                smallImageURL,
-                largeImageURL,
                 Integer.parseInt(publicationYear),
                 publisher,
                 description,
@@ -72,11 +72,11 @@ public class XmlDataParser {
 
         //Document doc = XMLUtils.getDocFromStream(in);
 
+
+        String id = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/id")).get(0).getTextContent();
         String title = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/title")).get(0).getTextContent();
         String isbn = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/isbn")).get(0).getTextContent();
         String imageURL = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/image_url")).get(0).getTextContent();
-        String smallImageURL = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/small_image_url")).get(0).getTextContent();
-        String largeImageURL = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/large_image_url")).get(0).getTextContent();
         String publicationYear = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/publication_year")).get(0).getTextContent();
         String publisher = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/publisher")).get(0).getTextContent();
         String description = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/description")).get(0).getTextContent();
@@ -84,11 +84,10 @@ public class XmlDataParser {
         String numPages = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, el.getTagName()+"/book/num_pages")).get(0).getTextContent();
         String author = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(doc, BASE_TAG+"/book/authors/author/name")).get(0).getTextContent();
 
-        return new Book(title,
+        return new Book(Integer.parseInt(id),
+                title,
                 isbn,
                 imageURL,
-                smallImageURL,
-                largeImageURL,
                 Integer.parseInt(publicationYear),
                 publisher,
                 description,

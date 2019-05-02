@@ -1,4 +1,4 @@
-package com.example.com.literarium;
+package com.example.com.dataAcquisition;
 
 import java.util.List;
 

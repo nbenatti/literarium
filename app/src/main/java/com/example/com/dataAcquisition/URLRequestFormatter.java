@@ -1,6 +1,9 @@
-package com.example.com.literarium;
+package com.example.com.dataAcquisition;
 
 import com.example.com.literarium.RequestType;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  *
@@ -13,14 +16,20 @@ public class URLRequestFormatter {
 
     public static String format(RequestType type, String... parameters) {
         switch (type) {
+            case BOOK_SHOW:
+                return BASE + "book/show/" + parameters[0] + "?format=xml&key=" + KEY;
             case AUTHOR_SHOW:
                 return BASE + "author/show/" + parameters[0] + "?format=xml&key=" + KEY;
             case AUTHOR_BOOKS:
-                return BASE + "author/show/" + parameters[0] + "?format=xml&key=" + KEY + "&page=" + parameters[1];
+                return BASE + "author/show/" + parameters[0] + "?format=xml&key=" + KEY + ((parameters.length > 1) ? "&page=" + parameters[1] : "");
             case SEARCH_AUTHOR:
                 return BASE + "api/author_url/" + parameters[0] + "?key=" + KEY;
             case SEARCH_BOOKS:
-                return BASE + "search/index.xml?key=" + KEY + "&q=" + parameters[0] + "&page=" + parameters[1] + "&search[field]=" + parameters[2];
+                try {
+                    return BASE + "search/index.xml?key=" + KEY + "&q=" + URLEncoder.encode(parameters[0], "UTF8") + ((parameters.length>1) ? "&page=" + parameters[1] : "") + ((parameters.length>2) ? "&search[field]=" + parameters[2] : "");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             default:
                 return "";
         }

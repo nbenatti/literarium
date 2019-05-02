@@ -7,7 +7,7 @@
     <dimen name="generalMargin">10dp</dimen>
     <dimen name="innerMargin">5dp</dimen>
     <dimen name="textPadding">3dp</dimen>
-    <dimen name="biographyDimension">100dp</dimen>
+    <dimen name="biographyDimension">130dp</dimen>
     <dimen name="searchBarWidth">50dp</dimen>
     <dimen name="searchBarHeigth">15</dimen>
 </resources>

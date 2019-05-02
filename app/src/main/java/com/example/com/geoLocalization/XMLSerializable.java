@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

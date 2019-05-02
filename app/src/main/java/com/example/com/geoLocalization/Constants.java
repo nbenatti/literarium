@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 /**
  * definition of some constants to handle:<br>

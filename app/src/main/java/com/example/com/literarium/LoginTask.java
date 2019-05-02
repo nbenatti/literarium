@@ -31,6 +31,7 @@ public class LoginTask extends AsyncTask {
         try {
             HttpRequest httpRequest = new HttpRequest(RequestManager.formatRequest(RequestType.AUTH_USER, userName, password),
                     HttpRequest.HttpRequestMethod.GET);
+            Log.d("LoginTask", RequestManager.formatRequest(RequestType.AUTH_USER, userName, password));
             httpRequest.send();
             Document response = httpRequest.getResult();
 

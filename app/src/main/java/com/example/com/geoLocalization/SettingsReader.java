@@ -1,4 +1,4 @@
-package geoLocalization;
+package com.example.com.geoLocalization;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
