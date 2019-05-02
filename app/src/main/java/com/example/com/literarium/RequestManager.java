@@ -25,16 +25,16 @@ public class RequestManager {
 
 
         if(type == RequestType.GEO_REPORT) {
-            req = "http://192.168.1.7/literarium_api/geo_report.php?userid=" + URLEncoder.encode(urlEncodedArgs[0], java.nio.charset.StandardCharsets.UTF_8.toString());
+            req = "http://87.14.101.137/literarium_api/geo_report.php?userid=" + URLEncoder.encode(urlEncodedArgs[0], java.nio.charset.StandardCharsets.UTF_8.toString());
         } else if(type == RequestType.LOG_POSITION) {
-            req = "http://192.168.1.7/literarium_api/insert_geo_data.php?"
+            req = "http://87.14.101.137/literarium_api/insert_geo_data.php?"
                     + "userid=" + urlEncodedArgs[0]
                     + "&latitudine=" + urlEncodedArgs[1]
                     + "&longitudine=" + urlEncodedArgs[2]
                     + "&indirizzo=" + urlEncodedArgs[3];
         } else if(type == com.example.com.literarium.RequestType.AUTH_USER) {
 
-            req = "http://192.168.1.7/literarium_api/auth.php?"
+            req = "http://87.14.101.137/literarium_api/auth.php?"
                     +"nomeutente=" + urlEncodedArgs[0]
                     +"&password=" + urlEncodedArgs[1];
         }

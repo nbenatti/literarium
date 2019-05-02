@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
         //getActionBar().hide();
 
         LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
-        noConnectionBanner.setVisibility(View.INVISIBLE);
+        noConnectionBanner.setVisibility(View.GONE);
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText(Globals.getInstance().getUserLocalData().getUserName()+"!");
