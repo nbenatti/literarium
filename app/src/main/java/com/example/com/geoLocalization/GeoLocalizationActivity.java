@@ -2,6 +2,7 @@ package com.example.com.geoLocalization;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.com.bookSharing.ShareBookTask;
 import com.example.com.dataAcquisition.Book;
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
+import com.example.com.localDB.User;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -53,6 +56,8 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
      */
     private Book toShare;
 
+    private Context ctx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,26 +66,45 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         super.onCreate(savedInstanceState);
         MapQuest.start(getApplicationContext());
 
+        Context ctx = this;
+
         // inflate the wiew
         setContentView(R.layout.geolocalization_activity);
 
         // get the book data
         Bundle bookData = getIntent().getExtras();
-        toShare = new Book(bookData.getInt("bookId"),
-                            bookData.getString("bookTitle"),
-                            bookData.getString("bookIsbn"),
-                            bookData.getString("bookImageUrl"),
-                            bookData.getInt("bookPubYear"),
-                            bookData.getString("bookPublisher"),
-                            bookData.getString("bookDescription"),
-                            bookData.getString("bookAmazonBuyLink"),
-                            bookData.getInt("bookNumPages"),
-                            bookData.getString("bookAuthor"));
+        /*if(bookData != null) {
+            toShare = new Book(bookData.getInt("bookId"),
+                    bookData.getString("bookTitle"),
+                    bookData.getString("bookIsbn"),
+                    bookData.getString("bookImageUrl"),
+                    bookData.getInt("bookPubYear"),
+                    bookData.getString("bookPublisher"),
+                    bookData.getString("bookDescription"),
+                    bookData.getString("bookAmazonBuyLink"),
+                    bookData.getInt("bookNumPages"),
+                    bookData.getString("bookAuthor"));
+        }*/
+
+        toShare = new Book(50,
+                "Hatchet",
+                "0689840926",
+                "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
+                2000,
+                "Atheneum Books for Young Readers: Richard Jackson Books",
+                "Brian is on his way to Canada to visit his estranged father when the pilot " +
+                        "of his small prop plane suffers a heart attack. Brian is forced to crash-land the plane in a lake--and " +
+                        "finds himself stranded in the remote Canadian wilderness with only his clothing and the " +
+                        "hatchet his mother gave him as a present before his departure",
+                "https://www.goodreads.com/book_link/follow/1",
+                208,
+                "Gary Paulsen");
 
         // get UI components
         usersList = findViewById(R.id.usersList);
         map = (com.mapquest.mapping.maps.MapView)findViewById(R.id.mapQuest);
         map.onCreate(savedInstanceState);
+        mapBox = null;
         map.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -89,7 +113,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 map.setStreetMode();
             }
         });
-
 
         // set file path
         //SettingsReader.setConfigFilePath(getFilesDir().getAbsolutePath());
@@ -121,6 +144,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 R.layout.list_item,
                 list);
         usersList.setAdapter(listAdapter);
+        // when item is pressed, zoom the map on that position
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -130,6 +154,26 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 mapBox.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(itemLocation), 13));
             }
         });
+        // when item gets pressed for a long time, share the book
+        usersList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Toast.makeText(getApplicationContext(), "long press!", Toast.LENGTH_SHORT).show();
+
+                Log.d("GeoLocalizationActivity", "selected user: " + list.get(i).toString());
+
+                // do something only if the user has a book to share (should be 100% of the times)
+                if(toShare != null) {
+                    UserData selectedUser = list.get(i);
+
+                    ShareBookTask shareBookTask = new ShareBookTask(ctx);
+                    shareBookTask.execute(selectedUser.getId(), toShare.getId());
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -137,6 +181,8 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         super.onResume();
         map.onResume();
         Log.d("GeoLocalizationActivity", "activity resumed, map" + ((mapBox==null)?" null":" not null"));
+
+        //while(mapBox == null);
     }
 
     @Override
@@ -195,6 +241,8 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
      */
     public void populateList(List<? extends Cloneable> dataList) {
 
+        while (mapBox == null);
+
         if(dataList.size() == 0)
             return;
 
@@ -244,13 +292,13 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     public void shareBook(View v) {
 
         // connect to the webservice and update the DB
-
+        ShareBookTask shareBookTask = new ShareBookTask(this);
+        shareBookTask.execute();
     }
 
-    // == handle exceptions ==
-    //TODO: remove
-    protected void handleSocketTimeout(SocketTimeoutException e) {
+    // === handle operation results
+    public void handleBookSharingSuccess() {
 
-        Toast.makeText(this, "server not responding...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "book shared!", Toast.LENGTH_SHORT).show();
     }
 }

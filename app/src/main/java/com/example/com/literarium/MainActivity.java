@@ -24,6 +24,9 @@ import com.example.com.geoLocalization.Constants;
 import com.example.com.geoLocalization.FetchAddressIntentService;
 import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.geoLocalization.LocationResultReceiver;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapquest.mapping.MapQuest;
+import com.mapquest.mapping.maps.MapView;
 
 public class MainActivity extends Activity {
 

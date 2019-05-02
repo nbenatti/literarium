@@ -55,25 +55,27 @@ public class ShowBookActivity extends Activity {
 
     public void saveBook(View v) {
 
-        Book b = new Book(50,
+        /*Book b = new Book(50,
                         "Hatchet",
                         "0689840926",
                     "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
                 2000,
                     "Atheneum Books for Young Readers: Richard Jackson Books",
                    "Brian is on his way to Canada to visit his estranged father when the pilot " +
-                           "of his small prop plane suffers a heart attack. Brian is forced to crash-land the plane in a lake--and " +
-                           "finds himself stranded in the remote Canadian wilderness with only his clothing and the " +
-                           "hatchet his mother gave him as a present before his departure",
+                            "of his small prop plane suffers a heart attack. Brian is forced to crash-land the plane in a lake--and " +
+                            "finds himself stranded in the remote Canadian wilderness with only his clothing and the " +
+                            "hatchet his mother gave him as a present before his departure",
                 "https://www.goodreads.com/book_link/follow/1",
                    208,
-                     "Gary Paulsen");
+                     "Gary Paulsen");*/
 
-        SaveBookTask saveBookTask = new SaveBookTask(this, b);
+        SaveBookTask saveBookTask = new SaveBookTask(this, bookObj);
         saveBookTask.execute();
     }
 
     public void loadBookData(Book b) {
+
+        bookObj = b;
 
         bookTitle.setText(b.getTitle());
         bookAuthor.setText(b.getAuthor());

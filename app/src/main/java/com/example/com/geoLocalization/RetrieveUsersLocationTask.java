@@ -98,12 +98,14 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
                 List<Node> addressList = null;
                 List<Node> locationList = null;
                 List<Node> usernameList = null;
+                List<Node> userIdList = null;
 
                 // extract relevant data from the XML response
                 try {
                     addressList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/response/rilevation/streetAddress"));
                     locationList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/response/rilevation/location"));
                     usernameList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "response/rilevation/username"));
+                    userIdList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "response/rilevation/userId"));
                 } catch (XPathExpressionException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +126,9 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
                     String username = ((Element)usernameList.get(i)).getTextContent().trim();
 
-                    userDataList.add(new UserData(username, tmpLoc, addressList.get(i).getTextContent()));
+                    int userId = Integer.parseInt(((Element)userIdList.get(i)).getTextContent().trim());
+
+                    userDataList.add(new UserData(userId, username, tmpLoc, addressList.get(i).getTextContent()));
                 }
 
                 Log.d("RetrieveUsrLocationTask", "final data: " + userDataList.toString());
@@ -143,10 +147,10 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
         // check if the task has thrown any exception and, if yes, rethrow
         if(lastThrown != null) {
-            if(lastThrown instanceof SocketTimeoutException) {
+            /*if(lastThrown instanceof SocketTimeoutException) {
 
                 ((GeoLocalizationActivity)ref).handleSocketTimeout((SocketTimeoutException)lastThrown);
-            }
+            }*/
         }
 
         // don't need to check the actual type of ref because the doInBackground() method already does the job

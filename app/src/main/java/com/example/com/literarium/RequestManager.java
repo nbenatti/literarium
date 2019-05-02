@@ -37,6 +37,13 @@ public class RequestManager {
             req = "http://192.168.1.7/literarium_api/auth.php?"
                     +"nomeutente=" + urlEncodedArgs[0]
                     +"&password=" + urlEncodedArgs[1];
+        } else if(type == RequestType.SHARE_BOOK) {
+
+            req = "http://192.168.1.7/literarium_api/share_book.php?"
+                    + "token=" + Globals.getInstance().getUserLocalData().getAuthToken()
+                    + "&userid=" + Globals.getInstance().getUserLocalData().getUserId()
+                    + "&receiverid=" + urlEncodedArgs[0]
+                    + "&bookid=" + urlEncodedArgs[1];
         }
 
         return req;

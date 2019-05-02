@@ -11,5 +11,6 @@ public enum RequestType {
     SERIES_WORK,
     AUTH_USER,
     GEO_REPORT,
-    LOG_POSITION
+    LOG_POSITION,
+    SHARE_BOOK
 }

@@ -29,10 +29,20 @@ public class UserData implements Cloneable, XMLSerializable {
      */
     private String name;
 
-    public UserData(String name, Location location, String address) {
+    /**
+     * user id.
+     */
+    private int id;
+
+    public UserData(int id, String name, Location location, String address) {
+        this.id = id;
         this.location = location;
         this.address = address;
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -60,6 +70,8 @@ public class UserData implements Cloneable, XMLSerializable {
         return "UserData{" +
                 "location=" + location +
                 ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", id=" + id +
                 '}';
     }
 
