@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- ACTIVITIES -->
         <activity android:name=".SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -65,6 +67,32 @@
         <service
             android:name="com.example.com.geoLocalization.LocationSenderService"
             android:exported="false" />
+        <service android:name="com.example.com.bookSharing.ListenForSharesService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service
+            android:name="com.example.com.bookSharing.AcceptShare"
+            android:exported="false"/>
+        <service
+            android:name="com.example.com.bookSharing.DenyShare"
+            android:exported="false"/>
+
+        <!-- RECEIVERS -->
+        <receiver android:name="com.example.com.bookSharing.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.com.bookSharing.AcceptShareBroadcastReceiver">
+            <intent-filter>
+                <action></action>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.com.bookSharing.DenyShareBroadcastReceiver">
+            <intent-filter>
+                <action></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

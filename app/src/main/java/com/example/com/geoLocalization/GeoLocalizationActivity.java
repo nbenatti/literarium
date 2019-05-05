@@ -19,7 +19,6 @@ import com.example.com.bookSharing.ShareBookTask;
 import com.example.com.dataAcquisition.Book;
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
-import com.example.com.localDB.User;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -28,7 +27,6 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapquest.mapping.MapQuest;
 import com.mapquest.mapping.maps.MapView;
 
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +71,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
 
         // get the book data
         Bundle bookData = getIntent().getExtras();
-        /*if(bookData != null) {
+        if(bookData != null) {
             toShare = new Book(bookData.getInt("bookId"),
                     bookData.getString("bookTitle"),
                     bookData.getString("bookIsbn"),
@@ -84,21 +82,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                     bookData.getString("bookAmazonBuyLink"),
                     bookData.getInt("bookNumPages"),
                     bookData.getString("bookAuthor"));
-        }*/
-
-        toShare = new Book(50,
-                "Hatchet",
-                "0689840926",
-                "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
-                2000,
-                "Atheneum Books for Young Readers: Richard Jackson Books",
-                "Brian is on his way to Canada to visit his estranged father when the pilot " +
-                        "of his small prop plane suffers a heart attack. Brian is forced to crash-land the plane in a lake--and " +
-                        "finds himself stranded in the remote Canadian wilderness with only his clothing and the " +
-                        "hatchet his mother gave him as a present before his departure",
-                "https://www.goodreads.com/book_link/follow/1",
-                208,
-                "Gary Paulsen");
+        }
 
         // get UI components
         usersList = findViewById(R.id.usersList);
@@ -111,6 +95,10 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 Log.d("GeoLocalizationActivity", "map initialized");
                 mapBox = mapboxMap;
                 map.setStreetMode();
+
+                // send request to server, to retrieve location of other phones
+                RetrieveUsersLocationTask rult = new RetrieveUsersLocationTask(ctx);
+                rult.execute();
             }
         });
 
@@ -121,11 +109,6 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         // TODO: this must be done in the mainActivity of the app
         /*SendIpAddressTask sendIpAddressTask = new SendIpAddressTask(this);
         sendIpAddressTask.execute();*/
-
-
-        // send request to server, to retrieve location of other phones
-        RetrieveUsersLocationTask rult = new RetrieveUsersLocationTask(this);
-        rult.execute();
 
 
         // ask for permissions

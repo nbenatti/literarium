@@ -1,8 +1,8 @@
 package com.example.com.literarium;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.provider.Settings;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -18,10 +18,15 @@ public class LoginTask extends AsyncTask {
 
     private String userName, password;
 
+    private SharedPreferences sharedPreferences;
+
     public LoginTask(Context ref, String userName, String password) {
         this.ref = ref;
         this.userName = userName;
         this.password = password;
+
+        sharedPreferences = ref.getSharedPreferences(ref.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
     }
 
     @Override
@@ -55,6 +60,12 @@ public class LoginTask extends AsyncTask {
             Globals.getInstance().getUserLocalData().setAuthToken(token);
             Globals.getInstance().getUserLocalData().setUserName(userName);
             Globals.getInstance().getUserLocalData().setUserId(Integer.parseInt(userId));
+
+            // insert user's data in the shared preferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(ref.getString(R.string.user_id_setting), Integer.parseInt(userId));
+            editor.putString(ref.getString(R.string.user_token_setting), token);
+            editor.commit();
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

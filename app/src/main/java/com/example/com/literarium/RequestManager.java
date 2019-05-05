@@ -44,6 +44,12 @@ public class RequestManager {
                     + "&userid=" + Globals.getInstance().getUserLocalData().getUserId()
                     + "&receiverid=" + urlEncodedArgs[0]
                     + "&bookid=" + urlEncodedArgs[1];
+        } else if(type == RequestType.GET_NEW_SHARES) {
+
+            req = "http://192.168.1.7/literarium_api/get_new_shares.php?"
+                    + "token=" + urlEncodedArgs[0]
+                    + "&userid=" + urlEncodedArgs[1]
+                    + "&timestamp=" + urlEncodedArgs[2];
         }
 
         return req;

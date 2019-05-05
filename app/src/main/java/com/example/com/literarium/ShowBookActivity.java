@@ -15,8 +15,6 @@ import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.localDB.SaveBookTask;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 public class ShowBookActivity extends Activity {
 
     private TextView bookTitle;
@@ -49,7 +47,7 @@ public class ShowBookActivity extends Activity {
         bookDescription.setSelected(true);
         bookCover = findViewById(R.id.bookCover);
 
-        GetBookDataTask getBookDataTask = new GetBookDataTask(this, /*data.getInt("bookId")*/16034833);
+        GetBookDataTask getBookDataTask = new GetBookDataTask(this, /*data.getInt("bookId")*/200720);
         getBookDataTask.execute();
     }
 

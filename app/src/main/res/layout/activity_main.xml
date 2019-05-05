@@ -34,12 +34,6 @@
             android:text="Book"
             android:onClick="goToSearchLayout"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="geo"
-            android:onClick="startGeolocalization"/>
-
         <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

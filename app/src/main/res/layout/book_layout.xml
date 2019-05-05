@@ -202,7 +202,7 @@
                                     android:scaleType="fitCenter"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:background="@drawable/app_icon"
+                                    android:background="@drawable/lit_logo_yellow"
                                     android:layout_margin="@dimen/textPadding"
                                     />
 

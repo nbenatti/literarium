@@ -3,15 +3,21 @@ package com.example.com.literarium;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.com.geoLocalization.Constants;
+import com.example.com.geoLocalization.FetchAddressIntentService;
+import com.example.com.geoLocalization.GeoLocalizationActivity;
+import com.example.com.geoLocalization.LocationResultReceiver;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -19,16 +25,19 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
-
-import com.example.com.geoLocalization.Constants;
-import com.example.com.geoLocalization.FetchAddressIntentService;
-import com.example.com.geoLocalization.GeoLocalizationActivity;
-import com.example.com.geoLocalization.LocationResultReceiver;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapquest.mapping.MapQuest;
-import com.mapquest.mapping.maps.MapView;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class MainActivity extends Activity {
+
+    /**
+     * activity context.
+     */
+    private Context ctx;
+
+    /**
+     * application settings.
+     */
+    SharedPreferences sharedPreferences;
 
     private final int MINUTE = 1000*60;
     private final int SECOND = MINUTE / 60;
@@ -54,6 +63,8 @@ public class MainActivity extends Activity {
      */
     private LocationResultReceiver resultReceiver;
 
+    private ScheduledExecutorService scheduledExecutorService;
+
     /* == GUI components == */
     private TextView welcomeMessage;
 
@@ -62,6 +73,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //getActionBar().hide();
+
+        ctx = this;
+
+        // get preferences
+        sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
 
         LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
         noConnectionBanner.setVisibility(View.INVISIBLE);
@@ -89,16 +106,10 @@ public class MainActivity extends Activity {
             }
         };
 
-        // send my IP to the server
-        /*SendIpAddressTask sendIpAddressTask = new SendIpAddressTask(this);
-        sendIpAddressTask.execute();*/
-
         // start to periodically query the GPS
         getRealTimeLocation();
 
-        // try to populate the local db
-        /*PopulateDbTask populateDbTask = new PopulateDbTask(this);
-        populateDbTask.execute();*/
+
     }
 
     public void startGeolocalization(View b) {
@@ -137,6 +148,20 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // save the last access timestamp in SharedPreferences
+        String timestamp = Globals.getTimestamp();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.last_access_setting), timestamp);
+        editor.commit();
+
+        Log.d("MainActivity", "timestamp saved in preferences");
     }
 
     public static FusedLocationProviderClient getLocationClient() {

@@ -12,5 +12,6 @@ public enum RequestType {
     AUTH_USER,
     GEO_REPORT,
     LOG_POSITION,
-    SHARE_BOOK
+    SHARE_BOOK,
+    GET_NEW_SHARES
 }

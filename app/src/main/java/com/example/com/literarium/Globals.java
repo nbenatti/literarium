@@ -1,6 +1,13 @@
 package com.example.com.literarium;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Globals extends Application {
 
@@ -13,8 +20,7 @@ public class Globals extends Application {
             return authToken;
         }
 
-        public User() {
-        }
+        public User() {}
 
         public void setAuthToken(String authToken) {
             this.authToken = authToken;
@@ -62,4 +68,28 @@ public class Globals extends Application {
     public static void setInstance(Globals instance) {
         Globals.instance = instance;
     }
+
+    public static void createNotificationChannel(Context ctx) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = ctx.getString(R.string.channel_name);
+            String description = ctx.getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(ctx.getString(R.string.channel_id), name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = ctx.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public static String getTimestamp() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestamp = sdf.format(new Date());
+
+        return timestamp;
+    }
+
 }

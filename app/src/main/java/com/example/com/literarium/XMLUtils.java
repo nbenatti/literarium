@@ -5,10 +5,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +135,9 @@ public class XMLUtils {
     public static List<Node> NodeListToListNode(NodeList nl) {
 
         List<Node> ln = new ArrayList<>();
+
+        if(nl.getLength() == 0)
+            return new ArrayList<>();
 
         for(int i = 0; i < nl.getLength(); ++i) {
 
