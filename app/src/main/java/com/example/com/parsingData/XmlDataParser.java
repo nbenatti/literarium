@@ -65,21 +65,14 @@ public final class XmlDataParser {
         String publication_year = getStringValueFromPath(doc, "/book/publication_year");
         String publisher = getStringValueFromPath(doc, "/book/publisher");
         String description = getStringValueFromPath(doc, "/book/description");
-        String amazon_buy_link = getStringValueFromPath(doc, "/book/buy_links/buy_link/link");
         String average_rating = getStringValueFromPath(doc, "/book/average_rating");
         String num_pages = getStringValueFromPath(doc, "/book/num_pages");
 
-        List<AuthorInfo> authors = new ArrayList<>();
-        NodeList authorsList = XMLUtils.executeXpath(doc, BASE_TAG + "/book/authors/author");
-        for (int i = 0; i < authorsList.getLength(); ++i) {
-            Element node = (Element) authorsList.item(i);
-            String authorsId = node.getElementsByTagName("id").item(0).getTextContent();
-            String authorsName = node.getElementsByTagName("name").item(0).getTextContent();
-            AuthorInfo author = new AuthorInfo(Integer.valueOf(authorsId), authorsName);
-            authors.add(author);
-        }
+        String authorsId = getStringValueFromPath(doc, BASE_TAG + "/book/authors/author/id");
+        String authorsName = getStringValueFromPath(doc, BASE_TAG + "/book/authors/author/name");
+        AuthorInfo author = new AuthorInfo(Integer.valueOf(authorsId), authorsName);
 
-        return new Book(Integer.valueOf(id), title, isbn, image_url, Integer.valueOf(publication_year), publisher, description, amazon_buy_link, Double.valueOf(average_rating), Integer.valueOf(num_pages), (AuthorInfo[]) authors.toArray());
+        return new Book(Integer.valueOf(id), title, isbn, image_url, Integer.valueOf(publication_year), publisher, description, Double.valueOf(average_rating), Integer.valueOf(num_pages), author);
     }
 
     public static Book[] parseSearch(InputStream in) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {

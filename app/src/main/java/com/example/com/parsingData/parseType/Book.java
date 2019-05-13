@@ -2,12 +2,12 @@ package literarium.parsingData.parseType;
 
 public final class Book {
 
-    private final String title, isbn, image_url, publisher, description, amazon_buy_link;
+    private final String title, isbn, image_url, publisher, description;
     private final int id, publication_year, num_pages;
     private final double average_rating;
-    private final AuthorInfo[] authors;
+    private final AuthorInfo author;
 
-    public Book(int id, String title, String isbn, String image_url, int publication_year, String publisher, String description, String amazon_buy_link, double average_rating, int num_pages, AuthorInfo[] authors) {
+    public Book(int id, String title, String isbn, String image_url, int publication_year, String publisher, String description, double average_rating, int num_pages, AuthorInfo author) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
@@ -15,10 +15,9 @@ public final class Book {
         this.publication_year = publication_year;
         this.publisher = publisher;
         this.description = description;
-        this.amazon_buy_link = amazon_buy_link;
         this.average_rating = average_rating;
         this.num_pages = num_pages;
-        this.authors = authors;
+        this.author = author;
     }
 
     public int getId() {
@@ -49,10 +48,6 @@ public final class Book {
         return description;
     }
 
-    public String getAmazon_buy_link() {
-        return amazon_buy_link;
-    }
-
     public double getAverage_rating() {
         return average_rating;
     }
@@ -61,8 +56,8 @@ public final class Book {
         return num_pages;
     }
 
-    public AuthorInfo[] getAuthors() {
-        return authors;
+    public AuthorInfo getAuthors() {
+        return author;
     }
 
 }
