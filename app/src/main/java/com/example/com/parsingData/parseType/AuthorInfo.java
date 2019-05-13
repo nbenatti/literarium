@@ -2,15 +2,15 @@ package literarium.parsingData.parseType;
 
 public final class AuthorInfo {
 
-    private final Integer id;
+    private final int id;
     private final String name;
 
-    public AuthorInfo(Integer id, String name) {
+    public AuthorInfo(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

@@ -3,7 +3,7 @@ package literarium.parsingData.parseType;
 public final class Shelf {
 
     private final String name;
-    private final Integer book_count;
+    private final int book_count;
 
     public Shelf(String name, int book_count) {
         this.name = name;

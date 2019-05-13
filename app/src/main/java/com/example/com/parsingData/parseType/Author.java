@@ -3,11 +3,11 @@ package literarium.parsingData.parseType;
 public final class Author {
 
     private final String image_url, about, gender, homeTown, born_at, died_at;
-    private final Integer fans_count, works_count;
+    private final int fans_count, works_count;
     private final Book[] books;
     private final AuthorInfo info;
 
-    public Author(Integer id, String name, Integer fans_count, String image_url, String about, Integer works_count, String gender, String homeTown, String born_at, String died_at, Book[] books) {
+    public Author(int id, String name, int fans_count, String image_url, String about, int works_count, String gender, String homeTown, String born_at, String died_at, Book[] books) {
         this.info = new AuthorInfo(id, name);
         this.fans_count = fans_count;
         this.image_url = image_url;
@@ -24,7 +24,7 @@ public final class Author {
         return info;
     }
 
-    public Integer getFans_count() {
+    public int getFans_count() {
         return fans_count;
     }
 
@@ -36,7 +36,7 @@ public final class Author {
         return about;
     }
 
-    public Integer getWorks_count() {
+    public int getWorks_count() {
         return works_count;
     }
 

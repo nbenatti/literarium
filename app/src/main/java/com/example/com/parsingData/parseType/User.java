@@ -3,10 +3,10 @@ package literarium.parsingData.parseType;
 public final class User {
 
     private final String name, username, image_url, about, gender, interests;
-    private final Integer age, friends_count, reviews_count;
+    private final int age, friends_count, reviews_count;
     private final Shelf[] shelves;
 
-    public User(String name, String username, String image_url, String about, Integer age, String gender, String interests, Integer friends_count, Integer reviews_count, Shelf[] shelves) {
+    public User(String name, String username, String image_url, String about, int age, String gender, String interests, int friends_count, int reviews_count, Shelf[] shelves) {
         this.name = name;
         this.username = username;
         this.image_url = image_url;
@@ -43,15 +43,15 @@ public final class User {
         return interests;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public Integer getFriends_count() {
+    public int getFriends_count() {
         return friends_count;
     }
 
-    public Integer getReviews_count() {
+    public int getReviews_count() {
         return reviews_count;
     }
 
