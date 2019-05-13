@@ -16,10 +16,10 @@ public interface BookDAO {
     @Delete
     public void delete(Book b);
     
-    @Query("SELECT * FROM book AND userId = '"+userId+"'")
-    public List<Book> getAllBooks(int userId);
-    @Query("SELECT * FROM book WHERE status = 1 AND userId = '"+userId+"'")
-    public List<Book> getSavedBooks(int userId);
-    @Query("SELECT * FROM book WHERE status = 0 AND userId = '"+userId+"'")
-    public List<Book> getSentBooks(int userId);
+    @Query("SELECT * FROM book WHERE userId = :userId")
+    public List<Book> getAllBooks(String userId);
+    @Query("SELECT * FROM book WHERE status = 1 AND userId = :userId")
+    public List<Book> getSavedBooks(String userId);
+    @Query("SELECT * FROM book WHERE status = 0 AND userId = :userId")
+    public List<Book> getSentBooks(String userId);
 }
