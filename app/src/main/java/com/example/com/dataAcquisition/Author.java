@@ -1,70 +1,63 @@
-package com.example.com.dataAcquisition;
+package literarium.parsingData;
 
-import java.util.List;
+public final class Author {
 
-public class Author {
+    private final String image_url, about, gender, homeTown, born_at, died_at;
+    private final Integer fans_count, works_count;
+    private final Book[] books;
+    private final AuthorInfo info;
 
-    private String name;
-    private int fansCount;
-    private String imageURL, smallImageURL, largeImageURL;
-    String homeTown;
-    int numBooks;
-    private List<Book> books;
-
-    public Author(String name, int fansCount, String imageURL, String smallImageURL, String largeImageURL, String homeTown, int numBooks) {
-        this.name = name;
-        this.fansCount = fansCount;
-        this.imageURL = imageURL;
-        this.smallImageURL = smallImageURL;
-        this.largeImageURL = largeImageURL;
+    public Author(Integer id, String name, Integer fans_count, String image_url, String about, Integer works_count, String gender, String homeTown, String born_at, String died_at, Book[] books) {
+        this.info = new AuthorInfo(id, name);
+        this.fans_count = fans_count;
+        this.image_url = image_url;
+        this.about = about;
+        this.works_count = works_count;
+        this.gender = gender;
         this.homeTown = homeTown;
-        this.numBooks = numBooks;
+        this.born_at = born_at;
+        this.died_at = died_at;
+        this.books = books;
     }
 
-    public void addBook(Book b) {
-        books.add(b);
+    public AuthorInfo getInfo() {
+        return info;
     }
 
-    public String getName() {
-        return name;
+    public Integer getFans_count() {
+        return fans_count;
     }
 
-    public int getFansCount() {
-        return fansCount;
+    public String getImage_url() {
+        return image_url;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getAbout() {
+        return about;
     }
 
-    public String getSmallImageURL() {
-        return smallImageURL;
+    public Integer getWorks_count() {
+        return works_count;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public String getHomeTown() {
         return homeTown;
     }
 
-    public String getLargeImageURL() {
-        return largeImageURL;
+    public String getBorn_at() {
+        return born_at;
     }
 
-    public int getNumBooks() {
-        return numBooks;
+    public String getDied_at() {
+        return died_at;
     }
 
-    public List<Book> getBooks() {
+    public Book[] getBooks() {
         return books;
     }
-
-    @Override
-    public String toString() {
-        return "Author{" +
-                "name='" + name + '\'' +
-                ", fansCount=" + fansCount +
-                ", imageURL='" + imageURL + '\'' +
-                '}';
-    }
-
 
 }

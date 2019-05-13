@@ -1,42 +1,28 @@
-package com.example.com.dataAcquisition;
+package literarium.parsingData;
 
-import android.os.Parcelable;
+public final class Book {
 
-public class Book {
+    private final String title, isbn, image_url, publisher, description, amazon_buy_link;
+    private final Integer id, publication_year, num_pages;
+    private final Double average_rating;
+    private final AuthorInfo[] authors;
 
-    private int id;
-    private String title;
-    private String isbn;
-    private String imageURL;
-    private int publicationYear;
-    private String publisher;
-    private String description;
-    private String amazonBuyLink;
-    private int numPages;
-    private String author;
-
-    public Book(int id, String title, String isbn,
-                String imageURL,
-                int publicationYear, String publisher, String description,
-                String amazonBuyLink, int numPages, String author) {
+    public Book(Integer id, String title, String isbn, String image_url, Integer publication_year, String publisher, String description, String amazon_buy_link, Double average_rating, Integer num_pages, AuthorInfo[] authors) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
-        this.imageURL = imageURL;
-        this.publicationYear = publicationYear;
+        this.image_url = image_url;
+        this.publication_year = publication_year;
         this.publisher = publisher;
         this.description = description;
-        this.amazonBuyLink = amazonBuyLink;
-        this.numPages = numPages;
-        this.author = author;
+        this.amazon_buy_link = amazon_buy_link;
+        this.average_rating = average_rating;
+        this.num_pages = num_pages;
+        this.authors = authors;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public String getAuthor() {
-        return author;
     }
 
     public String getTitle() {
@@ -47,12 +33,12 @@ public class Book {
         return isbn;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getImage_url() {
+        return image_url;
     }
 
-    public int getPublicationYear() {
-        return publicationYear;
+    public Integer getPublication_year() {
+        return publication_year;
     }
 
     public String getPublisher() {
@@ -63,11 +49,20 @@ public class Book {
         return description;
     }
 
-    public String getAmazonBuyLink() {
-        return amazonBuyLink;
+    public String getAmazon_buy_link() {
+        return amazon_buy_link;
     }
 
-    public int getNumPages() {
-        return numPages;
+    public Double getAverage_rating() {
+        return average_rating;
     }
+
+    public Integer getNum_pages() {
+        return num_pages;
+    }
+
+    public AuthorInfo[] getAuthors() {
+        return authors;
+    }
+
 }
