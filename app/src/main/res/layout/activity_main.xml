@@ -85,22 +85,29 @@
 
             </LinearLayout>
 
-            <!-- Latest books -->
+            <!-- new shares -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp">
 
-                <ExpandableListView
+                <!--<ExpandableListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/litBlue">
-                </ExpandableListView>
+                </ExpandableListView>-->
+
+                <ListView
+                    android:id="@+id/newShares"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </ListView>
 
             </LinearLayout>
 
             <!-- this block appears if there's no network connection -->
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/noConnectionBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +140,7 @@
                     android:textColor="@color/litYellow"
                     android:padding="5dp"/>
 
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
 

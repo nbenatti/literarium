@@ -9,7 +9,7 @@ public class Author {
     private String imageURL, smallImageURL, largeImageURL;
     String homeTown;
     int numBooks;
-    private List<Book> books;
+    private List<com.example.com.dataAcquisition.parseType.Book> books;
 
     public Author(String name, int fansCount, String imageURL, String smallImageURL, String largeImageURL, String homeTown, int numBooks) {
         this.name = name;
@@ -21,7 +21,7 @@ public class Author {
         this.numBooks = numBooks;
     }
 
-    public void addBook(Book b) {
+    public void addBook(com.example.com.dataAcquisition.parseType.Book b) {
         books.add(b);
     }
 
@@ -53,7 +53,7 @@ public class Author {
         return numBooks;
     }
 
-    public List<Book> getBooks() {
+    public List<com.example.com.dataAcquisition.parseType.Book> getBooks() {
         return books;
     }
 

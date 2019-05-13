@@ -7,11 +7,11 @@ import android.util.Log;
 
 import com.example.com.literarium.R;
 
-public class AcceptShareBroadcastReceiver extends BroadcastReceiver {
+public class DiscardShareBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("ListenForSharesService", "accept receiver started");
-        if(context.getString(R.string.accept_share_broadcast).equals(intent.getAction()))
-            AcceptShare.enqueueWork(context, intent);
+        Log.d("ListenForSharesService", "discard receiver started");
+        if(context.getString(R.string.discard_share_broadcast).equals(intent.getAction()))
+            DiscardShare.enqueueWork(context, intent);
     }
 }

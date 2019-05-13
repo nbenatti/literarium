@@ -18,10 +18,12 @@ import com.example.com.literarium.RequestType;
 import com.example.com.literarium.XMLUtils;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.xpath.XPathExpressionException;
@@ -116,16 +118,28 @@ public class ListenForSharesService extends JobIntentService {
                 else {
                     shares = XMLUtils.NodeListToListNode(nl);
                     numShares = shares.size();
+
+                    List<ShareData> shareDataList = new ArrayList<>();
+
+                    // get data
+                    for(int i = 0; i < numShares; ++i) {
+
+                        Element el = ((Element)shares.get(i));
+
+                        String userId = el.getElementsByTagName("userId").item(0).getTextContent();
+                        String bookId = el.getElementsByTagName("bookId").item(0).getTextContent();
+                        shareDataList.add(new ShareData(userId, bookId));
+                    }
+
+                    Log.d("ListenForSharesService", response.getDocumentElement().getTextContent());
+
+                    if(numShares > 0) {
+
+                        notifyUser(shareDataList);
+                    }
                 }
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
-            }
-
-            Log.d("ListenForSharesService", response.getDocumentElement().getTextContent());
-
-            if(numShares > 0) {
-
-                notifyUser();
             }
 
             timestamp = Globals.getTimestamp();
@@ -141,7 +155,8 @@ public class ListenForSharesService extends JobIntentService {
     /**
      * notify the user when there are new shares for him.
      */
-    private void notifyUser() {
+    private void notifyUser(List<ShareData> shareDataList) {
+
         Log.d("ListenForSharesService", "you have " + numShares + " new shares");
 
         String notifText = "";
@@ -154,21 +169,32 @@ public class ListenForSharesService extends JobIntentService {
         }
 
         Intent acceptShareIntent = new Intent(this, AcceptShareBroadcastReceiver.class);
-        //acceptShareIntent.setAction();
+        acceptShareIntent.setAction(getString(R.string.accept_share_broadcast));
+
+        // send share data to the intent
+        acceptShareIntent.putParcelableArrayListExtra(getString(R.string.share_data), (ArrayList<ShareData>)shareDataList);
+        acceptShareIntent.putExtra(getString(R.string.user_id_setting), userId);
+        acceptShareIntent.putExtra(getString(R.string.user_token_setting), userToken);
+
         PendingIntent acceptSharePendingIntent = PendingIntent.getBroadcast(this, 0, acceptShareIntent, 0);
 
-        Intent denyShareIntent = new Intent(this, DenyShareBroadcastReceiver.class);
-        PendingIntent denySharePendingIntent = PendingIntent.getBroadcast(this, 0, denyShareIntent, 0);
+        Intent discardShareIntent = new Intent(this, DiscardShareBroadcastReceiver.class);
+        discardShareIntent.setAction(getString(R.string.discard_share_broadcast));
 
+        // send share data to the intent
+        discardShareIntent.putParcelableArrayListExtra(getString(R.string.share_data), (ArrayList<ShareData>)shareDataList);
+        discardShareIntent.putExtra(getString(R.string.user_id_setting), userId);
+        discardShareIntent.putExtra(getString(R.string.user_token_setting), userToken);
 
+        PendingIntent discardSharePendingIntent = PendingIntent.getBroadcast(this, 0, discardShareIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
-                .setSmallIcon(R.drawable.lit_logo_bw)
+                .setSmallIcon(R.drawable.lit_logo_yellow)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(notifText)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .addAction(R.drawable.accept_icon, getString(R.string.accept_share), acceptSharePendingIntent)
-                .addAction(R.drawable.deny_icon, getString(R.string.discard_share), denySharePendingIntent);
+                .addAction(R.drawable.deny_icon, getString(R.string.discard_share), discardSharePendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID, builder.build());

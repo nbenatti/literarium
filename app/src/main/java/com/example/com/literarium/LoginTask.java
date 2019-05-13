@@ -41,6 +41,7 @@ public class LoginTask extends AsyncTask {
             Document response = httpRequest.getResult();
 
             String stringifiedXml = XMLUtils.docToString(response);
+            Log.d("LoginTask", stringifiedXml);
 
             // get authentication esit
             String authEsit = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(response, "response/responseCode")).get(0).getTextContent();

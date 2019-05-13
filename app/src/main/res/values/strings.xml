@@ -12,5 +12,8 @@
     <string name="user_id_setting">com.example.com.literarium.USER_ID</string>
     <string name="user_token_setting">com.example.com.literarium.USER_TOKEN</string>
     <string name="accept_share">accept</string>
+    <string name="accept_share_broadcast">com.example.com.literarium.ACCEPT_SHARE</string>
     <string name="discard_share">discard</string>
+    <string name="discard_share_broadcast">com.example.com.literarium.DISCARD_SHARE</string>
+    <string name="share_data">com.example.com.literarium.SHARE_DATA</string>
 </resources>

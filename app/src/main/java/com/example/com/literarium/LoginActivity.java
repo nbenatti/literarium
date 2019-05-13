@@ -2,19 +2,11 @@ package com.example.com.literarium;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.w3c.dom.Document;
-
-import java.io.UnsupportedEncodingException;
-
-import javax.xml.xpath.XPathExpressionException;
 
 public class LoginActivity extends Activity {
 

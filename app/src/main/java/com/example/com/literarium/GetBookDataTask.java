@@ -4,14 +4,16 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.com.dataAcquisition.Book;
 import com.example.com.dataAcquisition.URLRequestFormatter;
 import com.example.com.dataAcquisition.XmlDataParser;
+import com.example.com.dataAcquisition.enumType.RequestType;
+import com.example.com.dataAcquisition.parseType.Book;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -35,17 +37,22 @@ public class GetBookDataTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
 
-        String requestUrl = URLRequestFormatter.format(RequestType.BOOK_SHOW, String.valueOf(bookId));
+        String requestUrl = null;
+        try {
+            requestUrl = URLRequestFormatter.format(RequestType.BOOK_SHOW, String.valueOf(bookId));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         Log.d("GetBookDataTask", requestUrl);
 
         httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();
         xmlContent = httpRequest.getResult();
 
-        Book book = null;
+        com.example.com.dataAcquisition.parseType.Book book = null;
 
         try {
-            book = XmlDataParser.parseBook(xmlContent, xmlContent.getDocumentElement());
+            book = XmlDataParser.parseBook(xmlContent);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -64,6 +71,6 @@ public class GetBookDataTask extends AsyncTask {
 
         ShowBookActivity concreteActivity = (ShowBookActivity)ref;
 
-        ((ShowBookActivity) ref).loadBookData((Book)o);
+        ((ShowBookActivity) ref).loadBookData((Book) o);
     }
 }

@@ -50,6 +50,12 @@ public class RequestManager {
                     + "token=" + urlEncodedArgs[0]
                     + "&userid=" + urlEncodedArgs[1]
                     + "&timestamp=" + urlEncodedArgs[2];
+        } else if(type == RequestType.DELETE_SHARE) {
+
+            req = "http://192.168.1.7/literarium_api/delete_share.php?"
+                    + "token=" + urlEncodedArgs[0]
+                    + "&receiverid=" + urlEncodedArgs[1]
+                    + "&bookid=" + urlEncodedArgs[2];
         }
 
         return req;

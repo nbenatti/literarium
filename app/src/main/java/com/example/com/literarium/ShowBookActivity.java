@@ -10,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.com.dataAcquisition.Book;
+import com.example.com.dataAcquisition.parseType.Book;
 import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.localDB.SaveBookTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class ShowBookActivity extends Activity {
 
@@ -47,41 +49,30 @@ public class ShowBookActivity extends Activity {
         bookDescription.setSelected(true);
         bookCover = findViewById(R.id.bookCover);
 
-        GetBookDataTask getBookDataTask = new GetBookDataTask(this, /*data.getInt("bookId")*/200720);
+        GetBookDataTask getBookDataTask = new GetBookDataTask(this, /*data.getInt("bookId")*/923832);
         getBookDataTask.execute();
     }
 
     public void saveBook(View v) {
 
-        /*Book b = new Book(50,
-                        "Hatchet",
-                        "0689840926",
-                    "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png",
-                2000,
-                    "Atheneum Books for Young Readers: Richard Jackson Books",
-                   "Brian is on his way to Canada to visit his estranged father when the pilot " +
-                            "of his small prop plane suffers a heart attack. Brian is forced to crash-land the plane in a lake--and " +
-                            "finds himself stranded in the remote Canadian wilderness with only his clothing and the " +
-                            "hatchet his mother gave him as a present before his departure",
-                "https://www.goodreads.com/book_link/follow/1",
-                   208,
-                     "Gary Paulsen");*/
+        ArrayList<Book> toSaveBookList = new ArrayList<>();
+        toSaveBookList.add(bookObj);
 
-        SaveBookTask saveBookTask = new SaveBookTask(this, bookObj);
+        SaveBookTask saveBookTask = new SaveBookTask(this, toSaveBookList);
         saveBookTask.execute();
     }
 
-    public void loadBookData(Book b) {
+    public void loadBookData(com.example.com.dataAcquisition.parseType.Book b) {
 
         bookObj = b;
 
         bookTitle.setText(b.getTitle());
-        bookAuthor.setText(b.getAuthor());
+        bookAuthor.setText(b.getAuthor().getName());
         bookPublishDate.setText(String.valueOf(b.getPublicationYear()));
         bookDescription.setHint("");
         bookDescription.setEms(b.getDescription().length());
         bookDescription.setText(Html.fromHtml(b.getDescription()));
-        Picasso.get().load(b.getImageURL()).into(bookCover);
+        Picasso.get().load(b.getImageUrl()).into(bookCover);
 
     }
 
@@ -97,13 +88,13 @@ public class ShowBookActivity extends Activity {
         b.putInt("bookId", bookObj.getId());
         b.putString("bookTitle", bookObj.getTitle());
         b.putString("bookIsbn", bookObj.getIsbn());
-        b.putString("bookImageUrl", bookObj.getImageURL());
+        b.putString("bookImageUrl", bookObj.getImageUrl());
         b.putInt("bookPubYear", bookObj.getPublicationYear());
         b.putString("bookPublisher", bookObj.getPublisher());
         b.putString("bookDescription", bookObj.getDescription());
         b.putString("bookAmazonBuyLink", bookObj.getAmazonBuyLink());
         b.putInt("bookNumPages", bookObj.getNumPages());
-        b.putString("bookAuthor", bookObj.getAuthor());
+        b.putParcelable("bookAuthor", bookObj.getAuthor());
 
         Intent i = new Intent(this, GeoLocalizationActivity.class);
         i.putExtras(b);

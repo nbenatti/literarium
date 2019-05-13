@@ -74,7 +74,7 @@ public class Globals extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = ctx.getString(R.string.channel_name);
             String description = ctx.getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(ctx.getString(R.string.channel_id), name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance

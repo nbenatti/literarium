@@ -3,13 +3,10 @@ package com.example.com.localDB;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.example.com.literarium.Globals;
 import com.example.com.literarium.ShowBookActivity;
-import com.example.com.localDB.*;
-import com.example.com.localDB.Book;
 
 import java.util.List;
 
@@ -23,14 +20,28 @@ public class SaveBookTask extends AsyncTask {
     private LocalDatabase db;
     private BookDAO bookDao;
 
-    private Book bookToSave;
+    private List<Book> booksToBeSaved;
 
-    public SaveBookTask(Context ctx, com.example.com.dataAcquisition.Book b) {
+    public SaveBookTask(Context ctx, List<com.example.com.dataAcquisition.parseType.Book> b) {
 
         this.ctx = ctx;
 
-        // convert book object to be saved in the db
-        bookToSave = new Book(b.getId(), Globals.getInstance().getUserLocalData().getUserId(), b.getTitle(), b.getDescription(), b.getNumPages(), false);
+        // convert book objects to be saved in the db
+        for(com.example.com.dataAcquisition.parseType.Book book : b) {
+            booksToBeSaved.add(new Book(book.getId(),
+                    String.valueOf(Globals.getInstance().getUserLocalData().getUserId()),
+                    book.getTitle(),
+                    book.getIsbn(),
+                    book.getImageUrl(),
+                    book.getPublicationYear(),
+                    book.getPublisher(),
+                    book.getDescription(),
+                    book.getAmazonBuyLink(),
+                    book.getAverageRating(),
+                    book.getNumPages(),
+                    book.getAuthor().getId(),
+                    book.getAuthor().getName()));
+        }
     }
 
     @Override
@@ -41,7 +52,8 @@ public class SaveBookTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
 
-        insertBook(bookToSave);
+        for(Book runnerBook : booksToBeSaved)
+            insertBook(runnerBook);
 
         closeDb();
 
@@ -68,7 +80,7 @@ public class SaveBookTask extends AsyncTask {
     private void insertBook(com.example.com.localDB.Book b) {
 
         bookDao.insert(b);
-        List<com.example.com.localDB.Book> res = bookDao.getAllBooks();
+        List<com.example.com.localDB.Book> res = bookDao.getAllBooks(String.valueOf(Globals.getInstance().getUserLocalData().getUserId()));
         for(Book book : res)
             Log.d("LOCAL_DB", book.toString());
     }

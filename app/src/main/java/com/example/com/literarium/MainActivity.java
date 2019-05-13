@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.com.geoLocalization.Constants;
@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -68,6 +69,10 @@ public class MainActivity extends Activity {
     /* == GUI components == */
     private TextView welcomeMessage;
 
+    private ListView newSharesList;
+
+    private ArrayList<com.example.com.dataAcquisition.parseType.Book> newSharesListData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +85,8 @@ public class MainActivity extends Activity {
         sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
 
-        LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
-        noConnectionBanner.setVisibility(View.INVISIBLE);
+        /*LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
+        noConnectionBanner.setVisibility(View.INVISIBLE);*/
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText(Globals.getInstance().getUserLocalData().getUserName()+"!");
@@ -109,6 +114,10 @@ public class MainActivity extends Activity {
         // start to periodically query the GPS
         getRealTimeLocation();
 
+        // instantiate the list
+        /*newSharesListData = new ArrayList<>();
+        BookListAdapter bookListAdapter = new BookListAdapter(this, R.layout.book_item, newSharesListData);
+        newSharesList.setAdapter(bookListAdapter);*/
 
     }
 

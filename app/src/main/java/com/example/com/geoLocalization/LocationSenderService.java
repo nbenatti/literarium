@@ -24,7 +24,7 @@ import javax.xml.transform.TransformerException;
 
 public class LocationSenderService extends IntentService {
 
-    private final String WEBSERVICE_URL = "http://192.168.1.7/literarium_api/insert_geo_data.php";
+    private final String WEBSERVICE_URL = "https://192.168.1.7/literarium_api/insert_geo_data.php";
     private final int MINUTE = 1000*60;
     private final int SECOND = MINUTE / 60;
 

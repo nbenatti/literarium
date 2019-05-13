@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.com.bookSharing.ShareBookTask;
-import com.example.com.dataAcquisition.Book;
+import com.example.com.dataAcquisition.parseType.Book;
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -80,8 +80,9 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                     bookData.getString("bookPublisher"),
                     bookData.getString("bookDescription"),
                     bookData.getString("bookAmazonBuyLink"),
+                    bookData.getInt("bookRating"),
                     bookData.getInt("bookNumPages"),
-                    bookData.getString("bookAuthor"));
+                    bookData.getParcelable("bookAuthor"));
         }
 
         // get UI components
