@@ -1,13 +1,13 @@
-package com.example.com.dataAcquisition.parseType;
+package com.example.com.parsingData.parseType;
 
 public final class Book {
 
-    private final String title, isbn, image_url, publisher, description, amazon_buy_link;
-    private final int id, publication_year, num_pages;
+    private final String title, isbn, image_url, publisher, description, publication_year, num_pages;
+    private final int id;
     private final double average_rating;
-    private final AuthorInfo authors;
+    private final com.example.com.parsingData.parseType.AuthorInfo authors;
 
-    public Book(int id, String title, String isbn, String image_url, int publication_year, String publisher, String description, String amazon_buy_link, double average_rating, int num_pages, AuthorInfo authors) {
+    public Book(int id, String title, String isbn, String image_url, String publication_year, String publisher, String description, double average_rating, String num_pages, AuthorInfo authors) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
@@ -15,7 +15,6 @@ public final class Book {
         this.publication_year = publication_year;
         this.publisher = publisher;
         this.description = description;
-        this.amazon_buy_link = amazon_buy_link;
         this.average_rating = average_rating;
         this.num_pages = num_pages;
         this.authors = authors;
@@ -37,7 +36,7 @@ public final class Book {
         return image_url;
     }
 
-    public int getPublicationYear() {
+    public String getPublicationYear() {
         return publication_year;
     }
 
@@ -49,15 +48,11 @@ public final class Book {
         return description;
     }
 
-    public String getAmazonBuyLink() {
-        return amazon_buy_link;
-    }
-
     public double getAverageRating() {
         return average_rating;
     }
 
-    public int getNumPages() {
+    public String getNumPages() {
         return num_pages;
     }
 
@@ -65,4 +60,19 @@ public final class Book {
         return authors;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", image_url='" + image_url + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", description='" + description + '\'' +
+                ", publication_year='" + publication_year + '\'' +
+                ", num_pages='" + num_pages + '\'' +
+                ", id=" + id +
+                ", average_rating=" + average_rating +
+                ", authors=" + authors +
+                '}';
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.com.dataAcquisition.enumType;
+package com.example.com.parsingData.enumType;
 
 public enum SearchType {
     SEARCH_BY_BOTH,

@@ -12,7 +12,7 @@ import com.example.com.literarium.HttpRequest;
 import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
-import com.example.com.literarium.XMLUtils;
+import com.example.com.parsingData.XMLUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,7 +20,6 @@ import org.w3c.dom.Node;
 
 import java.io.InvalidClassException;
 import java.io.UnsupportedEncodingException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 

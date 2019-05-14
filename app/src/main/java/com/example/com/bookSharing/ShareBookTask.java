@@ -8,7 +8,7 @@ import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.literarium.HttpRequest;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
-import com.example.com.literarium.XMLUtils;
+import com.example.com.parsingData.XMLUtils;
 
 import org.w3c.dom.Document;
 

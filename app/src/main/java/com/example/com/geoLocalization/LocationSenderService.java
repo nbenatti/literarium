@@ -9,7 +9,7 @@ import com.example.com.literarium.Globals;
 import com.example.com.literarium.HttpRequest;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
-import com.example.com.literarium.XMLUtils;
+import com.example.com.parsingData.XMLUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;

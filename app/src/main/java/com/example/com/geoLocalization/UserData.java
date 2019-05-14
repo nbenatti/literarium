@@ -1,7 +1,7 @@
 package com.example.com.geoLocalization;
 import android.location.Location;
 
-import com.example.com.literarium.XMLUtils;
+import com.example.com.parsingData.XMLUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

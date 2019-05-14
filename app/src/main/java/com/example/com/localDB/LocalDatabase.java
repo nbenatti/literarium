@@ -1,4 +1,4 @@
-package app.literarium.localDB;
+package com.example.com.localDB;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;

@@ -22,12 +22,12 @@ public class SaveBookTask extends AsyncTask {
 
     private List<Book> booksToBeSaved;
 
-    public SaveBookTask(Context ctx, List<com.example.com.dataAcquisition.parseType.Book> b) {
+    public SaveBookTask(Context ctx, List<com.example.com.parsingData.parseType.Book> b) {
 
         this.ctx = ctx;
 
         // convert book objects to be saved in the db
-        for(com.example.com.dataAcquisition.parseType.Book book : b) {
+        for(com.example.com.parsingData.parseType.Book book : b) {
             booksToBeSaved.add(new Book(book.getId(),
                     String.valueOf(Globals.getInstance().getUserLocalData().getUserId()),
                     book.getTitle(),
@@ -36,7 +36,6 @@ public class SaveBookTask extends AsyncTask {
                     book.getPublicationYear(),
                     book.getPublisher(),
                     book.getDescription(),
-                    book.getAmazonBuyLink(),
                     book.getAverageRating(),
                     book.getNumPages(),
                     book.getAuthor().getId(),
@@ -77,10 +76,10 @@ public class SaveBookTask extends AsyncTask {
         db.close();
     }
 
-    private void insertBook(com.example.com.localDB.Book b) {
+    private void insertBook(Book b) {
 
         bookDao.insert(b);
-        List<com.example.com.localDB.Book> res = bookDao.getAllBooks(String.valueOf(Globals.getInstance().getUserLocalData().getUserId()));
+        List<Book> res = bookDao.getAllBooks(String.valueOf(Globals.getInstance().getUserLocalData().getUserId()));
         for(Book book : res)
             Log.d("LOCAL_DB", book.toString());
     }

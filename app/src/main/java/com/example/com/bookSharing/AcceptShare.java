@@ -20,7 +20,7 @@ public class AcceptShare extends JobIntentService {
 
     private List<ShareData> shareDataList;
 
-    private List<com.example.com.dataAcquisition.parseType.Book> fullBookData;
+    private List<com.example.com.parsingData.parseType.Book> fullBookData;
 
     public AcceptShare() {
     }
@@ -48,7 +48,7 @@ public class AcceptShare extends JobIntentService {
             for(ShareData sd : shareDataList) {
 
                 GetBookDataTask getBookDataTask = new GetBookDataTask(this, Integer.parseInt(sd.getBookId()));
-                com.example.com.dataAcquisition.parseType.Book toSave = (com.example.com.dataAcquisition.parseType.Book)getBookDataTask.execute().get();
+                com.example.com.parsingData.parseType.Book toSave = (com.example.com.parsingData.parseType.Book)getBookDataTask.execute().get();
             }
         } catch (ExecutionException e) {
             e.printStackTrace();

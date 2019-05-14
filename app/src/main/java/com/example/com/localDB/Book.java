@@ -1,4 +1,4 @@
-package app.literarium.localDB;
+package com.example.com.localDB;
 
 import android.arch.persistence.room.Entity;
 import android.support.annotation.NonNull;
@@ -7,15 +7,15 @@ import android.support.annotation.NonNull;
 public class Book {
 
     @NonNull
-    private int bookId, publication_year, num_pages, id_author;
+    private int bookId, id_author;
     @NonNull
-    private String userId, title, isbn, image_url, publisher, description, amazon_buy_link, name_author;
+    private String userId, title, isbn, image_url, publisher, description, name_author, publication_year, num_pages;
     @NonNull
     private boolean status, seen;
     @NonNull
     private double average_rating;
 
-    public Book(int bookId, String userId, String title, String isbn, String image_url, int publication_year, String publisher, String description, String amazon_buy_link, double average_rating, int num_pages, int id_author, String name_author) {
+    public Book(int bookId, String userId, String title, String isbn, String image_url, String publication_year, String publisher, String description, double average_rating, String num_pages, int id_author, String name_author) {
         this.bookId = bookId;
         this.userId = userId;
         this.title = title;
@@ -24,7 +24,6 @@ public class Book {
         this.publication_year = publication_year;
         this.publisher = publisher;
         this.description = description;
-        this.amazon_buy_link = amazon_buy_link;
         this.average_rating = average_rating;
         this.num_pages = num_pages;
         this.id_author = id_author;
@@ -39,19 +38,19 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public int getPublication_year() {
+    public String getPublication_year() {
         return publication_year;
     }
 
-    public void setPublication_year(int publication_year) {
+    public void setPublication_year(String publication_year) {
         this.publication_year = publication_year;
     }
 
-    public int getNum_pages() {
+    public String getNum_pages() {
         return num_pages;
     }
 
-    public void setNum_pages(int num_pages) {
+    public void setNum_pages(String num_pages) {
         this.num_pages = num_pages;
     }
 
@@ -109,14 +108,6 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getAmazon_buy_link() {
-        return amazon_buy_link;
-    }
-
-    public void setAmazon_buy_link(String amazon_buy_link) {
-        this.amazon_buy_link = amazon_buy_link;
     }
 
     public String getName_author() {

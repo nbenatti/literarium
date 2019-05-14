@@ -1,4 +1,4 @@
-package app.literarium.colorGenerator;
+package com.example.com.colorGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

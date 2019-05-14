@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.com.dataAcquisition.parseType.Book;
 import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.localDB.SaveBookTask;
+import com.example.com.parsingData.parseType.Book;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class ShowBookActivity extends Activity {
         saveBookTask.execute();
     }
 
-    public void loadBookData(com.example.com.dataAcquisition.parseType.Book b) {
+    public void loadBookData(com.example.com.parsingData.parseType.Book b) {
 
         bookObj = b;
 
@@ -89,11 +89,11 @@ public class ShowBookActivity extends Activity {
         b.putString("bookTitle", bookObj.getTitle());
         b.putString("bookIsbn", bookObj.getIsbn());
         b.putString("bookImageUrl", bookObj.getImageUrl());
-        b.putInt("bookPubYear", bookObj.getPublicationYear());
+        b.putString("bookPubYear", bookObj.getPublicationYear());
         b.putString("bookPublisher", bookObj.getPublisher());
         b.putString("bookDescription", bookObj.getDescription());
-        b.putString("bookAmazonBuyLink", bookObj.getAmazonBuyLink());
-        b.putInt("bookNumPages", bookObj.getNumPages());
+        b.putString("bookNumPages", bookObj.getNumPages());
+        b.putDouble("bookRating", bookObj.getAverageRating());
         b.putParcelable("bookAuthor", bookObj.getAuthor());
 
         Intent i = new Intent(this, GeoLocalizationActivity.class);

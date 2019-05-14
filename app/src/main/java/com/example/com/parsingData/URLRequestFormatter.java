@@ -1,15 +1,14 @@
-package app.literarium.parsingData;
+package com.example.com.parsingData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import literarium.parsingData.enumType.RequestType;
 
 public final class URLRequestFormatter {
 
     private static final String KEY = "MJt9vmrPRlZy1k1tGcooHg";
     private static final String BASE = "https://www.goodreads.com/";
 
-    public static String format(RequestType type, String... parameters) throws UnsupportedEncodingException {
+    public static String format(com.example.com.parsingData.enumType.RequestType type, String... parameters) throws UnsupportedEncodingException {
         switch (type) {
             case AUTHOR_SHOW:
                 return BASE + "author/show/" + parameters[0] + "?key=" + KEY;
@@ -21,7 +20,7 @@ public final class URLRequestFormatter {
             case USER_INFO:
                 return BASE + "user/show/?username=" + parameters[0] + "&key=" + KEY;
             default:
-                throw new FormatterException("Unreachable statement reached");
+                throw new com.example.com.parsingData.FormatterException("Unreachable statement reached");
         }
     }
 }

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.com.dataAcquisition.URLRequestFormatter;
-import com.example.com.dataAcquisition.XmlDataParser;
-import com.example.com.dataAcquisition.enumType.RequestType;
-import com.example.com.dataAcquisition.parseType.Book;
+import com.example.com.parsingData.URLRequestFormatter;
+import com.example.com.parsingData.XmlDataParser;
+import com.example.com.parsingData.enumType.RequestType;
+import com.example.com.parsingData.parseType.Book;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -49,7 +49,7 @@ public class GetBookDataTask extends AsyncTask {
         httpRequest.send();
         xmlContent = httpRequest.getResult();
 
-        com.example.com.dataAcquisition.parseType.Book book = null;
+        com.example.com.parsingData.parseType.Book book = null;
 
         try {
             book = XmlDataParser.parseBook(xmlContent);

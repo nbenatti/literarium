@@ -2,22 +2,21 @@ package com.example.com.literarium;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
-import com.example.com.dataAcquisition.URLRequestFormatter;
-import com.example.com.dataAcquisition.XmlDataParser;
-import com.example.com.localDB.Book;
+import com.example.com.parsingData.URLRequestFormatter;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.lang.annotation.Documented;
-import java.lang.reflect.Array;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+
+import static com.example.com.parsingData.XmlDataParser.parseSearch;
 
 public class SearchBooksTask extends AsyncTask {
 
@@ -27,7 +26,7 @@ public class SearchBooksTask extends AsyncTask {
 
     private HttpRequest httpRequest;
 
-    private ArrayList<Book> result;
+    private ArrayList<com.example.com.parsingData.parseType.Book> result;
 
     public SearchBooksTask(Context ctx, String keyword) {
         this.ctx = ctx;
@@ -37,14 +36,20 @@ public class SearchBooksTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
 
-        String reqUrl = URLRequestFormatter.format(RequestType., "all", keyword, "1");
+        String reqUrl = null;
+        try {
+            reqUrl = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.SEARCH_BOOKS, "all", keyword, "1");
+            Log.d("SearchBooksTask", reqUrl);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         httpRequest = new HttpRequest(reqUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();
         Document doc = httpRequest.getResult();
 
         try {
-            result = new ArrayList<Book>((ArrayList<Book>)Arrays.asList(XmlDataParser.parseSearch(doc)));
+            result = new ArrayList<>(parseSearch(doc));
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -62,5 +67,7 @@ public class SearchBooksTask extends AsyncTask {
     protected void onPostExecute(Object o) {
 
         SearchActivity act = (SearchActivity)ctx;
+
+        act.loadData(result);
     }
 }

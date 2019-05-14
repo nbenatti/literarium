@@ -1,4 +1,4 @@
-package com.example.com.dataAcquisition;
+package com.example.com.parsingData;
 
 public class FormatterException extends RuntimeException {
 

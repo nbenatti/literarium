@@ -1,4 +1,4 @@
-package com.example.com.dataAcquisition.parseType;
+package com.example.com.parsingData.parseType;
 
 public final class Shelf {
 

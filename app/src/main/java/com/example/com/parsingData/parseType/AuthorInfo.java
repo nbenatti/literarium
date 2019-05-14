@@ -1,4 +1,4 @@
-package com.example.com.dataAcquisition.parseType;
+package com.example.com.parsingData.parseType;
 
 import android.os.Parcel;
 import android.os.Parcelable;

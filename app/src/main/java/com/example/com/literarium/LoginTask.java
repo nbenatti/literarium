@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.com.parsingData.XMLUtils;
+
 import org.w3c.dom.Document;
 
 import java.io.UnsupportedEncodingException;

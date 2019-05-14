@@ -1,4 +1,4 @@
-package com.example.com.dataAcquisition.enumType;
+package com.example.com.parsingData.enumType;
 
 public enum RequestType {
     AUTHOR_SHOW,

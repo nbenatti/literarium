@@ -3,12 +3,12 @@ package com.example.com.literarium;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.com.geoLocalization.UserListAdapter;
-import com.example.com.localDB.Book;
+import com.example.com.parsingData.parseType.Book;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class SearchActivity extends Activity {
 
     private EditText keyword;
 
-    private ArrayList<Book> resultListData;
+    private ArrayList<com.example.com.parsingData.parseType.Book> resultListData;
 
     private ListView resultList;
 
@@ -27,10 +27,10 @@ public class SearchActivity extends Activity {
         //getActionBar().hide();
 
         keyword = findViewById(R.id.search_bar);
-        resultList = findViewById(R.id.result_list);
+        resultList = findViewById(R.id.resultList);
 
+        resultListData = new ArrayList<>();
         BookListAdapter bookListAdapter = new BookListAdapter(this, R.layout.book_item, resultListData);
-
         resultList.setAdapter(bookListAdapter);
     }
 
@@ -40,7 +40,7 @@ public class SearchActivity extends Activity {
         startActivity(i);
     }
 
-    public View performSearch(View v) {
+    public void performSearch(View v) {
 
         String keyword = this.keyword.getText().toString();
 
@@ -48,10 +48,14 @@ public class SearchActivity extends Activity {
         searchBooksTask.execute();
     }
 
-    private void loadData(ArrayList<Book> result) {
+    public void loadData(ArrayList<Book> result) {
+
+        Log.d("SearchActivity", result.toString());
 
         // carica i libri nella lista
-        for(Book bookResult : result) {
+        for(com.example.com.parsingData.parseType.Book bookResult : result) {
+
+            Log.d("SearchActivity", "loading data...");
 
             resultListData.add(bookResult);
         }

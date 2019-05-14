@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
 
     private ListView newSharesList;
 
-    private ArrayList<com.example.com.dataAcquisition.parseType.Book> newSharesListData;
+    private ArrayList<com.example.com.parsingData.parseType.Book> newSharesListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
 
     public void goToSearchLayout(View v) {
 
-        Intent i = new Intent(this, ShowBookActivity.class);
+        Intent i = new Intent(this, SearchActivity.class);
         startActivity(i);
     }
 }

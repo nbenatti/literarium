@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.com.dataAcquisition.parseType.Book;
+import com.example.com.parsingData.parseType.Book;
 
 import java.util.List;
 
