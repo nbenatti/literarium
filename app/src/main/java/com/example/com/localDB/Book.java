@@ -1,4 +1,4 @@
-package com.example.com.localDB;
+package app.literarium.localDB;
 
 import android.arch.persistence.room.Entity;
 import android.support.annotation.NonNull;
