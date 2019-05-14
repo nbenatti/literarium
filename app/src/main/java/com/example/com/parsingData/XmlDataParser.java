@@ -68,8 +68,8 @@ public final class XmlDataParser {
         String average_rating = getStringValueFromPath(doc, "/book/average_rating");
         String num_pages = getStringValueFromPath(doc, "/book/num_pages");
 
-        String authorsId = getStringValueFromPath(doc, BASE_TAG + "/book/authors/author/id");
-        String authorsName = getStringValueFromPath(doc, BASE_TAG + "/book/authors/author/name");
+        String authorsId = getStringValueFromPath(doc, "/book/authors/author/id");
+        String authorsName = getStringValueFromPath(doc, "/book/authors/author/name");
         AuthorInfo author = new AuthorInfo(Integer.valueOf(authorsId), authorsName);
 
         return new Book(Integer.valueOf(id), title, isbn, image_url, Integer.valueOf(publication_year), publisher, description, Double.valueOf(average_rating), Integer.valueOf(num_pages), author);
