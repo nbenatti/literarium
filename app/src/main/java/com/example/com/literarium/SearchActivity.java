@@ -58,6 +58,7 @@ public class SearchActivity extends Activity {
             Log.d("SearchActivity", "loading data...");
 
             resultListData.add(bookResult);
+
         }
 
         ((BookListAdapter)(resultList.getAdapter())).notifyDataSetChanged();
