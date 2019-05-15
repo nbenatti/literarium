@@ -13,4 +13,16 @@ public final class ColorUtils {
     private static boolean difference(int v1, int v2) {
         return Math.abs(v1 - v2) >= 33;
     }
+
+    public static String stringify(ColorTriplet c) {
+        return "#" + convertToHex(c.getR()) + convertToHex(c.getG()) + convertToHex(c.getB());
+    }
+
+    private static String convertToHex(int n) {
+        String s = Integer.toHexString(n);
+        if (s.length() == 1) {
+            s = "0" + s;
+        }
+        return s;
+    }
 }
