@@ -1,4 +1,4 @@
-package literarium.parsingData.enumType;
+package app.literarium.parsingData.enumType;
 
 public enum RequestType {
     AUTHOR_SHOW,

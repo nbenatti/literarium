@@ -1,4 +1,4 @@
-package literarium.parsingData;
+package app.literarium.parsingData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-import literarium.parsingData.enumType.RequestType;
-import literarium.parsingData.parseType.Author;
-import literarium.parsingData.parseType.AuthorInfo;
-import literarium.parsingData.parseType.Book;
-import literarium.parsingData.parseType.Shelf;
-import literarium.parsingData.parseType.User;
+import app.literarium.parsingData.enumType.RequestType;
+import app.literarium.parsingData.parseType.Author;
+import app.literarium.parsingData.parseType.AuthorInfo;
+import app.literarium.parsingData.parseType.Book;
+import app.literarium.parsingData.parseType.Shelf;
+import app.literarium.parsingData.parseType.User;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -68,8 +68,8 @@ public final class XmlDataParser {
         String average_rating = getStringValueFromPath(doc, "/book/average_rating");
         String num_pages = getStringValueFromPath(doc, "/book/num_pages");
 
-        String authorsId = getStringValueFromPath(doc, BASE_TAG + "/book/authors/author/id");
-        String authorsName = getStringValueFromPath(doc, BASE_TAG + "/book/authors/author/name");
+        String authorsId = getStringValueFromPath(doc, "/book/authors/author/id");
+        String authorsName = getStringValueFromPath(doc, "/book/authors/author/name");
         AuthorInfo author = new AuthorInfo(Integer.valueOf(authorsId), authorsName);
 
         return new Book(Integer.valueOf(id), title, isbn, image_url, Integer.valueOf(publication_year), publisher, description, Double.valueOf(average_rating), Integer.valueOf(num_pages), author);

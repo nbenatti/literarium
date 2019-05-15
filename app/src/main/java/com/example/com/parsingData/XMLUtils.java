@@ -1,4 +1,4 @@
-package literarium.parsingData;
+package app.literarium.parsingData;
 
 import java.io.IOException;
 import java.io.InputStream;

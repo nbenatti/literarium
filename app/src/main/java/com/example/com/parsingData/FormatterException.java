@@ -1,4 +1,4 @@
-package literarium.parsingData;
+package app.literarium.parsingData;
 
 public class FormatterException extends RuntimeException {
 

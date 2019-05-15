@@ -1,4 +1,4 @@
-package literarium.parsingData.parseType;
+package app.literarium.parsingData.parseType;
 
 public final class Author {
 
