@@ -1,4 +1,4 @@
-package literarium.colorGenerator;
+package app.literarium.colorGenerator;
 
 public final class GeneratorException extends RuntimeException {
 
