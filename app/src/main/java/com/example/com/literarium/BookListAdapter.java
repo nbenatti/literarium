@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.com.parsingData.parseType.Book;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,8 +22,13 @@ public class BookListAdapter extends ArrayAdapter<Book> {
     private TextView bookAuthor;
     private TextView bookRating;
 
+    private ImageView bookCover;
+
     public BookListAdapter(Context context, int resource, List<Book> books) {
-        super(context, resource);
+        super(context, resource, books);
+
+        ctx = context;
+        layoutId = resource;
     }
 
     @Override
@@ -42,13 +49,17 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             bookTitle = v.findViewById(R.id.bookTitle);
             bookAuthor = v.findViewById(R.id.bookAuthor);
             bookRating = v.findViewById(R.id.rating);
+            bookCover = v.findViewById(R.id.bookCover);
 
             if(bookTitle != null)
                 bookTitle.setText(book.getTitle());
             if(bookAuthor != null)
-                bookAuthor.setText("by " + book.getAuthor());
+                bookAuthor.setText("by " + book.getAuthor().getName());
             if(bookRating != null) {
-                //bookRating.setText(book+"/10");
+                bookRating.setText(book.getAverageRating()+"/10");
+            }
+            if(bookCover != null) {
+                Picasso.get().load(book.getImageUrl()).into(bookCover);
             }
         }
 

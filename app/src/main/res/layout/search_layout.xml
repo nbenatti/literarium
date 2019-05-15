@@ -41,10 +41,10 @@
         android:text="search"
         android:onClick="performSearch"/>
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/litGrey">
+        android:background="@color/litGrey">-->
 
         <!-- Search options -->
         <!--<ExpandableListView
@@ -56,12 +56,10 @@
         <ListView
             android:id="@+id/resultList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content"
+            >
         </ListView>
 
-
-
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </LinearLayout>

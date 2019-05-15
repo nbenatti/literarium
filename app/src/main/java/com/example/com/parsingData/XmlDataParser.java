@@ -45,12 +45,12 @@ public final class XmlDataParser {
         String about = getStringValueFromPath(doc, "/author/about");
         String works_count = getStringValueFromPath(doc, "/author/works_count");
         String gender = getStringValueFromPath(doc, "/author/gender");
-        String homeTown = getStringValueFromPath(doc, "/author/homeTown");
+        String homeTown = getStringValueFromPath(doc, "/author/hometown");
         String born_at = getStringValueFromPath(doc, "/author/born_at");
         String died_at = getStringValueFromPath(doc, "/author/died_at");
 
-        List<com.example.com.parsingData.parseType.Book> books = new ArrayList<>();
-        NodeList bookList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + "/author/books/book/id");
+        List<Book> books = new ArrayList<>();
+        /*NodeList bookList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + "/author/books/book/id");
         for (int i = 0; i < bookList.getLength(); ++i) {
             String bookId = bookList.item(i).getTextContent();
             String url = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.BOOK_SHOW, bookId);
@@ -58,9 +58,9 @@ public final class XmlDataParser {
             httpRequest.send();
             com.example.com.parsingData.parseType.Book book = parseBook(httpRequest.getResult());
             books.add(book);
-        }
+        }*/
 
-        return new com.example.com.parsingData.parseType.Author(Integer.valueOf(id), name, Integer.valueOf(fans_count), image_url, about, Integer.valueOf(works_count), gender, homeTown, born_at, died_at, (Book[]) books.toArray());
+        return new com.example.com.parsingData.parseType.Author(Integer.valueOf(id), name, Integer.valueOf(fans_count), image_url, about, Integer.valueOf(works_count), gender, homeTown, born_at, died_at, /*(Book[]) books.toArray()*/new Book[]{});
     }
 
     public static com.example.com.parsingData.parseType.Book parseBook(Document doc) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {

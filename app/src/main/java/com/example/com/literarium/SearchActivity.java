@@ -1,10 +1,12 @@
 package com.example.com.literarium;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -16,9 +18,13 @@ public class SearchActivity extends Activity {
 
     private EditText keyword;
 
-    private ArrayList<com.example.com.parsingData.parseType.Book> resultListData;
+    private ArrayList<Book> resultListData;
 
     private ListView resultList;
+
+    private BookListAdapter bookListAdapter;
+
+    private Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +32,29 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.search_layout);
         //getActionBar().hide();
 
+        ctx = this;
+
         keyword = findViewById(R.id.search_bar);
         resultList = findViewById(R.id.resultList);
 
         resultListData = new ArrayList<>();
-        BookListAdapter bookListAdapter = new BookListAdapter(this, R.layout.book_item, resultListData);
+        bookListAdapter = new BookListAdapter(this, R.layout.book_item, resultListData);
         resultList.setAdapter(bookListAdapter);
+
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // show the book
+                Intent showBook = new Intent(ctx, ShowBookActivity.class);
+
+                Bundle bookData = new Bundle();
+                bookData.putParcelable(getString(R.string.book_data), resultListData.get(i));
+
+                showBook.putExtras(bookData);
+
+                startActivity(showBook);
+            }
+        });
     }
 
     public void goToBookSHow(View v) {
@@ -53,14 +76,19 @@ public class SearchActivity extends Activity {
         Log.d("SearchActivity", result.toString());
 
         // carica i libri nella lista
-        for(com.example.com.parsingData.parseType.Book bookResult : result) {
+        /*for(Book bookResult : result) {
 
             Log.d("SearchActivity", "loading data...");
 
             resultListData.add(bookResult);
+        }*/
 
-        }
+        bookListAdapter.clear();
 
-        ((BookListAdapter)(resultList.getAdapter())).notifyDataSetChanged();
+        resultListData.addAll(result);
+
+        Log.d("SearchActivity", "DONE LOADING BOOKS");
+
+        bookListAdapter.notifyDataSetChanged();
     }
 }

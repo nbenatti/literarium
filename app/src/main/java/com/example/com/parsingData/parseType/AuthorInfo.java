@@ -49,4 +49,11 @@ public final class AuthorInfo implements Parcelable {
         name = parcel.readString();
         id = parcel.readInt();
     }
+
+    @Override
+    public String toString() {
+        return "AuthorInfo{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

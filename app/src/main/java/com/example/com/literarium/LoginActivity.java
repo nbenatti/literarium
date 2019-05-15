@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +30,10 @@ public class LoginActivity extends Activity {
                 Context.MODE_PRIVATE);
 
         if(sharedPreferences.getInt(getString(R.string.user_id_setting), -1) != -1 &&
-            sharedPreferences.getString(getString(R.string.user_token_setting), "") != "") {
+            sharedPreferences.getString(getString(R.string.user_token_setting), "") != "" &&
+            sharedPreferences.getString(getString(R.string.username_setting), "") != "") {
+
+            Log.d("LoginActivity", "user already logged in");
 
             Intent skipToMain = new Intent(this, MainActivity.class);
             startActivity(skipToMain);

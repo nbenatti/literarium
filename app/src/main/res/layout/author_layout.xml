@@ -63,6 +63,7 @@
                         android:layout_gravity="center">
 
                         <ImageView
+                            android:id="@+id/authorImage"
                             android:layout_width="120dp"
                             android:layout_height="120dp"
                             android:src="@drawable/profile_photo_template" />
@@ -78,6 +79,7 @@
 
                         <!-- Author name -->
                         <TextView
+                            android:id="@+id/authorName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/textPadding"
@@ -86,40 +88,52 @@
                             android:textColor="@color/litBlue"/>
 
                         <!-- Author surname -->
-                        <TextView
+                        <!--<TextView
+                            android:id="@+id/authorSurname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/textPadding"
-                            android:text="Username"
+                            android:text="Surname"
+                            android:textSize="@dimen/titleDimension"
+                            android:textColor="@color/litBlue"/>-->
+
+                        <TextView
+                            android:id="@+id/homeTown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/textPadding"
+                            android:text="Born place"
                             android:textSize="@dimen/textDimension"
                             android:textColor="@color/litBlue"/>
 
-                        <!-- Gender -->
+                        <!-- Written books -->
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="Gender: "
-                                android:textSize="@dimen/textDimension"
+                                android:text="Written books:"
+                                android:layout_width="0dp"
                                 android:layout_weight="3"
+                                android:textSize="@dimen/textDimension"
                                 android:textColor="@color/litBlue"/>
 
                             <TextView
+                                android:id="@+id/workCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="-"
+                                android:text="NBooks"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
 
                         </LinearLayout>
 
-                        <!-- Age -->
+                        <!-- Number of fans -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -128,23 +142,24 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="Age: "
+                                android:text="Fans: "
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="3"
                                 android:textColor="@color/litBlue"/>
 
                             <TextView
+                                android:id="@+id/fansCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="n years"
+                                android:text="NFans"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
 
                         </LinearLayout>
 
-                        <!-- Friends count -->
+                        <!-- Born date -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -153,23 +168,24 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="Friends count: "
+                                android:text="Born:"
                                 android:textSize="@dimen/textDimension"
-                                android:layout_weight="3"
+                                android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
 
                             <TextView
+                                android:id="@+id/bornAt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="-"
+                                android:text="DD/MM/YYYY"
                                 android:textSize="@dimen/textDimension"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:textColor="@color/litBlue"/>
 
                         </LinearLayout>
 
-                        <!-- Reviews count -->
+                        <!-- Death date -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -178,18 +194,19 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="Reviews count: "
+                                android:text="Dead:"
                                 android:textSize="@dimen/textDimension"
-                                android:layout_weight="3"
+                                android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
 
                             <TextView
+                                android:id="@+id/diedAt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:text="-"
+                                android:text="DD/MM/YYYY"
                                 android:textSize="@dimen/textDimension"
-                                android:layout_weight="1"
+                                android:layout_weight="3"
                                 android:textColor="@color/litBlue"/>
 
                         </LinearLayout>
@@ -200,18 +217,19 @@
 
             </LinearLayout>
 
-            <!-- Interests -->
+            <!-- Biography -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/generalMargin"
-                android:layout_marginBottom="@dimen/generalMargin"
+                android:layout_height="@dimen/biographyDimension"
+                android:layout_margin="@dimen/generalMargin"
                 android:background="@drawable/border">
 
+
                 <TextView
+                    android:id="@+id/about"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Interests"
+                    android:hint="Biography"
                     android:layout_margin="@dimen/innerMargin"
                     android:textSize="@dimen/textDimension"
                     android:textColorHint="@color/litBlue"
@@ -220,26 +238,20 @@
 
             </LinearLayout>
 
-            <!-- About -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Series-->
+            <ExpandableListView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/generalMargin"
-                android:layout_marginBottom="@dimen/generalMargin"
-                android:background="@drawable/border">
+                android:background="@color/litBlue">
 
+            </ExpandableListView>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="About"
-                    android:layout_margin="@dimen/innerMargin"
-                    android:textSize="@dimen/textDimension"
-                    android:textColorHint="@color/litBlue"
-                    android:textColor="@color/litBlue"
-                    />
-
-            </LinearLayout>
+            <!-- Books-->
+            <ExpandableListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/litBlue">
+            </ExpandableListView>
 
         </LinearLayout>
 

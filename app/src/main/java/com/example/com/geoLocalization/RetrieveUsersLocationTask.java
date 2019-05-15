@@ -3,13 +3,14 @@ package com.example.com.geoLocalization;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.com.literarium.Globals;
 import com.example.com.literarium.HttpRequest;
 import com.example.com.literarium.IListableActivity;
+import com.example.com.literarium.R;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
 import com.example.com.parsingData.XMLUtils;
@@ -30,21 +31,17 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
     @SuppressLint("StaticFieldLeak")
     private Context ref;
 
+    private Exception lastThrown;
+
+    private SharedPreferences sharedPreferences;
+
     public RetrieveUsersLocationTask(Context main) {
         this.ref = main;
+
+        // get preferences
+        sharedPreferences = ref.getSharedPreferences(ref.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
     }
-
-    /**
-     * public IP of the server
-     */
-    private final String SERVER_IP = /*"95.236.93.207"*/"192.168.1.7";
-
-    private final int SERVER_PORT = 6000;   // TCP port
-
-    private final String REQUEST_NAME = "geolocalizationReport";
-    private final int CONN_TIMEOUT = 5000;  // ms
-
-    private Exception lastThrown;
 
     @Override
     protected List<UserData> doInBackground(Void... voids) {
@@ -68,7 +65,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
         //Document xmlResponse = null;
         String requestUrl = null;
         try {
-            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, Globals.getInstance().getUserLocalData().getUserId());
+            requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, sharedPreferences.getInt(ref.getString(R.string.user_id_setting), -1));
             Log.d("RetrieveUsrLocationTask", requestUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

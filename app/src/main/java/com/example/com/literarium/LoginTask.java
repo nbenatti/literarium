@@ -60,14 +60,15 @@ public class LoginTask extends AsyncTask {
             Log.d("AUTH_TOKEN", token);
 
             // insert user's data in the global area
-            Globals.getInstance().getUserLocalData().setAuthToken(token);
+            /*Globals.getInstance().getUserLocalData().setAuthToken(token);
             Globals.getInstance().getUserLocalData().setUserName(userName);
-            Globals.getInstance().getUserLocalData().setUserId(Integer.parseInt(userId));
+            Globals.getInstance().getUserLocalData().setUserId(Integer.parseInt(userId));*/
 
             // insert user's data in the shared preferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(ref.getString(R.string.user_id_setting), Integer.parseInt(userId));
             editor.putString(ref.getString(R.string.user_token_setting), token);
+            editor.putString(ref.getString(R.string.username_setting), userName);
             editor.commit();
 
         } catch (UnsupportedEncodingException e) {

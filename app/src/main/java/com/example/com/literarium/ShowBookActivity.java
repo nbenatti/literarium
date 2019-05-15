@@ -1,6 +1,7 @@
 package com.example.com.literarium;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -18,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class ShowBookActivity extends Activity {
+
+    private Context ctx;
 
     private TextView bookTitle;
     private TextView bookAuthor;
@@ -39,6 +42,8 @@ public class ShowBookActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_layout);
 
+        ctx = this;
+
         Bundle data = getIntent().getExtras();
 
         saveBookButton = findViewById(R.id.saveBookButton);
@@ -49,8 +54,28 @@ public class ShowBookActivity extends Activity {
         bookDescription.setSelected(true);
         bookCover = findViewById(R.id.bookCover);
 
-        GetBookDataTask getBookDataTask = new GetBookDataTask(this, /*data.getInt("bookId")*/923832);
-        getBookDataTask.execute();
+        bookObj = data.getParcelable(getString(R.string.book_data));
+
+        loadBookData(bookObj);
+
+        /*GetBookDataTask getBookDataTask = new GetBookDataTask(this, data.getInt("bookId"));
+        getBookDataTask.execute();*/
+
+        // go to the author activity when clicking on his name
+        bookAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent showAuthor = new Intent(ctx, AuthorShowActivity.class);
+
+                Bundle authorInfo = new Bundle();
+                authorInfo.putParcelable(getString(R.string.author_info_data), bookObj.getAuthor());
+
+                showAuthor.putExtras(authorInfo);
+
+                startActivity(showAuthor);
+            }
+        });
     }
 
     public void saveBook(View v) {
@@ -73,7 +98,6 @@ public class ShowBookActivity extends Activity {
         bookDescription.setEms(b.getDescription().length());
         bookDescription.setText(Html.fromHtml(b.getDescription()));
         Picasso.get().load(b.getImageUrl()).into(bookCover);
-
     }
 
     public void handleBookSavingSuccess() {

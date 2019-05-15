@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
         noConnectionBanner.setVisibility(View.INVISIBLE);*/
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
-        welcomeMessage.setText(Globals.getInstance().getUserLocalData().getUserName()+"!");
+        welcomeMessage.setText(sharedPreferences.getString(getString(R.string.username_setting), ""));
 
         locationClient = LocationServices.getFusedLocationProviderClient(this);
         resultReceiver = new LocationResultReceiver(this, new Handler());

@@ -1,6 +1,9 @@
 package com.example.com.parsingData.parseType;
 
-public final class Book {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public final class Book implements Parcelable {
 
     private final String title, isbn, image_url, publisher, description, publication_year, num_pages;
     private final int id;
@@ -74,5 +77,50 @@ public final class Book {
                 ", average_rating=" + average_rating +
                 ", authors=" + authors +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int i) {
+        out.writeString(title);
+        out.writeString(isbn);
+        out.writeString(image_url);
+        out.writeString(publisher);
+        out.writeString(description);
+        out.writeString(publication_year);
+        out.writeString(num_pages);
+        out.writeInt(id);
+        out.writeDouble(average_rating);
+        out.writeParcelable(authors, i);
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
+
+    private Book(Parcel p) {
+
+        title = p.readString();
+        isbn = p.readString();
+        image_url = p.readString();
+        publisher = p.readString();
+        description = p.readString();
+        publication_year = p.readString();
+        num_pages = p.readString();
+        id = p.readInt();
+        average_rating = p.readDouble();
+        authors = p.readParcelable(AuthorInfo.class.getClassLoader());
     }
 }
