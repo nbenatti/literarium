@@ -108,7 +108,8 @@
                             android:padding="@dimen/textPadding"
                             android:text="Name"
                             android:textSize="@dimen/titleDimension"
-                            android:textColor="@color/litBlue"/>
+                            android:textColor="@color/litBlue"
+                            android:id="@+id/user_name"/>
 
                         <!-- Author surname -->
                         <TextView
@@ -117,7 +118,8 @@
                             android:padding="@dimen/textPadding"
                             android:text="Username"
                             android:textSize="@dimen/textDimension"
-                            android:textColor="@color/litBlue"/>
+                            android:textColor="@color/litBlue"
+                            android:id="@+id/user_username"/>
 
                         <!-- Gender -->
                         <LinearLayout
@@ -140,7 +142,8 @@
                                 android:text="-"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_gender"/>
 
                         </LinearLayout>
 
@@ -165,7 +168,8 @@
                                 android:text="n years"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_age"/>
 
                         </LinearLayout>
 
@@ -190,7 +194,8 @@
                                 android:text="-"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_friendscount"/>
 
                         </LinearLayout>
 
@@ -215,7 +220,8 @@
                                 android:text="-"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_reviewscount"/>
 
                         </LinearLayout>
 
@@ -241,6 +247,7 @@
                     android:textSize="@dimen/textDimension"
                     android:textColorHint="@color/litBlue"
                     android:textColor="@color/litBlue"
+                    android:id="@+id/user_interests"
                     />
 
             </LinearLayout>
@@ -262,9 +269,17 @@
                     android:textSize="@dimen/textDimension"
                     android:textColorHint="@color/litBlue"
                     android:textColor="@color/litBlue"
+                    android:id="@+id/user_about"
                     />
 
             </LinearLayout>
+
+            <!-- Pie chart -->
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:id="@+id/user_chart"/>
 
         </LinearLayout>
 

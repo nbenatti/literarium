@@ -31,16 +31,6 @@
             android:background="@color/litBlue"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/textPadding"
-            android:text="Book"
-            android:onClick="goToSearchLayout"/>
-
-        <ImageButton
-            android:src="@drawable/viewsavedbooks_icon"
-            android:scaleType="fitCenter"
-            android:layout_width="50dp"
-            android:background="@color/litBlue"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/textPadding"
             android:onClick="goToSearchLayout"/>
 
         <ImageButton
@@ -50,7 +40,7 @@
             android:background="@color/litBlue"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/textPadding"
-            android:onClick="goToSearchLayout"/>
+            android:onClick="goToUserLayout"/>
 
         <!--<Button
             android:layout_width="wrap_content"

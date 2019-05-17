@@ -24,6 +24,7 @@ allprojects {
         maven {
             url 'https://artifactory.cloud.mapquest.com/artifactory/et-android-binaries'
         }
+        maven { url 'https://jitpack.io' }
     }
 }
 

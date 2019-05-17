@@ -8,8 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.com.localDB.BookDAO;
-import com.example.com.parsingData.parseType.Book;
+import com.example.com.localDB.Book;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class SavedBookListAdapter extends ArrayAdapter<Book> {
@@ -55,13 +56,13 @@ public class SavedBookListAdapter extends ArrayAdapter<Book> {
             if(bookTitle != null)
                 bookTitle.setText(book.getTitle());
             if(bookAuthor != null)
-                bookAuthor.setText("by " + book.getAuthor().getName());
+                bookAuthor.setText("by " + book.getName_author());
             if(bookRating != null)
-                bookRating.setText(book.getAverageRating()+"/10");
+                bookRating.setText(book.getAverage_rating()+"/10");
             if(bookCover != null)
-                Picasso.get().load(book.getImageUrl()).into(bookCover);
+                Picasso.get().load(book.getImage_url()).into(bookCover);
             if(ssIcon != null){
-                if(book.())
+                if(book.isStatus())
                     ssIcon.setBackgroundResource(R.drawable.savedbook_icon);
                 else
                     ssIcon.setBackgroundResource(R.drawable.sentbook_icon);

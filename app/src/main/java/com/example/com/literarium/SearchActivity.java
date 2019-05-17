@@ -91,4 +91,17 @@ public class SearchActivity extends Activity {
 
         bookListAdapter.notifyDataSetChanged();
     }
+
+    public void goToSavedBooks(View v) {
+
+        Intent i = new Intent(this, SavedBooksActivity.class);
+        startActivity(i);
+    }
+
+    public void goToUserLayout(View v) {
+
+        Intent i = new Intent(this, UserShowActivity.class);
+        startActivity(i);
+    }
+
 }
