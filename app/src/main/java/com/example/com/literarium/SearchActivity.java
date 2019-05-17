@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.com.parsingData.parseType.Book;
 
@@ -17,14 +19,13 @@ import java.util.ArrayList;
 public class SearchActivity extends Activity {
 
     private EditText keyword;
-
     private ArrayList<Book> resultListData;
-
     private ListView resultList;
-
     private BookListAdapter bookListAdapter;
-
     private Context ctx;
+
+    private RadioGroup rg;
+    private RadioButton selectedRb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,9 @@ public class SearchActivity extends Activity {
                 startActivity(showBook);
             }
         });
+
+        rg = findViewById(R.id.fieldselection);
+
     }
 
     public void goToBookSHow(View v) {
@@ -66,6 +70,10 @@ public class SearchActivity extends Activity {
     public void performSearch(View v) {
 
         String keyword = this.keyword.getText().toString();
+
+        // getting selected radio button
+        int id = rg.getCheckedRadioButtonId();
+        selectedRb = findViewById(id);
 
         SearchBooksTask searchBooksTask = new SearchBooksTask(this, keyword);
         searchBooksTask.execute();

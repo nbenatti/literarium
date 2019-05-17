@@ -74,6 +74,45 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/fieldselection">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/litBlue"
+                android:text="All"
+                android:layout_weight="1"
+                android:id="@+id/all_rb"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/litBlue"
+                android:text="Title"
+                android:layout_weight="1"
+                android:id="@+id/title_rb"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/litBlue"
+                android:text="Author"
+                android:layout_weight="1"
+                android:id="@+id/author_rb"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
     <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
