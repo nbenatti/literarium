@@ -69,7 +69,8 @@
         <ExpandableListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/litBlue">
+            android:background="@color/litBlue"
+            android:id="@+id/savedbookslist">
         </ExpandableListView>
 
     </ScrollView>
