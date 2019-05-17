@@ -130,4 +130,22 @@ public class ShowBookActivity extends Activity {
         i.putExtras(b);
         startActivity(i);
     }
+
+    public void goToSearchLayout(View v) {
+
+        Intent i = new Intent(this, SearchActivity.class);
+        startActivity(i);
+    }
+
+    public void goToSavedBooks(View v) {
+
+        Intent i = new Intent(this, SavedBooksActivity.class);
+        startActivity(i);
+    }
+
+    public void goToUserLayout(View v) {
+
+        Intent i = new Intent(this, UserShowActivity.class);
+        startActivity(i);
+    }
 }

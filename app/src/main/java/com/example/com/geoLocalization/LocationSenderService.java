@@ -2,11 +2,13 @@ package com.example.com.geoLocalization;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 
 import com.example.com.literarium.Globals;
 import com.example.com.literarium.HttpRequest;
+import com.example.com.literarium.R;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
 import com.example.com.parsingData.XMLUtils;
@@ -33,6 +35,8 @@ public class LocationSenderService extends IntentService {
     private LocationRequest lr;
     private LocationResultReceiver resultReceiver;
 
+    private SharedPreferences sharedPreferences;
+
     /**
      * output data of the <b>reverse geocoding</b> process.
      */
@@ -51,6 +55,8 @@ public class LocationSenderService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        sharedPreferences = Globals.getSharedPreferences(this);
 
         Log.d("LocationSenderService", "service started");
 
@@ -76,7 +82,7 @@ public class LocationSenderService extends IntentService {
             try {
                 requestUrl = RequestManager.formatRequest(
                         RequestType.LOG_POSITION,
-                        Globals.getInstance().getUserLocalData().getUserId(),
+                        sharedPreferences.getInt(getString(R.string.user_id_setting), -1),
                         locationPackage.getLocation().getLatitude(),
                         locationPackage.getLocation().getLongitude(),
                         locationPackage.getStreetAddress());

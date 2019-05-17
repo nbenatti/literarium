@@ -71,7 +71,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
             e.printStackTrace();
         }
         HttpRequest request = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
-        //Log.d("RetrieveUsrLocationTask", requestUrl);
+        Log.d("RetrieveUsrLocationTask", requestUrl);
         request.send();
         Document xmlResponse = request.getResult();
 

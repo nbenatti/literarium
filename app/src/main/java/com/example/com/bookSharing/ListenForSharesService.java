@@ -49,7 +49,7 @@ public class ListenForSharesService extends JobIntentService {
     /**
      * application settings.
      */
-    SharedPreferences sharedPreferences;
+    private static SharedPreferences sharedPreferences;
 
     /**
      * timestamp of the last request
@@ -69,22 +69,20 @@ public class ListenForSharesService extends JobIntentService {
 
     public ListenForSharesService() {
         super();
-
-        sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE);
     }
 
     public ListenForSharesService(String name) {
         super();
-
-        sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE);
 
         stop = false;
     }
 
     public static void enqueueWork(Context context, Intent work) {
         Log.d("ListenForSharesService", "work enqueued");
+
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+
         enqueueWork(context, ListenForSharesService.class, SERVICE_JOB_ID, work);
     }
 
@@ -163,10 +161,25 @@ public class ListenForSharesService extends JobIntentService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            stop = isMyServiceRunning(ListenForSharesService.class);
+            /*stop = isMyServiceRunning(ListenForSharesService.class);
+            Log.d("ListenForSharesService", "is my service running: " + stop);*/
         }
 
         updateLastAccessTimestamp();
+    }
+
+    @Override
+    public boolean onStopCurrentWork() {
+
+        updateLastAccessTimestamp();
+        return true;
+    }
+
+    @Override
+    public void onDestroy() {
+
+        updateLastAccessTimestamp();
+        super.onDestroy();
     }
 
     private void updateLastAccessTimestamp() {

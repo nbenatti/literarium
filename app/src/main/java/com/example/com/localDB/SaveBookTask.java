@@ -2,11 +2,13 @@ package com.example.com.localDB;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.com.literarium.Globals;
+import com.example.com.literarium.R;
 import com.example.com.literarium.ShowBookActivity;
 import com.example.com.parsingData.enumType.BookType;
 
@@ -27,11 +29,16 @@ public class SaveBookTask extends AsyncTask {
 
     private ShowBookActivity act;
 
+    private SharedPreferences sharedPreferences;
+
     public SaveBookTask(Context ctx, List<com.example.com.parsingData.parseType.Book> b, BookType bt) {
 
         this.ctx = ctx;
 
-        act = (ShowBookActivity)ctx;
+        sharedPreferences = Globals.getSharedPreferences(ctx);
+
+        if(act instanceof ShowBookActivity)
+            act = (ShowBookActivity)ctx;
 
         booksToBeSaved = new ArrayList<>();
 
@@ -48,7 +55,7 @@ public class SaveBookTask extends AsyncTask {
         // convert book objects to be saved in the db
         for(com.example.com.parsingData.parseType.Book book : b) {
             booksToBeSaved.add(new BookDB(book.getId(),
-                    String.valueOf(Globals.getInstance().getUserLocalData().getUserId()),
+                    String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)),
                     book.getTitle(),
                     book.getIsbn(),
                     book.getImageUrl(),
@@ -83,7 +90,8 @@ public class SaveBookTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         //notify the calling activity with the operation's status
-        act.handleBookSavingSuccess();
+        if(act != null && (act instanceof ShowBookActivity))
+            act.handleBookSavingSuccess();
     }
 
     private void createDb() {
@@ -103,7 +111,7 @@ public class SaveBookTask extends AsyncTask {
         catch(SQLiteConstraintException e) {
             act.handleDuplicateSavedBook();
         }
-        List<BookDB> res = bookDao.getAllBooks(String.valueOf(Globals.getInstance().getUserLocalData().getUserId()));
+        List<BookDB> res = bookDao.getAllBooks(String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)));
         for(BookDB bookDB : res)
             Log.d("LOCAL_DB", bookDB.toString());
     }

@@ -55,9 +55,16 @@ public class FetchNewSharesTask extends AsyncTask {
 
         ArrayList<BookDB> dbBooks = (ArrayList<BookDB>)o;
 
-        ArrayList<Book> books = (ArrayList<Book>) DbUtils.convertBookDBToBook(dbBooks);
+        if(dbBooks.size() == 0) {
 
-        act.populate(books);
+            act.handleNoShares();
+        }
+        else {
+
+            ArrayList<Book> books = (ArrayList<Book>) DbUtils.convertBookDBToBook(dbBooks);
+
+            act.populate(books);
+        }
     }
 
     private void createDb() {

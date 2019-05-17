@@ -17,11 +17,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- ACTIVITIES -->
+        <activity android:name=".RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SavedBooksActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AuthorShowActivity"
             android:label="@string/title_activity_author_show"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <!-- ACTIVITIES -->
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity android:name=".SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -58,7 +73,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
-        </activity> <!-- SERVICES -->
+        </activity>
+
+        <!-- SERVICES -->
         <service
             android:name="com.example.com.geoLocalization.FetchAddressIntentService"
             android:exported="false" />
@@ -76,7 +93,9 @@
         <service
             android:name="com.example.com.bookSharing.DiscardShare"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- RECEIVERS -->
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- RECEIVERS -->
         <receiver android:name="com.example.com.bookSharing.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

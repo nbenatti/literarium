@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.com.literarium.HttpRequest;
 import com.example.com.parsingData.parseType.Book;
 import com.example.com.parsingData.parseType.Shelf;
+import com.example.com.parsingData.parseType.User;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,6 +23,8 @@ import javax.xml.xpath.XPathExpressionException;
 public final class XmlDataParser {
 
     private static final String BASE_TAG = "GoodreadsResponse";
+
+    private static final String ERROR_TAG = "error";
 
     private static HttpRequest httpRequest;
 
@@ -101,8 +104,15 @@ public final class XmlDataParser {
         return books;
     }
 
-    public static com.example.com.parsingData.parseType.User parseUserInfo(Document doc) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+    public static User parseUserInfo(Document doc) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
         //Document doc = XMLUtils.getNewDocFromStream(in);
+
+        Element rootNode = doc.getDocumentElement();
+
+        if(rootNode.getTagName().equals(ERROR_TAG) && rootNode.getTextContent().equals("profile not found")) {
+
+            return null;
+        }
 
         String name = getStringValueFromPath(doc, "/user/name");
         String username = getStringValueFromPath(doc, "/user/username");

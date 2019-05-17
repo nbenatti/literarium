@@ -10,6 +10,7 @@ public enum RequestType {
     SERIES_SHOW,
     SERIES_WORK,
     AUTH_USER,
+    REGISTER,
     GEO_REPORT,
     LOG_POSITION,
     SHARE_BOOK,
