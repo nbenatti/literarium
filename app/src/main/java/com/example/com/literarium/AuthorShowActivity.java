@@ -1,7 +1,9 @@
 package com.example.com.literarium;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,4 +54,23 @@ public class AuthorShowActivity extends Activity {
         bookCount.setText(String.valueOf(a.getWorks_count()));
         Picasso.get().load(a.getImage_url()).into(image);
     }
+
+    public void goToSearchLayout(View v) {
+
+        Intent i = new Intent(this, SearchActivity.class);
+        startActivity(i);
+    }
+
+    public void goToSavedBooks(View v) {
+
+        Intent i = new Intent(this, SavedBooksActivity.class);
+        startActivity(i);
+    }
+
+    public void goToUserLayout(View v) {
+
+        Intent i = new Intent(this, UserShowActivity.class);
+        startActivity(i);
+    }
+
 }

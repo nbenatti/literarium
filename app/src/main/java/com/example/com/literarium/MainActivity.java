@@ -86,7 +86,7 @@ public class MainActivity extends Activity {
                 Context.MODE_PRIVATE);
 
         /*LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
-        noConnectionBanner.setVisibility(View.INVISIBLE);*/
+        noConnectionBanner.setVisibility(View.GONE);*/
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText(sharedPreferences.getString(getString(R.string.username_setting), ""));

@@ -50,6 +50,22 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/litGrey">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/textPadding"
+            android:text="Your books"
+            android:textSize="25dp"
+            android:textColor="@color/litBlue"
+            android:layout_margin="5dp"/>
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,7 +75,7 @@
         <ExpandableListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/litBlue"
+            android:background="@color/litGrey"
             android:id="@+id/savedbookslist">
         </ExpandableListView>
 
