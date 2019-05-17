@@ -31,7 +31,32 @@
             android:background="@color/litBlue"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/textPadding"
-            android:text="Book" />
+            android:text="Book"
+            android:onClick="goToSearchLayout"/>
+
+        <ImageButton
+            android:src="@drawable/viewsavedbooks_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:onClick="goToSearchLayout"/>
+
+        <ImageButton
+            android:src="@drawable/user_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:onClick="goToSearchLayout"/>
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geo report"
+            android:onClick="startGeolocalization"/>-->
 
     </LinearLayout>
 
