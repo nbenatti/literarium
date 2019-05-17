@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.localDB.SaveBookTask;
+import com.example.com.parsingData.enumType.BookType;
 import com.example.com.parsingData.parseType.Book;
 import com.squareup.picasso.Picasso;
 
@@ -83,7 +84,7 @@ public class ShowBookActivity extends Activity {
         ArrayList<Book> toSaveBookList = new ArrayList<>();
         toSaveBookList.add(bookObj);
 
-        SaveBookTask saveBookTask = new SaveBookTask(this, toSaveBookList);
+        SaveBookTask saveBookTask = new SaveBookTask(this, toSaveBookList, BookType.SAVED_BOOK);
         saveBookTask.execute();
     }
 
@@ -103,6 +104,11 @@ public class ShowBookActivity extends Activity {
     public void handleBookSavingSuccess() {
 
         Toast.makeText(this, "book saved successfully!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void handleDuplicateSavedBook() {
+
+        Toast.makeText(this, "book already in your list", Toast.LENGTH_SHORT).show();
     }
 
     public void goToGeolocalization(View v) {

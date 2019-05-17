@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.com.literarium.GetBookDataTask;
 import com.example.com.literarium.R;
 import com.example.com.localDB.SaveBookTask;
+import com.example.com.parsingData.enumType.BookType;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -57,7 +58,7 @@ public class AcceptShare extends JobIntentService {
         }
 
         // save all the books in the local archive
-        SaveBookTask saveBookTask = new SaveBookTask(this, fullBookData);
+        SaveBookTask saveBookTask = new SaveBookTask(this, fullBookData, BookType.RECEIVED_BOOK);
         saveBookTask.execute();
     }
 }

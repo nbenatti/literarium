@@ -18,6 +18,9 @@ import com.example.com.geoLocalization.Constants;
 import com.example.com.geoLocalization.FetchAddressIntentService;
 import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.geoLocalization.LocationResultReceiver;
+import com.example.com.localDB.BookDAO;
+import com.example.com.localDB.LocalDatabase;
+import com.example.com.parsingData.parseType.Book;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,9 +39,15 @@ public class MainActivity extends Activity {
     private Context ctx;
 
     /**
+     * reference to the local DB
+     */
+    private LocalDatabase dbRef;
+    private BookDAO bookDao;
+
+    /**
      * application settings.
      */
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     private final int MINUTE = 1000*60;
     private final int SECOND = MINUTE / 60;
@@ -71,7 +80,9 @@ public class MainActivity extends Activity {
 
     private ListView newSharesList;
 
-    private ArrayList<com.example.com.parsingData.parseType.Book> newSharesListData;
+    private ArrayList<Book> newSharesListData;
+
+    private BookListAdapter bookListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,10 +126,19 @@ public class MainActivity extends Activity {
         getRealTimeLocation();
 
         // instantiate the list
-        /*newSharesListData = new ArrayList<>();
-        BookListAdapter bookListAdapter = new BookListAdapter(this, R.layout.book_item, newSharesListData);
-        newSharesList.setAdapter(bookListAdapter);*/
+        newSharesList = findViewById(R.id.newShares);
+        newSharesListData = new ArrayList<>();
+        bookListAdapter = new BookListAdapter(this, R.layout.book_item, newSharesListData);
+        newSharesList.setAdapter(bookListAdapter);
 
+        // fetch data
+        FetchNewSharesTask fetchNewSharesTask = new FetchNewSharesTask(this);
+        fetchNewSharesTask.execute();
+    }
+
+    public void populate(ArrayList<Book> books) {
+        newSharesListData.addAll(books);
+        bookListAdapter.notifyDataSetChanged();
     }
 
     public void startGeolocalization(View b) {

@@ -1,8 +1,10 @@
 package com.example.com.bookSharing;
 
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
@@ -45,6 +47,11 @@ public class ListenForSharesService extends JobIntentService {
     private boolean stop;
 
     /**
+     * application settings.
+     */
+    SharedPreferences sharedPreferences;
+
+    /**
      * timestamp of the last request
      */
     private String timestamp;
@@ -62,10 +69,17 @@ public class ListenForSharesService extends JobIntentService {
 
     public ListenForSharesService() {
         super();
+
+        sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
     }
 
     public ListenForSharesService(String name) {
         super();
+
+        sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+
         stop = false;
     }
 
@@ -149,9 +163,29 @@ public class ListenForSharesService extends JobIntentService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            stop = isMyServiceRunning(ListenForSharesService.class);
         }
+
+        updateLastAccessTimestamp();
     }
 
+    private void updateLastAccessTimestamp() {
+        String timestamp = Globals.getTimestamp();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.last_access_setting), timestamp);
+        editor.commit();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * notify the user when there are new shares for him.
      */
