@@ -76,7 +76,14 @@ public class LoginActivity extends Activity {
      */
     public void handleLoginFailure() {
 
-        Toast.makeText(this, "wrong credentials!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Wrong credentials!", Toast.LENGTH_SHORT).show();
         resetUserInput();
     }
+
+    public void goToRegisterLayout(View v) {
+
+        Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
+    }
+
 }
