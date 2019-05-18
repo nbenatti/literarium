@@ -25,7 +25,7 @@ public class RegisterActivity extends Activity {
 
     }
 
-    protected void register(View v){
+    public void register(View v){
 
         // check if edit texts are not empty
         if(TextUtils.isEmpty(grUsername.getText()) || TextUtils.isEmpty(lUsername.getText()) || TextUtils.isEmpty(lPassword.getText())){ // one is empty
@@ -33,11 +33,24 @@ public class RegisterActivity extends Activity {
         }
 
         // query
+        RegisterTask registerTask = new RegisterTask(this,
+                                                        grUsername.getText().toString(),
+                                                        grUsername.getText().toString(),
+                                                        lPassword.getText().toString());
 
+        registerTask.execute();
+
+        /*Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);*/
+
+    }
+
+    public void handleRegisterSuccess() {
+
+        Toast.makeText(this, "you are in!", Toast.LENGTH_SHORT).show();
 
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
-
     }
 
 }

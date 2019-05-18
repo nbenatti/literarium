@@ -14,18 +14,20 @@ public class RegisterTask  extends AsyncTask {
 
     private HttpRequest httpRequest;
 
-    private String userName, password;
+    private String userName, password, grUsername;
 
-    public RegisterTask(String userName, String password) {
+    public RegisterTask(Context ctx, String userName, String grUsername, String password) {
         this.userName = userName;
         this.password = password;
+        this.grUsername = grUsername;
+        this.ctx = ctx;
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
 
         try {
-            String reqUrl = RequestManager.formatRequest(RequestType.REGISTER, userName, password);
+            String reqUrl = RequestManager.formatRequest(RequestType.REGISTER, userName, grUsername, password);
 
             httpRequest = new HttpRequest(reqUrl, HttpRequest.HttpRequestMethod.GET);
             httpRequest.send();
@@ -39,5 +41,13 @@ public class RegisterTask  extends AsyncTask {
 
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+
+        RegisterActivity act = (RegisterActivity)ctx;
+
+        ((RegisterActivity) ctx).handleRegisterSuccess();
     }
 }

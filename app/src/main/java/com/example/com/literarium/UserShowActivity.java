@@ -125,6 +125,23 @@ public class UserShowActivity extends Activity {
         editor.remove(getString(R.string.user_token_setting));
         editor.remove(getString(R.string.username_setting));
         editor.commit();
+
+        updateLastAccessTimestamp();
+
+        // redirect to the main
+        Intent i = new Intent(UserShowActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+    }
+
+    private void updateLastAccessTimestamp() {
+        String timestamp = Globals.getTimestamp();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.last_access_setting), timestamp);
+        editor.commit();
     }
 
     public void handleUserNotFound() {

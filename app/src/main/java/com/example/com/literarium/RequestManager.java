@@ -60,7 +60,8 @@ public class RequestManager {
 
             req = "http://79.40.96.138/literarium_api/register.php?"
                     + "username=" + urlEncodedArgs[0]
-                    + "&password=" + urlEncodedArgs[1];
+                    + "&grusername=" + urlEncodedArgs[1]
+                    + "&password=" + urlEncodedArgs[2];
         }
 
         return req;
