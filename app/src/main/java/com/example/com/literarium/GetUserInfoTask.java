@@ -7,7 +7,7 @@ import android.util.Log;
 import com.example.com.parsingData.URLRequestFormatter;
 import com.example.com.parsingData.XmlDataParser;
 import com.example.com.parsingData.enumType.RequestType;
-import com.example.com.parsingData.parseType.Book;
+import com.example.com.parsingData.parseType.User;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
-public class GetBookDataTask extends AsyncTask {
+public class GetUserInfoTask extends AsyncTask {
 
     private Context ref;
 
@@ -26,20 +26,21 @@ public class GetBookDataTask extends AsyncTask {
 
     private HttpRequest httpRequest;
 
-    private int bookId;
+    private String userName;
 
-    public GetBookDataTask(Context ref, int bookId) {
-
+    public GetUserInfoTask(Context ref, String userName) {
         this.ref = ref;
-        this.bookId = bookId;
+        this.userName = userName;
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
 
+        Log.d("GetUserInfoTask", "task started");
+
         String requestUrl = null;
         try {
-            requestUrl = URLRequestFormatter.format(RequestType.BOOK_SHOW, String.valueOf(bookId));
+            requestUrl = URLRequestFormatter.format(RequestType.USER_INFO, String.valueOf(userName));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -49,10 +50,10 @@ public class GetBookDataTask extends AsyncTask {
         httpRequest.send();
         xmlContent = httpRequest.getResult();
 
-        com.example.com.parsingData.parseType.Book book = null;
+        User user = null;
 
         try {
-            book = XmlDataParser.parseBook(xmlContent);
+            user = XmlDataParser.parseUserInfo(xmlContent);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -63,18 +64,27 @@ public class GetBookDataTask extends AsyncTask {
             e.printStackTrace();
         }
 
-        return book;
+        // user not found
+        if(user == null) {
+
+            return null;
+        }
+
+        return user;
     }
 
     @Override
     protected void onPostExecute(Object o) {
 
-        if(ref instanceof ShowBookActivity) {
-            ShowBookActivity concreteActivity = (ShowBookActivity) ref;
-            ((ShowBookActivity) ref).loadBookData((Book) o);
+        UserShowActivity concreteActivity = (UserShowActivity) ref;
+
+
+        if(o != null) {
+            ((UserShowActivity) ref).loadUserData((User) o);
         }
-        else {
-            return;
+        else if(o == null) {
+
+            concreteActivity.handleUserNotFound();
         }
     }
 }

@@ -28,8 +28,11 @@ public class SearchBooksTask extends AsyncTask {
 
     private ArrayList<com.example.com.parsingData.parseType.Book> result;
 
+    private SearchActivity act;
+
     public SearchBooksTask(Context ctx, String keyword) {
         this.ctx = ctx;
+        act = (SearchActivity)ctx;
         this.keyword = keyword;
     }
 
@@ -67,6 +70,8 @@ public class SearchBooksTask extends AsyncTask {
     protected void onPostExecute(Object o) {
 
         SearchActivity act = (SearchActivity)ctx;
+
+        act.stopLoadingRing();
 
         act.loadData(result);
     }

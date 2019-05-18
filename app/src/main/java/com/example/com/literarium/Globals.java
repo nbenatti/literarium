@@ -4,6 +4,7 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import java.text.SimpleDateFormat;
@@ -90,6 +91,15 @@ public class Globals extends Application {
         String timestamp = sdf.format(new Date());
 
         return timestamp;
+    }
+
+    public static SharedPreferences getSharedPreferences(Context ctx) {
+
+        //if user had already logged in, skip to the main activity
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+
+        return sharedPreferences;
     }
 
 }

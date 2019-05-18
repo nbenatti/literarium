@@ -10,7 +10,9 @@ import android.util.Log;
 import com.example.com.literarium.GetBookDataTask;
 import com.example.com.literarium.R;
 import com.example.com.localDB.SaveBookTask;
+import com.example.com.parsingData.enumType.BookType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -26,8 +28,8 @@ public class AcceptShare extends JobIntentService {
     }
 
     public static void enqueueWork(Context context, Intent work) {
-        Log.d("ListenForSharesService", "deny task started");
-        enqueueWork(context, DiscardShare.class, SERVICE_JOB_ID, work);
+        Log.d("ListenForSharesService", "accept task started");
+        enqueueWork(context, AcceptShare.class, SERVICE_JOB_ID, work);
     }
 
     @Override
@@ -42,6 +44,8 @@ public class AcceptShare extends JobIntentService {
 
         shareDataList = b.getParcelableArrayList(getString(R.string.share_data));
 
+        fullBookData = new ArrayList<>();
+
         try {
 
             // get full data of all the books
@@ -49,6 +53,8 @@ public class AcceptShare extends JobIntentService {
 
                 GetBookDataTask getBookDataTask = new GetBookDataTask(this, Integer.parseInt(sd.getBookId()));
                 com.example.com.parsingData.parseType.Book toSave = (com.example.com.parsingData.parseType.Book)getBookDataTask.execute().get();
+
+                fullBookData.add(toSave);
             }
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -57,7 +63,7 @@ public class AcceptShare extends JobIntentService {
         }
 
         // save all the books in the local archive
-        SaveBookTask saveBookTask = new SaveBookTask(this, fullBookData);
+        SaveBookTask saveBookTask = new SaveBookTask(this, fullBookData, BookType.RECEIVED_BOOK);
         saveBookTask.execute();
     }
 }

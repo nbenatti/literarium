@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.com.parsingData.parseType.Book;
 
@@ -17,14 +20,15 @@ import java.util.ArrayList;
 public class SearchActivity extends Activity {
 
     private EditText keyword;
-
     private ArrayList<Book> resultListData;
-
     private ListView resultList;
-
     private BookListAdapter bookListAdapter;
-
     private Context ctx;
+
+    private RadioGroup rg;
+    private RadioButton selectedRb;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,9 @@ public class SearchActivity extends Activity {
 
         keyword = findViewById(R.id.search_bar);
         resultList = findViewById(R.id.resultList);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         resultListData = new ArrayList<>();
         bookListAdapter = new BookListAdapter(this, R.layout.book_item, resultListData);
@@ -55,6 +62,9 @@ public class SearchActivity extends Activity {
                 startActivity(showBook);
             }
         });
+
+        rg = findViewById(R.id.fieldselection);
+
     }
 
     public void goToBookSHow(View v) {
@@ -67,8 +77,14 @@ public class SearchActivity extends Activity {
 
         String keyword = this.keyword.getText().toString();
 
+        // getting selected radio button
+        int id = rg.getCheckedRadioButtonId();
+        selectedRb = findViewById(id);
+
         SearchBooksTask searchBooksTask = new SearchBooksTask(this, keyword);
         searchBooksTask.execute();
+
+        startLoadingRing();
     }
 
     public void loadData(ArrayList<Book> result) {
@@ -91,4 +107,27 @@ public class SearchActivity extends Activity {
 
         bookListAdapter.notifyDataSetChanged();
     }
+
+    public void startLoadingRing() {
+
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void stopLoadingRing() {
+
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void goToSavedBooks(View v) {
+
+        Intent i = new Intent(this, SavedBooksActivity.class);
+        startActivity(i);
+    }
+
+    public void goToUserLayout(View v) {
+
+        Intent i = new Intent(this, UserShowActivity.class);
+        startActivity(i);
+    }
+
 }

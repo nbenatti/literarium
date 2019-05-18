@@ -1,7 +1,7 @@
 package com.example.com.geoLocalization;
 import android.location.Location;
 
-import com.example.com.parsingData.XMLUtils;
+import com.example.com.parsingData.ParseUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -109,7 +109,7 @@ public class UserData implements Cloneable, XMLSerializable {
     @Override
     public Element encode() {
 
-        /*Document doc = XMLUtils.getNewDocInstance();
+        /*Document doc = ParseUtils.getNewDocInstance();
 
         Element root = doc.createElement("phoneData");
 
@@ -128,7 +128,7 @@ public class UserData implements Cloneable, XMLSerializable {
         root.appendChild(streetAddress);
 
         return root;*/
-        Document doc = XMLUtils.getNewDocInstance();
+        Document doc = ParseUtils.getNewDocInstance();
 
         Element root = doc.createElement("Rilevation");
 

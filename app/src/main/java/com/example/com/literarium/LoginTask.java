@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.com.parsingData.XMLUtils;
+import com.example.com.parsingData.ParseUtils;
 
 import org.w3c.dom.Document;
 
@@ -42,11 +42,11 @@ public class LoginTask extends AsyncTask {
             httpRequest.send();
             Document response = httpRequest.getResult();
 
-            String stringifiedXml = XMLUtils.docToString(response);
+            String stringifiedXml = ParseUtils.docToString(response);
             Log.d("LoginTask", stringifiedXml);
 
             // get authentication esit
-            String authEsit = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(response, "response/responseCode")).get(0).getTextContent();
+            String authEsit = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(response, "response/responseCode")).get(0).getTextContent();
 
             // authentication failes
             if(Integer.parseInt(authEsit) == 500) {
@@ -54,8 +54,8 @@ public class LoginTask extends AsyncTask {
             }
 
             // get user token
-            String token = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(response, "response/authToken")).get(0).getTextContent();
-            String userId = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(response, "response/userId")).get(0).getTextContent();
+            String token = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(response, "response/authToken")).get(0).getTextContent();
+            String userId = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(response, "response/userId")).get(0).getTextContent();
 
             Log.d("AUTH_TOKEN", token);
 

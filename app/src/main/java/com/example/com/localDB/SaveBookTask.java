@@ -2,12 +2,17 @@ package com.example.com.localDB;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.com.literarium.Globals;
+import com.example.com.literarium.R;
 import com.example.com.literarium.ShowBookActivity;
+import com.example.com.parsingData.enumType.BookType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,16 +25,37 @@ public class SaveBookTask extends AsyncTask {
     private LocalDatabase db;
     private BookDAO bookDao;
 
-    private List<Book> booksToBeSaved;
+    private List<BookDB> booksToBeSaved;
 
-    public SaveBookTask(Context ctx, List<com.example.com.parsingData.parseType.Book> b) {
+    private ShowBookActivity act;
+
+    private SharedPreferences sharedPreferences;
+
+    public SaveBookTask(Context ctx, List<com.example.com.parsingData.parseType.Book> b, BookType bt) {
 
         this.ctx = ctx;
 
+        sharedPreferences = Globals.getSharedPreferences(ctx);
+
+        if(act instanceof ShowBookActivity)
+            act = (ShowBookActivity)ctx;
+
+        booksToBeSaved = new ArrayList<>();
+
+        boolean seen = false, status = false;
+
+        if(bt == BookType.RECEIVED_BOOK) {
+            seen = false;
+            status = true;
+        }else if (bt == BookType.SAVED_BOOK) {
+            seen = true;
+            status = false;
+        }
+
         // convert book objects to be saved in the db
         for(com.example.com.parsingData.parseType.Book book : b) {
-            booksToBeSaved.add(new Book(book.getId(),
-                    String.valueOf(Globals.getInstance().getUserLocalData().getUserId()),
+            booksToBeSaved.add(new BookDB(book.getId(),
+                    String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)),
                     book.getTitle(),
                     book.getIsbn(),
                     book.getImageUrl(),
@@ -39,7 +65,9 @@ public class SaveBookTask extends AsyncTask {
                     book.getAverageRating(),
                     book.getNumPages(),
                     book.getAuthor().getId(),
-                    book.getAuthor().getName()));
+                    book.getAuthor().getName(),
+                    seen,
+                    status));
         }
     }
 
@@ -51,8 +79,8 @@ public class SaveBookTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
 
-        for(Book runnerBook : booksToBeSaved)
-            insertBook(runnerBook);
+        for(BookDB runnerBookDB : booksToBeSaved)
+            insertBook(runnerBookDB);
 
         closeDb();
 
@@ -62,13 +90,12 @@ public class SaveBookTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         //notify the calling activity with the operation's status
-        ShowBookActivity act = (ShowBookActivity)ctx;
-        act.handleBookSavingSuccess();
+        if(act != null && (act instanceof ShowBookActivity))
+            act.handleBookSavingSuccess();
     }
 
     private void createDb() {
-        Context context = ctx;
-        db = Room.inMemoryDatabaseBuilder(context, LocalDatabase.class).build();
+        db = Room.databaseBuilder(ctx, LocalDatabase.class, "local-db").build();
         bookDao = db.getBookDAO();
     }
 
@@ -76,11 +103,16 @@ public class SaveBookTask extends AsyncTask {
         db.close();
     }
 
-    private void insertBook(Book b) {
+    private void insertBook(BookDB b) {
 
-        bookDao.insert(b);
-        List<Book> res = bookDao.getAllBooks(String.valueOf(Globals.getInstance().getUserLocalData().getUserId()));
-        for(Book book : res)
-            Log.d("LOCAL_DB", book.toString());
+        try {
+            bookDao.insert(b);
+        }
+        catch(SQLiteConstraintException e) {
+            act.handleDuplicateSavedBook();
+        }
+        List<BookDB> res = bookDao.getAllBooks(String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)));
+        for(BookDB bookDB : res)
+            Log.d("LOCAL_DB", bookDB.toString());
     }
 }

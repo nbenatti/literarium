@@ -1,8 +1,10 @@
 package com.example.com.bookSharing;
 
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
@@ -15,7 +17,7 @@ import com.example.com.literarium.HttpRequest;
 import com.example.com.literarium.R;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
-import com.example.com.parsingData.XMLUtils;
+import com.example.com.parsingData.ParseUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,6 +47,11 @@ public class ListenForSharesService extends JobIntentService {
     private boolean stop;
 
     /**
+     * application settings.
+     */
+    private static SharedPreferences sharedPreferences;
+
+    /**
      * timestamp of the last request
      */
     private String timestamp;
@@ -66,11 +73,16 @@ public class ListenForSharesService extends JobIntentService {
 
     public ListenForSharesService(String name) {
         super();
+
         stop = false;
     }
 
     public static void enqueueWork(Context context, Intent work) {
         Log.d("ListenForSharesService", "work enqueued");
+
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+
         enqueueWork(context, ListenForSharesService.class, SERVICE_JOB_ID, work);
     }
 
@@ -112,11 +124,11 @@ public class ListenForSharesService extends JobIntentService {
             // get the list of shares
             List<Node> shares = null;
             try {
-                NodeList nl = XMLUtils.executeXpath(response, "response/share");
+                NodeList nl = ParseUtils.executeXpath(response, "response/share");
                 if (nl == null)
                     numShares = 0;
                 else {
-                    shares = XMLUtils.NodeListToListNode(nl);
+                    shares = ParseUtils.NodeListToListNode(nl);
                     numShares = shares.size();
 
                     List<ShareData> shareDataList = new ArrayList<>();
@@ -149,9 +161,44 @@ public class ListenForSharesService extends JobIntentService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            /*stop = isMyServiceRunning(ListenForSharesService.class);
+            Log.d("ListenForSharesService", "is my service running: " + stop);*/
         }
+
+        updateLastAccessTimestamp();
     }
 
+    @Override
+    public boolean onStopCurrentWork() {
+
+        updateLastAccessTimestamp();
+        return true;
+    }
+
+    @Override
+    public void onDestroy() {
+
+        updateLastAccessTimestamp();
+        super.onDestroy();
+    }
+
+    private void updateLastAccessTimestamp() {
+        String timestamp = Globals.getTimestamp();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.last_access_setting), timestamp);
+        editor.commit();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * notify the user when there are new shares for him.
      */

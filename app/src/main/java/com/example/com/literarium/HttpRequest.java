@@ -1,6 +1,6 @@
 package com.example.com.literarium;
 
-import com.example.com.parsingData.XMLUtils;
+import com.example.com.parsingData.ParseUtils;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -47,7 +47,7 @@ public class HttpRequest implements IRequest {
         try {
             in = urlObj.openStream();
 
-            return XMLUtils.getNewDocFromStream(in);
+            return ParseUtils.getNewDocFromStream(in);
         } catch (IOException e) {
             e.printStackTrace();
         }catch (SAXException e) {

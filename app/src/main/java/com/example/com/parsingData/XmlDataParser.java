@@ -2,9 +2,10 @@ package com.example.com.parsingData;
 
 import android.util.Log;
 
-import com.example.com.literarium.HttpRequest;
+import com.example.com.parsingData.parseType.Author;
 import com.example.com.parsingData.parseType.Book;
 import com.example.com.parsingData.parseType.Shelf;
+import com.example.com.parsingData.parseType.User;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,20 +25,21 @@ public final class XmlDataParser {
 
     private static final String BASE_TAG = "GoodreadsResponse";
 
-    private static HttpRequest httpRequest;
+    private static final String ERROR_TAG = "error";
+
+
 
     private static String getStringValueFromPath(Document doc, String path) throws XPathExpressionException {
-        NodeList nodeList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + path);
+        NodeList nodeList = ParseUtils.executeXpath(doc, BASE_TAG + path);
         if(!nodeList.item(0).getTextContent().isEmpty())
             Log.d("__XMLDataParser", nodeList.item(0).getTextContent());
         else
             Log.d("__XMLDataParser", path + " is empty ");
-        List<Node> listNode = com.example.com.parsingData.XMLUtils.NodeListToListNode(nodeList);
+        List<Node> listNode = ParseUtils.NodeListToListNode(nodeList);
         return listNode.get(0).getTextContent();
     }
 
-    public static com.example.com.parsingData.parseType.Author parseAuthor(Document doc) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
-        //Document doc = XMLUtils.getNewDocFromStream(in);
+    public static Author parseAuthor(Document doc) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException, InterruptedException {
 
         String id = getStringValueFromPath(doc, "/author/id");
         String name = getStringValueFromPath(doc, "/author/name");
@@ -49,22 +52,27 @@ public final class XmlDataParser {
         String born_at = getStringValueFromPath(doc, "/author/born_at");
         String died_at = getStringValueFromPath(doc, "/author/died_at");
 
-        List<Book> books = new ArrayList<>();
-        /*NodeList bookList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + "/author/books/book/id");
+        List<Book> books = Collections.synchronizedList(new ArrayList<Book>());
+        NodeList bookList = ParseUtils.executeXpath(doc, BASE_TAG + "/author/books/book/id");
+
+        BookThread[] threads = new BookThread[bookList.getLength()];
+
         for (int i = 0; i < bookList.getLength(); ++i) {
             String bookId = bookList.item(i).getTextContent();
-            String url = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.BOOK_SHOW, bookId);
-            httpRequest = new HttpRequest(url, HttpRequest.HttpRequestMethod.GET);
-            httpRequest.send();
-            com.example.com.parsingData.parseType.Book book = parseBook(httpRequest.getResult());
-            books.add(book);
-        }*/
+            threads[i] = new BookThread(bookId);
+            threads[i].start();
+        }
 
-        return new com.example.com.parsingData.parseType.Author(Integer.valueOf(id), name, Integer.valueOf(fans_count), image_url, about, Integer.valueOf(works_count), gender, homeTown, born_at, died_at, /*(Book[]) books.toArray()*/new Book[]{});
+        for (int i = 0; i < bookList.getLength(); ++i) {
+            threads[i].join();
+            books.add(threads[i].getBook());
+        }
+
+        return new com.example.com.parsingData.parseType.Author(Integer.valueOf(id), name, Integer.valueOf(fans_count), image_url, about, Integer.valueOf(works_count), gender, homeTown, born_at, died_at, (Book[]) books.toArray());
     }
 
     public static com.example.com.parsingData.parseType.Book parseBook(Document doc) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
-        //Document doc = XMLUtils.getNewDocFromStream(in);
+        //Document doc = ParseUtils.getNewDocFromStream(in);
 
         String id = getStringValueFromPath(doc, "/book/id");
         String title = getStringValueFromPath(doc, "/book/title");
@@ -83,26 +91,37 @@ public final class XmlDataParser {
         return new com.example.com.parsingData.parseType.Book(Integer.valueOf(id), title, isbn, image_url, publication_year, publisher, description, Double.valueOf(average_rating), num_pages, author);
     }
 
-    public static List<Book> parseSearch(Document doc) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-        //Document doc = XMLUtils.getNewDocFromStream(in);
+    public static List<Book> parseSearch(Document doc) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException, InterruptedException {
+        //Document doc = ParseUtils.getNewDocFromStream(in);
 
-        List<com.example.com.parsingData.parseType.Book> books = new ArrayList<>();
-        NodeList bookList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + "/search/results/work/best_book/id");
+        List<Book> books = Collections.synchronizedList(new ArrayList<Book>());
+        NodeList bookList = ParseUtils.executeXpath(doc, BASE_TAG + "/search/results/work/best_book/id");
+
+        BookThread[] threads = new BookThread[bookList.getLength()];
+
         for (int i = 0; i < bookList.getLength(); ++i) {
             String bookId = bookList.item(i).getTextContent();
-            String url = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.BOOK_SHOW, bookId);
-            httpRequest = new HttpRequest(url, HttpRequest.HttpRequestMethod.GET);
-            httpRequest.send();
-            Log.d("XMLDataParser", url);
-            com.example.com.parsingData.parseType.Book book = parseBook(httpRequest.getResult());
-            books.add(book);
+            threads[i] = new BookThread(bookId);
+            threads[i].start();
+        }
+
+        for (int i = 0; i < bookList.getLength(); ++i) {
+            threads[i].join();
+            books.add(threads[i].getBook());
         }
 
         return books;
     }
 
-    public static com.example.com.parsingData.parseType.User parseUserInfo(Document doc) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
-        //Document doc = XMLUtils.getNewDocFromStream(in);
+    public static User parseUserInfo(Document doc) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        //Document doc = ParseUtils.getNewDocFromStream(in);
+
+        //Element rootNode = doc.getDocumentElement();
+
+        /*if(rootNode.getTagName().equals(ERROR_TAG) && rootNode.getTextContent().equals("profile not found")) {
+
+            return null;
+        }*/
 
         String name = getStringValueFromPath(doc, "/user/name");
         String username = getStringValueFromPath(doc, "/user/username");
@@ -115,15 +134,15 @@ public final class XmlDataParser {
         String reviews_count = getStringValueFromPath(doc, "/user/reviews_count");
 
         List<com.example.com.parsingData.parseType.Shelf> shelves = new ArrayList<>();
-        NodeList shelvesList = XMLUtils.executeXpath(doc, BASE_TAG + "/user/user_shelves/user_shelf");
+        NodeList shelvesList = ParseUtils.executeXpath(doc, BASE_TAG + "/user/user_shelves/user_shelf");
         for (int i = 0; i < shelvesList.getLength(); ++i) {
             Element node = (Element) shelvesList.item(i);
             String shelfName = node.getElementsByTagName("name").item(0).getTextContent();
             String shelfBook_count = node.getElementsByTagName("book_count").item(0).getTextContent();
-            com.example.com.parsingData.parseType.Shelf shelf = new com.example.com.parsingData.parseType.Shelf(shelfName, Integer.valueOf(shelfBook_count));
+            Shelf shelf = new Shelf(shelfName, Integer.valueOf(shelfBook_count));
             shelves.add(shelf);
         }
 
-        return new com.example.com.parsingData.parseType.User(name, username, image_url, about, Integer.valueOf(age), gender, interests, Integer.valueOf(friends_count), Integer.valueOf(reviews_count), (Shelf[]) shelves.toArray());
+        return new User(name, username, image_url, about, Integer.valueOf(age), gender, interests, Integer.valueOf(friends_count), Integer.valueOf(reviews_count), (Shelf[]) shelves.toArray());
     }
 }

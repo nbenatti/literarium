@@ -13,7 +13,7 @@ import com.example.com.literarium.IListableActivity;
 import com.example.com.literarium.R;
 import com.example.com.literarium.RequestManager;
 import com.example.com.literarium.RequestType;
-import com.example.com.parsingData.XMLUtils;
+import com.example.com.parsingData.ParseUtils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -71,7 +71,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
             e.printStackTrace();
         }
         HttpRequest request = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
-        //Log.d("RetrieveUsrLocationTask", requestUrl);
+        Log.d("RetrieveUsrLocationTask", requestUrl);
         request.send();
         Document xmlResponse = request.getResult();
 
@@ -98,10 +98,10 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
                 // extract relevant data from the XML response
                 try {
-                    addressList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/response/rilevation/streetAddress"));
-                    locationList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "/response/rilevation/location"));
-                    usernameList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "response/rilevation/username"));
-                    userIdList = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(xmlResponse, "response/rilevation/userId"));
+                    addressList = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(xmlResponse, "/response/rilevation/streetAddress"));
+                    locationList = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(xmlResponse, "/response/rilevation/location"));
+                    usernameList = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(xmlResponse, "response/rilevation/username"));
+                    userIdList = ParseUtils.NodeListToListNode(ParseUtils.executeXpath(xmlResponse, "response/rilevation/userId"));
                 } catch (XPathExpressionException e) {
                     e.printStackTrace();
                 }

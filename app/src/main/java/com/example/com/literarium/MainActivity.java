@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +20,9 @@ import com.example.com.geoLocalization.Constants;
 import com.example.com.geoLocalization.FetchAddressIntentService;
 import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.geoLocalization.LocationResultReceiver;
+import com.example.com.localDB.BookDAO;
+import com.example.com.localDB.LocalDatabase;
+import com.example.com.parsingData.parseType.Book;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,9 +41,15 @@ public class MainActivity extends Activity {
     private Context ctx;
 
     /**
+     * reference to the local DB
+     */
+    private LocalDatabase dbRef;
+    private BookDAO bookDao;
+
+    /**
      * application settings.
      */
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     private final int MINUTE = 1000*60;
     private final int SECOND = MINUTE / 60;
@@ -71,13 +82,14 @@ public class MainActivity extends Activity {
 
     private ListView newSharesList;
 
-    private ArrayList<com.example.com.parsingData.parseType.Book> newSharesListData;
+    private ArrayList<Book> newSharesListData;
+
+    private BookListAdapter bookListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getActionBar().hide();
 
         ctx = this;
 
@@ -85,8 +97,8 @@ public class MainActivity extends Activity {
         sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
 
-        /*LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
-        noConnectionBanner.setVisibility(View.INVISIBLE);*/
+        LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
+        noConnectionBanner.setVisibility(View.INVISIBLE);
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText(sharedPreferences.getString(getString(R.string.username_setting), ""));
@@ -115,10 +127,40 @@ public class MainActivity extends Activity {
         getRealTimeLocation();
 
         // instantiate the list
-        /*newSharesListData = new ArrayList<>();
-        BookListAdapter bookListAdapter = new BookListAdapter(this, R.layout.book_item, newSharesListData);
-        newSharesList.setAdapter(bookListAdapter);*/
+        newSharesList = findViewById(R.id.newShares);
+        newSharesListData = new ArrayList<>();
+        bookListAdapter = new BookListAdapter(this, R.layout.book_item, newSharesListData);
+        newSharesList.setAdapter(bookListAdapter);
 
+        newSharesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // show the book
+                Intent showBook = new Intent(ctx, ShowBookActivity.class);
+
+                Bundle bookData = new Bundle();
+                bookData.putParcelable(getString(R.string.book_data), newSharesListData.get(i));
+
+                showBook.putExtras(bookData);
+
+                startActivity(showBook);
+            }
+        });
+
+        // fetch data
+        FetchNewSharesTask fetchNewSharesTask = new FetchNewSharesTask(this);
+        fetchNewSharesTask.execute();
+    }
+
+    public void populate(ArrayList<Book> books) {
+        newSharesListData.addAll(books);
+        bookListAdapter.notifyDataSetChanged();
+    }
+
+    public void handleNoShares() {
+
+        LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
+        noConnectionBanner.setVisibility(View.VISIBLE);
     }
 
     public void startGeolocalization(View b) {
@@ -204,6 +246,18 @@ public class MainActivity extends Activity {
     public void goToSearchLayout(View v) {
 
         Intent i = new Intent(this, SearchActivity.class);
+        startActivity(i);
+    }
+
+    public void goToSavedBooks(View v) {
+
+        Intent i = new Intent(this, SavedBooksActivity.class);
+        startActivity(i);
+    }
+
+    public void goToUserLayout(View v) {
+
+        Intent i = new Intent(this, UserShowActivity.class);
         startActivity(i);
     }
 }
