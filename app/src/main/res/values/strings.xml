@@ -15,6 +15,7 @@
     <string name="share_data">com.example.com.literarium.SHARE_DATA</string>
     <string name="book_data">com.example.com.literarium.BOOK_DATA</string>
     <string name="author_info_data">com.example.com.literarium.AUTHOR_DATA</string>
+    <string name="user_name">com.example.com.literarium.USERNAME</string>
 
     <!-- shared data keys -->
     <string name="last_access_setting">com.example.com.literarium.LAST_ACCESS_TIMESTAMP</string>

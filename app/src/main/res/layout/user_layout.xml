@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".UserShowActivity">
 
     <!-- App bar -->
     <LinearLayout
@@ -31,7 +33,23 @@
             android:background="@color/litBlue"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/textPadding"
-            android:text="Book" />
+            android:text="Book"
+            android:onClick="goToSearchLayout"/>
+
+        <ImageButton
+            android:src="@drawable/viewsavedbooks_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:onClick="goToSearchLayout"/>
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geo report"
+            android:onClick="startGeolocalization"/>-->
 
     </LinearLayout>
 
@@ -83,7 +101,8 @@
                             android:padding="@dimen/textPadding"
                             android:text="Name"
                             android:textSize="@dimen/titleDimension"
-                            android:textColor="@color/litBlue"/>
+                            android:textColor="@color/litBlue"
+                            android:id="@+id/user_name"/>
 
                         <!-- Author surname -->
                         <TextView
@@ -92,7 +111,8 @@
                             android:padding="@dimen/textPadding"
                             android:text="Username"
                             android:textSize="@dimen/textDimension"
-                            android:textColor="@color/litBlue"/>
+                            android:textColor="@color/litBlue"
+                            android:id="@+id/user_username"/>
 
                         <!-- Gender -->
                         <LinearLayout
@@ -115,7 +135,8 @@
                                 android:text="-"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_gender"/>
 
                         </LinearLayout>
 
@@ -140,7 +161,8 @@
                                 android:text="n years"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_age"/>
 
                         </LinearLayout>
 
@@ -165,7 +187,8 @@
                                 android:text="-"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_friendscount"/>
 
                         </LinearLayout>
 
@@ -190,7 +213,8 @@
                                 android:text="-"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
-                                android:textColor="@color/litBlue"/>
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_reviewscount"/>
 
                         </LinearLayout>
 
@@ -216,6 +240,7 @@
                     android:textSize="@dimen/textDimension"
                     android:textColorHint="@color/litBlue"
                     android:textColor="@color/litBlue"
+                    android:id="@+id/user_interests"
                     />
 
             </LinearLayout>
@@ -228,7 +253,6 @@
                 android:layout_marginBottom="@dimen/generalMargin"
                 android:background="@drawable/border">
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -237,9 +261,29 @@
                     android:textSize="@dimen/textDimension"
                     android:textColorHint="@color/litBlue"
                     android:textColor="@color/litBlue"
+                    android:id="@+id/user_about"
                     />
 
             </LinearLayout>
+
+            <!-- Pie chart -->
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:id="@+id/user_chart"/>
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@color/litYellow"
+                android:textColor="@color/litRed"
+                android:textStyle="bold"
+                android:text="logout"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="logout"/>
 
         </LinearLayout>
 

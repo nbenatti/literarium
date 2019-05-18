@@ -10,7 +10,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:orientation="horizontal"
         android:background="@color/litBlue"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,41 +24,123 @@
             android:layout_marginLeft="5dp"
             />
 
+        <ImageButton
+            android:src="@drawable/viewsavedbooks_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:onClick="goToSavedBooks"/>
+
+        <ImageButton
+            android:src="@drawable/user_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:onClick="goToUserLayout"/>
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geo report"
+            android:onClick="startGeolocalization"/>-->
+
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/search_bar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search for a book"/>
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
 
-    <Button
-        android:id="@+id/searchButton"
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Search for a book"
+            android:singleLine="true"
+            android:layout_weight="9"/>
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@color/litYellow"
+            android:textColor="@color/litBlue"
+            android:text="search"
+            android:onClick="performSearch"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:background="@color/litYellow"
-        android:textColor="@color/litBlue"
-        android:text="search"
-        android:onClick="performSearch"/>
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/fieldselection">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/litBlue"
+                android:text="All"
+                android:checked="true"
+                android:layout_weight="1"
+                android:id="@+id/all_rb"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/litBlue"
+                android:text="Title"
+                android:layout_weight="1"
+                android:id="@+id/title_rb"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/litBlue"
+                android:text="Author"
+                android:layout_weight="1"
+                android:id="@+id/author_rb"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
 
     <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/litGrey">-->
 
-        <!-- Search options -->
-        <!--<ExpandableListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/litBlue">
-        </ExpandableListView>-->
-
-        <ListView
-            android:id="@+id/resultList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-        </ListView>
+    <!-- Search options -->
+    <!--<ExpandableListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/litBlue">
+    </ExpandableListView>-->
+    
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:layout_gravity="center"/>
+    
+    <ListView
+        android:id="@+id/resultList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </ListView>
 
     <!--</ScrollView>-->
 
