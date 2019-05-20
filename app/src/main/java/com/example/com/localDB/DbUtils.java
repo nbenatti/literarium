@@ -26,4 +26,12 @@ public class DbUtils {
         }
         return ret;
     }
+
+    public static Book convertSingleBookDbToBook(BookDB bookDB) {
+
+        ArrayList<BookDB> tmp = new ArrayList<>();
+        tmp.add(bookDB);
+
+        return convertBookDBToBook(tmp).get(0);
+    }
 }

@@ -66,12 +66,12 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/litGrey">
 
-        <!-- Saved books -->
+
         <ExpandableListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,6 +79,12 @@
             android:id="@+id/savedbookslist">
         </ExpandableListView>
 
-    </ScrollView>
+    </ScrollView>-->
+
+    <!-- list of your saved books -->
+    <ListView
+        android:id="@+id/savedBooksList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ListView>
 
 </LinearLayout>

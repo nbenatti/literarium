@@ -54,9 +54,9 @@ public class UserShowActivity extends Activity {
 
         chart = findViewById(R.id.user_chart);
 
-        /*GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this,
+        GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this,
                 sharedPreferences.getString(getString(R.string.username_setting), ""));
-        getUserInfoTask.execute();*/
+        getUserInfoTask.execute();
     }
 
     public void loadUserData(com.example.com.parsingData.parseType.User u){
@@ -64,9 +64,9 @@ public class UserShowActivity extends Activity {
         name.setText(u.getName());
         username.setText(u.getUsername());
         gender.setText(u.getGender());
-        age.setText(u.getAge());
-        friendsCount.setText(u.getFriends_count());
-        reviewsCount.setText(u.getReviews_count());
+        age.setText(String.valueOf(u.getAge()));
+        friendsCount.setText(String.valueOf(u.getFriends_count()));
+        reviewsCount.setText(String.valueOf(u.getReviews_count()));
         interests.setText(u.getInterests());
         about.setText(u.getAbout());
 

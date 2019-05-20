@@ -44,7 +44,7 @@ public class GetUserInfoTask extends AsyncTask {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.d("GetBookDataTask", requestUrl);
+        Log.d("GetUserInfoTask", requestUrl);
 
         httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();

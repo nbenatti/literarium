@@ -115,7 +115,7 @@ public final class XmlDataParser {
         }
 
         String name = getStringValueFromPath(doc, "/user/name");
-        String username = getStringValueFromPath(doc, "/user/username");
+        String username = getStringValueFromPath(doc, "/user/user_name");
         String image_url = getStringValueFromPath(doc, "/user/image_url");
         String about = getStringValueFromPath(doc, "/user/about");
         String age = getStringValueFromPath(doc, "/user/age");
@@ -124,16 +124,16 @@ public final class XmlDataParser {
         String friends_count = getStringValueFromPath(doc, "/user/friends_count");
         String reviews_count = getStringValueFromPath(doc, "/user/reviews_count");
 
-        List<com.example.com.parsingData.parseType.Shelf> shelves = new ArrayList<>();
+        List<Shelf> shelves = new ArrayList<>();
         NodeList shelvesList = XMLUtils.executeXpath(doc, BASE_TAG + "/user/user_shelves/user_shelf");
         for (int i = 0; i < shelvesList.getLength(); ++i) {
             Element node = (Element) shelvesList.item(i);
             String shelfName = node.getElementsByTagName("name").item(0).getTextContent();
             String shelfBook_count = node.getElementsByTagName("book_count").item(0).getTextContent();
-            com.example.com.parsingData.parseType.Shelf shelf = new com.example.com.parsingData.parseType.Shelf(shelfName, Integer.valueOf(shelfBook_count));
+            Shelf shelf = new Shelf(shelfName, Integer.valueOf(shelfBook_count));
             shelves.add(shelf);
         }
 
-        return new com.example.com.parsingData.parseType.User(name, username, image_url, about, Integer.valueOf(age), gender, interests, Integer.valueOf(friends_count), Integer.valueOf(reviews_count), (Shelf[]) shelves.toArray());
+        return new User(name, username, image_url, about, Integer.valueOf(age), gender, interests, Integer.valueOf(friends_count), Integer.valueOf(reviews_count), shelves.toArray(new Shelf[]{}));
     }
 }

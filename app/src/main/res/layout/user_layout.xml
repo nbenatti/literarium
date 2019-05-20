@@ -41,7 +41,7 @@
             android:background="@color/litBlue"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/textPadding"
-            android:onClick="goToSearchLayout"/>
+            android:onClick="goToSavedBooks"/>
 
         <!--<Button
             android:layout_width="wrap_content"

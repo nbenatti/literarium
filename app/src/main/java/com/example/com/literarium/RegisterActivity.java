@@ -34,7 +34,7 @@ public class RegisterActivity extends Activity {
 
         // query
         RegisterTask registerTask = new RegisterTask(this,
-                                                        grUsername.getText().toString(),
+                                                        lUsername.getText().toString(),
                                                         grUsername.getText().toString(),
                                                         lPassword.getText().toString());
 
