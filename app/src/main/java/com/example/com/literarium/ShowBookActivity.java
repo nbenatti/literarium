@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class ShowBookActivity extends Activity {
 
     private TextView bookTitle;
     private TextView bookAuthor;
+    private TextView bookRating;
     private TextView bookPublishDate;
     private TextView bookDescription;
 
@@ -50,6 +52,7 @@ public class ShowBookActivity extends Activity {
         saveBookButton = findViewById(R.id.saveBookButton);
         bookTitle = findViewById(R.id.bookTitle);
         bookAuthor = findViewById(R.id.bookAuthor);
+        bookRating = findViewById(R.id.bookRating);
         bookPublishDate = findViewById(R.id.bookPublishDate);
         bookDescription = findViewById(R.id.bookDescription);
         bookDescription.setSelected(true);
@@ -94,10 +97,25 @@ public class ShowBookActivity extends Activity {
 
         bookTitle.setText(b.getTitle());
         bookAuthor.setText(b.getAuthor().getName());
-        bookPublishDate.setText(String.valueOf(b.getPublicationYear()));
-        bookDescription.setHint("");
-        bookDescription.setEms(b.getDescription().length());
-        bookDescription.setText(Html.fromHtml(b.getDescription()));
+        
+        if(!b.getPublicationYear().isEmpty())
+            bookPublishDate.setText(String.valueOf(b.getPublicationYear()));
+        else
+            findViewById(R.id.bookPublishDateFather).setVisibility(View.GONE);
+
+        if(!String.valueOf(b.getAverageRating()).isEmpty())
+            bookRating.setText(String.valueOf(b.getAverageRating()));
+        else
+            findViewById(R.id.bookRatingFather).setVisibility(View.GONE);
+
+        if(!b.getDescription().isEmpty()){
+            bookDescription.setHint("");
+            bookDescription.setEms(b.getDescription().length());
+            bookDescription.setText(Html.fromHtml(b.getDescription()));
+        }
+        else
+            findViewById(R.id.bookDescriptionFather).setVisibility(View.GONE);
+
         Picasso.get().load(b.getImageUrl()).into(bookCover);
     }
 

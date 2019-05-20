@@ -126,7 +126,9 @@
                         <!-- Publish date -->
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/bookPublishDateFather"
+                            android:visibility="visible">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -152,7 +154,9 @@
                         <!-- Rating -->
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/bookRatingFather"
+                            android:visibility="visible">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -230,7 +234,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/generalMargin"
-                android:background="@drawable/border">
+                android:background="@drawable/border"
+                android:id="@+id/bookDescriptionFather"
+                android:visibility="visible">
 
 
                 <TextView
