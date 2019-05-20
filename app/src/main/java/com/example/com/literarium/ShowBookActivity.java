@@ -97,7 +97,7 @@ public class ShowBookActivity extends Activity {
 
         bookTitle.setText(b.getTitle());
         bookAuthor.setText(b.getAuthor().getName());
-        
+
         if(!b.getPublicationYear().isEmpty())
             bookPublishDate.setText(String.valueOf(b.getPublicationYear()));
         else
