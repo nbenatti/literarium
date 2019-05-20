@@ -228,7 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/generalMargin"
                 android:layout_marginBottom="@dimen/generalMargin"
-                android:background="@drawable/border">
+                android:background="@drawable/roundcorner_litblueborder">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -249,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/generalMargin"
                 android:layout_marginBottom="@dimen/generalMargin"
-                android:background="@drawable/border">
+                android:background="@drawable/roundcorner_litblueborder">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -275,13 +275,14 @@
                 android:id="@+id/searchButton"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:background="@color/litYellow"
+                android:background="@drawable/roundcorner_lityellow"
                 android:textColor="@color/litRed"
                 android:textStyle="bold"
                 android:text="logout"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:onClick="logout"/>
+                android:onClick="logout"
+                style="?android:attr/borderlessButtonStyle"/>
 
         </LinearLayout>
 
