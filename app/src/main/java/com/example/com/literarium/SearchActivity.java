@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.com.parsingData.parseType.Book;
 
@@ -116,6 +117,13 @@ public class SearchActivity extends Activity {
     public void stopLoadingRing() {
 
         progressBar.setVisibility(View.GONE);
+    }
+
+    public void deleteSearchString(View v) {
+
+        TextView bar = findViewById(R.id.search_bar);
+        bar.setText("");
+
     }
 
     public void goToSavedBooks(View v) {

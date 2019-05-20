@@ -10,7 +10,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:orientation="horizontal"
         android:background="@color/litBlue"
-        android:padding="5dp">
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,12 +56,31 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <EditText
-            android:id="@+id/search_bar"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search for a book"
-            android:layout_weight="9"/>
+            android:orientation="horizontal"
+            android:layout_weight="9">
+
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="Search for a book"
+                android:singleLine="true"/>
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="8dp"
+                android:onClick="deleteSearchString"
+                android:scaleType="fitCenter"
+                android:src="@drawable/delete_icon"
+                android:background="@null"/>
+
+        </FrameLayout>
 
         <Button
             android:id="@+id/searchButton"
@@ -78,7 +97,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -92,7 +112,8 @@
                 android:textColor="@color/litBlue"
                 android:text="All"
                 android:layout_weight="1"
-                android:id="@+id/all_rb"/>
+                android:id="@+id/all_rb"
+                android:checked="true"/>
 
             <RadioButton
                 android:layout_width="match_parent"
