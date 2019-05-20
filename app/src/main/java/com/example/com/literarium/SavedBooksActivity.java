@@ -49,6 +49,15 @@ public class SavedBooksActivity extends Activity {
                 startActivity(showBook);
             }
         });
+
+        FetchSavedBooksTask fetchSavedBooksTask = new FetchSavedBooksTask(this);
+        fetchSavedBooksTask.execute();
+    }
+
+    public void populate(ArrayList<BookDB> bookList) {
+
+        bookListData.addAll(bookList);
+        sbAdapter.notifyDataSetChanged();
     }
 
     public void goToSearchLayout(View v) {

@@ -87,6 +87,7 @@
             android:id="@+id/fieldselection">
 
             <RadioButton
+                android:checked="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/litBlue"

@@ -28,12 +28,15 @@ public class SearchBooksTask extends AsyncTask {
 
     private ArrayList<com.example.com.parsingData.parseType.Book> result;
 
+    private String searchFilter;
+
     private SearchActivity act;
 
-    public SearchBooksTask(Context ctx, String keyword) {
+    public SearchBooksTask(Context ctx, String keyword, String searchFilter) {
         this.ctx = ctx;
         act = (SearchActivity)ctx;
         this.keyword = keyword;
+        this.searchFilter = searchFilter;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class SearchBooksTask extends AsyncTask {
 
         String reqUrl = null;
         try {
-            reqUrl = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.SEARCH_BOOKS, "all", keyword, "1");
+            reqUrl = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.SEARCH_BOOKS, searchFilter, keyword, "1");
             Log.d("SearchBooksTask", reqUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

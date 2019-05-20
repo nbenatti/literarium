@@ -7,15 +7,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.com.colorGenerator.ColorGenerator;
 import com.example.com.parsingData.parseType.Shelf;
+import com.example.com.parsingData.parseType.User;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ public class UserShowActivity extends Activity {
     private TextView reviewsCount;
     private TextView interests;
     private TextView about;
+    private ImageView profilePic;
 
     private PieChart chart;
 
@@ -51,6 +55,7 @@ public class UserShowActivity extends Activity {
         reviewsCount = findViewById(R.id.user_reviewscount);
         interests = findViewById(R.id.user_interests);
         about = findViewById(R.id.user_about);
+        profilePic = findViewById(R.id.profilePic);
 
         chart = findViewById(R.id.user_chart);
 
@@ -59,7 +64,7 @@ public class UserShowActivity extends Activity {
         getUserInfoTask.execute();
     }
 
-    public void loadUserData(com.example.com.parsingData.parseType.User u){
+    public void loadUserData(User u){
 
         name.setText(u.getName());
         username.setText(u.getUsername());
@@ -69,6 +74,7 @@ public class UserShowActivity extends Activity {
         reviewsCount.setText(String.valueOf(u.getReviews_count()));
         interests.setText(u.getInterests());
         about.setText(u.getAbout());
+        Picasso.get().load(u.getImage_url()).into(profilePic);
 
         // setting the pie chart
         List <PieEntry> entries = new ArrayList<PieEntry>();

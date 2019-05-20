@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,11 +31,11 @@ public final class XmlDataParser {
 
     private static String getStringValueFromPath(Document doc, String path) throws XPathExpressionException {
         NodeList nodeList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + path);
-        if(!nodeList.item(0).getTextContent().isEmpty())
-            Log.d("__XMLDataParser", nodeList.item(0).getTextContent());
-        else
-            Log.d("__XMLDataParser", path + " is empty ");
-        List<Node> listNode = com.example.com.parsingData.XMLUtils.NodeListToListNode(nodeList);
+        if(nodeList == null || nodeList.item(0).getTextContent().isEmpty()) {
+            Log.d("XmlDataParser", path+" is empty");
+            return "";
+        }
+        List<Node> listNode = XMLUtils.NodeListToListNode(nodeList);
         return listNode.get(0).getTextContent();
     }
 
@@ -72,7 +73,10 @@ public final class XmlDataParser {
         String id = getStringValueFromPath(doc, "/book/id");
         String title = getStringValueFromPath(doc, "/book/title");
         String isbn = getStringValueFromPath(doc, "/book/isbn");
-        String image_url = getStringValueFromPath(doc, "/book/image_url");
+        String image_url = getStringValueFromPath(doc, "/book/large_image_url");
+        if(image_url.isEmpty()) {
+            image_url = getStringValueFromPath(doc, "/book/image_url");
+        }
         String publication_year = getStringValueFromPath(doc, "/book/publication_year");
         String publisher = getStringValueFromPath(doc, "/book/publisher");
         String description = getStringValueFromPath(doc, "/book/description");
@@ -83,13 +87,15 @@ public final class XmlDataParser {
         String authorsName = getStringValueFromPath(doc, "/book/authors/author/name");
         com.example.com.parsingData.parseType.AuthorInfo author = new com.example.com.parsingData.parseType.AuthorInfo(Integer.valueOf(authorsId), authorsName);
 
-        return new com.example.com.parsingData.parseType.Book(Integer.valueOf(id), title, isbn, image_url, publication_year, publisher, description, Double.valueOf(average_rating), num_pages, author);
+        return new Book(Integer.valueOf(id), title, isbn, image_url, publication_year, publisher, description, Double.valueOf(average_rating), num_pages, author);
     }
 
     public static List<Book> parseSearch(Document doc) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         //Document doc = XMLUtils.getNewDocFromStream(in);
 
-        List<com.example.com.parsingData.parseType.Book> books = new ArrayList<>();
+        long startTime = System.currentTimeMillis();
+
+        /*List<com.example.com.parsingData.parseType.Book> books = new ArrayList<>();
         NodeList bookList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + "/search/results/work/best_book/id");
         for (int i = 0; i < bookList.getLength(); ++i) {
             String bookId = bookList.item(i).getTextContent();
@@ -100,6 +106,36 @@ public final class XmlDataParser {
             com.example.com.parsingData.parseType.Book book = parseBook(httpRequest.getResult());
             books.add(book);
         }
+
+        double runtime = (System.currentTimeMillis() - startTime) / 1000.0;
+
+        Log.d("XmlDataParser", "SEARCH RUNTIME: " + runtime + "s");
+
+        return books;*/
+
+        List<Book> books = Collections.synchronizedList(new ArrayList<Book>());
+        NodeList bookList = XMLUtils.executeXpath(doc, BASE_TAG + "/search/results/work/best_book/id");
+
+        BookParserThread[] threads = new BookParserThread[bookList.getLength()];
+
+        for (int i = 0; i < bookList.getLength(); ++i) {
+            String bookId = bookList.item(i).getTextContent();
+            threads[i] = new BookParserThread(bookId);
+            threads[i].start();
+        }
+
+        for (int i = 0; i < bookList.getLength(); ++i) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            books.add(threads[i].getBook());
+        }
+
+
+        double runtime = (System.currentTimeMillis() - startTime) / 1000.0;
+        Log.d("XmlDataParser", "SEARCH RUNTIME: " + runtime + "s");
 
         return books;
     }
@@ -119,10 +155,16 @@ public final class XmlDataParser {
         String image_url = getStringValueFromPath(doc, "/user/image_url");
         String about = getStringValueFromPath(doc, "/user/about");
         String age = getStringValueFromPath(doc, "/user/age");
+        if (age.isEmpty())
+            age = "0";
         String gender = getStringValueFromPath(doc, "/user/gender");
         String interests = getStringValueFromPath(doc, "/user/interests");
         String friends_count = getStringValueFromPath(doc, "/user/friends_count");
+        if(friends_count.isEmpty())
+            friends_count = "0";
         String reviews_count = getStringValueFromPath(doc, "/user/reviews_count");
+        if(reviews_count.isEmpty())
+            reviews_count = "0";
 
         List<Shelf> shelves = new ArrayList<>();
         NodeList shelvesList = XMLUtils.executeXpath(doc, BASE_TAG + "/user/user_shelves/user_shelf");

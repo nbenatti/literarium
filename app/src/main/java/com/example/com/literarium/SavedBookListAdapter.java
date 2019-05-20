@@ -1,6 +1,7 @@
 package com.example.com.literarium;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +63,11 @@ public class SavedBookListAdapter extends ArrayAdapter<BookDB> {
             if(bookCover != null)
                 Picasso.get().load(book.getImage_url()).into(bookCover);
             if(ssIcon != null){
-                if(book.isStatus())
-                    ssIcon.setBackgroundResource(R.drawable.savedbook_icon);
+                Log.d("SavedBookListAdapter", "status: " + book.isStatus());
+                if(!book.isStatus())
+                    ssIcon.setImageResource(R.drawable.savedbook_icon);
                 else
-                    ssIcon.setBackgroundResource(R.drawable.sentbook_icon);
+                    ssIcon.setImageResource(R.drawable.sentbook_icon);
             }
         }
 

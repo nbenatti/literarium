@@ -78,13 +78,23 @@ public class SearchActivity extends Activity {
         String keyword = this.keyword.getText().toString();
 
         // getting selected radio button
-        int id = rg.getCheckedRadioButtonId();
-        selectedRb = findViewById(id);
+        int selectedRadioid = rg.getCheckedRadioButtonId();
+        selectedRb = findViewById(selectedRadioid);
 
-        SearchBooksTask searchBooksTask = new SearchBooksTask(this, keyword);
+        SearchBooksTask searchBooksTask = new SearchBooksTask(this, keyword, computeSearchFilters(selectedRadioid));
         searchBooksTask.execute();
 
         startLoadingRing();
+    }
+
+    private String computeSearchFilters(int selectedRadioid) {
+
+        if(selectedRadioid == R.id.all_rb)
+            return "all";
+        else if(selectedRadioid == R.id.author_rb)
+            return "author";
+        else
+            return "title";
     }
 
     public void loadData(ArrayList<Book> result) {

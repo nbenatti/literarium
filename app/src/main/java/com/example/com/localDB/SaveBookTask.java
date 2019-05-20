@@ -3,7 +3,6 @@ package com.example.com.localDB;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -37,8 +36,11 @@ public class SaveBookTask extends AsyncTask {
 
         sharedPreferences = Globals.getSharedPreferences(ctx);
 
-        if(act instanceof ShowBookActivity)
-            act = (ShowBookActivity)ctx;
+        if(ctx instanceof ShowBookActivity) {
+            act = (ShowBookActivity) ctx;
+        }
+        else
+            act = null;
 
         booksToBeSaved = new ArrayList<>();
 
@@ -90,7 +92,7 @@ public class SaveBookTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         //notify the calling activity with the operation's status
-        if(act != null && (act instanceof ShowBookActivity))
+        if(act != null)
             act.handleBookSavingSuccess();
     }
 
@@ -105,12 +107,8 @@ public class SaveBookTask extends AsyncTask {
 
     private void insertBook(BookDB b) {
 
-        try {
-            bookDao.insert(b);
-        }
-        catch(SQLiteConstraintException e) {
-            act.handleDuplicateSavedBook();
-        }
+        bookDao.insert(b);
+
         List<BookDB> res = bookDao.getAllBooks(String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)));
         for(BookDB bookDB : res)
             Log.d("LOCAL_DB", bookDB.toString());
