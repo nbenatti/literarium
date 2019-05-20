@@ -189,7 +189,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/litBlue"
+                                android:background="@drawable/roundcorner_litblue"
                                 android:layout_marginHorizontal="5dp">
 
                                 <ImageButton
@@ -197,7 +197,7 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:background="@drawable/share_icon"
-                                    android:layout_margin="@dimen/textPadding"
+                                    android:layout_margin="5dp"
                                     android:onClick="goToGeolocalization"
                                     />
 
@@ -206,7 +206,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/litBlue"
+                                android:background="@drawable/roundcorner_litblue"
                                 android:layout_marginHorizontal="5dp">
 
                                 <ImageButton
@@ -215,7 +215,7 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:background="@drawable/save_icon"
-                                    android:layout_margin="@dimen/textPadding"
+                                    android:layout_margin="5dp"
                                     android:onClick="saveBook"
                                     />
 
