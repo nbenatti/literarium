@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- App bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:orientation="horizontal"
+        android:background="@color/litBlue"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Literarium"
+            android:layout_weight="1"
+            android:textColor="@color/litYellow"
+            android:textSize="@dimen/appTitleDimension"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+            />
+
+        <ImageButton
+            android:src="@drawable/lens_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:text="Book"
+            android:onClick="goToSearchLayout"/>
+
+        <ImageButton
+            android:src="@drawable/viewsavedbooks_icon"
+            android:scaleType="fitCenter"
+            android:layout_width="50dp"
+            android:background="@color/litBlue"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/textPadding"
+            android:onClick="goToSavedBooks"/>
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geo report"
+            android:onClick="startGeolocalization"/>-->
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/litGrey">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/generalMargin"
+                    android:gravity="center_horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/profilePic"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/profile_photo_template" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/generalMargin"
+                        android:orientation="vertical">
+
+                        <!-- Author name -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/textPadding"
+                            android:text="Name"
+                            android:textSize="@dimen/titleDimension"
+                            android:textColor="@color/litBlue"
+                            android:id="@+id/user_name"/>
+
+                        <!-- Author surname -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/textPadding"
+                            android:text="Username"
+                            android:textSize="@dimen/textDimension"
+                            android:textColor="@color/litBlue"
+                            android:id="@+id/user_username"/>
+
+                        <!-- Gender -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="Gender: "
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="3"
+                                android:textColor="@color/litBlue"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="-"
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="1"
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_gender"/>
+
+                        </LinearLayout>
+
+                        <!-- Age -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="Age: "
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="3"
+                                android:textColor="@color/litBlue"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="n years"
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="1"
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_age"/>
+
+                        </LinearLayout>
+
+                        <!-- Friends count -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="Friends count: "
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="3"
+                                android:textColor="@color/litBlue"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="-"
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="1"
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_friendscount"/>
+
+                        </LinearLayout>
+
+                        <!-- Reviews count -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="Reviews count: "
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="3"
+                                android:textColor="@color/litBlue"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/textPadding"
+                                android:text="-"
+                                android:textSize="@dimen/textDimension"
+                                android:layout_weight="1"
+                                android:textColor="@color/litBlue"
+                                android:id="@+id/user_reviewscount"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Interests -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/generalMargin"
+                android:layout_marginBottom="@dimen/generalMargin"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Interests"
+                    android:layout_margin="@dimen/innerMargin"
+                    android:textSize="@dimen/textDimension"
+                    android:textColorHint="@color/litBlue"
+                    android:textColor="@color/litBlue"
+                    android:id="@+id/user_interests"
+                    />
+
+            </LinearLayout>
+
+            <!-- About -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/generalMargin"
+                android:layout_marginBottom="@dimen/generalMargin"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="About"
+                    android:layout_margin="@dimen/innerMargin"
+                    android:textSize="@dimen/textDimension"
+                    android:textColorHint="@color/litBlue"
+                    android:textColor="@color/litBlue"
+                    android:id="@+id/user_about"
+                    />
+
+            </LinearLayout>
+
+            <!-- Pie chart -->
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_gravity="center"
+                android:id="@+id/user_chart"
+                android:layout_margin="20dp"/>
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@color/litYellow"
+                android:textColor="@color/litRed"
+                android:textStyle="bold"
+                android:text="logout"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="logout"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
