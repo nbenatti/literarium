@@ -126,7 +126,9 @@
                         <!-- Publish date -->
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/bookPublishDateFather"
+                            android:visibility="visible">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -152,7 +154,9 @@
                         <!-- Rating -->
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/bookRatingFather"
+                            android:visibility="visible">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -168,7 +172,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/textPadding"
-                                android:hint="0/0"
+                                android:hint="0/5"
                                 android:textSize="@dimen/textDimension"
                                 android:layout_weight="1"
                                 android:textColor="@color/litBlue"/>
@@ -185,7 +189,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/litBlue"
+                                android:background="@drawable/roundcorner_litblue"
                                 android:layout_marginHorizontal="5dp">
 
                                 <ImageButton
@@ -193,7 +197,7 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:background="@drawable/share_icon"
-                                    android:layout_margin="@dimen/textPadding"
+                                    android:layout_margin="5dp"
                                     android:onClick="goToGeolocalization"
                                     />
 
@@ -202,16 +206,17 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/litBlue"
+                                android:background="@drawable/roundcorner_litblue"
                                 android:layout_marginHorizontal="5dp">
 
+                                <!-- save or delete book -->
                                 <ImageButton
                                     android:id="@+id/saveBookButton"
                                     android:scaleType="fitCenter"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:background="@drawable/save_icon"
-                                    android:layout_margin="@dimen/textPadding"
+                                    android:layout_margin="5dp"
                                     android:onClick="saveBook"
                                     />
 
@@ -230,7 +235,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/generalMargin"
-                android:background="@drawable/border">
+                android:background="@drawable/roundcorner_litblueborder"
+                android:id="@+id/bookDescriptionFather"
+                android:visibility="visible">
 
 
                 <TextView
@@ -250,11 +257,11 @@
             </LinearLayout>
 
             <!-- Series -->
-            <ExpandableListView
+            <!--<ExpandableListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/litBlue">
-            </ExpandableListView>
+            </ExpandableListView>-->
 
         </LinearLayout>
 

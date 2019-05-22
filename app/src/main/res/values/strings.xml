@@ -23,4 +23,5 @@
     <string name="user_token_setting">com.example.com.literarium.USER_TOKEN</string>
     <string name="username_setting">com.example.com.literarium.USERNAME</string>
     <string name="title_activity_author_show">AuthorShowActivity</string>
+    <string name="book_type">com.example.com.literarium.BOOK_TYPE</string>
 </resources>

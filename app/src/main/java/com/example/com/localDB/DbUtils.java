@@ -34,4 +34,22 @@ public class DbUtils {
 
         return convertBookDBToBook(tmp).get(0);
     }
+
+    public static BookDB convertBookToBookDB(Book book, int userid, boolean seen, boolean status) {
+
+        return new BookDB(book.getId(),
+                String.valueOf(userid),
+                book.getTitle(),
+                book.getIsbn(),
+                book.getImageUrl(),
+                book.getPublicationYear(),
+                book.getPublisher(),
+                book.getDescription(),
+                book.getAverageRating(),
+                book.getNumPages(),
+                book.getAuthor().getId(),
+                book.getAuthor().getName(),
+                seen,
+                status);
+    }
 }

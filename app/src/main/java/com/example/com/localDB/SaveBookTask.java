@@ -10,6 +10,7 @@ import com.example.com.literarium.Globals;
 import com.example.com.literarium.R;
 import com.example.com.literarium.ShowBookActivity;
 import com.example.com.parsingData.enumType.BookType;
+import com.example.com.parsingData.parseType.Book;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class SaveBookTask extends AsyncTask {
 
     private SharedPreferences sharedPreferences;
 
-    public SaveBookTask(Context ctx, List<com.example.com.parsingData.parseType.Book> b, BookType bt) {
+    public SaveBookTask(Context ctx, List<Book> b, BookType bt) {
 
         this.ctx = ctx;
 

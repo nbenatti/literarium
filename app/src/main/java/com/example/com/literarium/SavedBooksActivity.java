@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -43,10 +44,19 @@ public class SavedBooksActivity extends Activity {
 
                 Bundle bookData = new Bundle();
                 bookData.putParcelable(getString(R.string.book_data), DbUtils.convertSingleBookDbToBook(bookListData.get(i)));
+                bookData.putString(getString(R.string.book_type), "saved");
 
                 showBook.putExtras(bookData);
 
                 startActivity(showBook);
+            }
+        });
+
+        sbList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                removeSavedBooks();
+                return true;
             }
         });
 
@@ -58,6 +68,11 @@ public class SavedBooksActivity extends Activity {
 
         bookListData.addAll(bookList);
         sbAdapter.notifyDataSetChanged();
+    }
+
+    public void removeSavedBooks() {
+
+        Log.d("SavedBooksActivity", "LONG PRESS");
     }
 
     public void goToSearchLayout(View v) {

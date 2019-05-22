@@ -59,7 +59,7 @@ public class SavedBookListAdapter extends ArrayAdapter<BookDB> {
             if(bookAuthor != null)
                 bookAuthor.setText("by " + book.getName_author());
             if(bookRating != null)
-                bookRating.setText(book.getAverage_rating()+"/10");
+                bookRating.setText(book.getAverage_rating()+"/5");
             if(bookCover != null)
                 Picasso.get().load(book.getImage_url()).into(bookCover);
             if(ssIcon != null){

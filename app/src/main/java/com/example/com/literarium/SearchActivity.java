@@ -56,6 +56,7 @@ public class SearchActivity extends Activity {
 
                 Bundle bookData = new Bundle();
                 bookData.putParcelable(getString(R.string.book_data), resultListData.get(i));
+                bookData.putString(getString(R.string.book_type), "searched");
 
                 showBook.putExtras(bookData);
 
@@ -140,4 +141,8 @@ public class SearchActivity extends Activity {
         startActivity(i);
     }
 
+    public void deleteSearchString(View v) {
+
+        keyword.setText("");
+    }
 }

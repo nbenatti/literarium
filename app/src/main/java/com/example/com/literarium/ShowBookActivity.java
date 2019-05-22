@@ -3,6 +3,7 @@ package com.example.com.literarium;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.com.geoLocalization.GeoLocalizationActivity;
+import com.example.com.localDB.BookDB;
+import com.example.com.localDB.DbUtils;
+import com.example.com.localDB.DeleteBookTask;
 import com.example.com.localDB.SaveBookTask;
 import com.example.com.parsingData.enumType.BookType;
 import com.example.com.parsingData.parseType.Book;
@@ -25,12 +29,15 @@ public class ShowBookActivity extends Activity {
 
     private TextView bookTitle;
     private TextView bookAuthor;
+    private TextView bookRating;
     private TextView bookPublishDate;
     private TextView bookDescription;
 
     private ImageView bookCover;
 
     private ImageButton saveBookButton;
+
+    private SharedPreferences sharedPreferences;
 
     /**
      * complete data of the book
@@ -45,11 +52,16 @@ public class ShowBookActivity extends Activity {
 
         ctx = this;
 
+        // get preferences
+        sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+
         Bundle data = getIntent().getExtras();
 
         saveBookButton = findViewById(R.id.saveBookButton);
         bookTitle = findViewById(R.id.bookTitle);
         bookAuthor = findViewById(R.id.bookAuthor);
+        bookRating = findViewById(R.id.bookRating);
         bookPublishDate = findViewById(R.id.bookPublishDate);
         bookDescription = findViewById(R.id.bookDescription);
         bookDescription.setSelected(true);
@@ -77,6 +89,27 @@ public class ShowBookActivity extends Activity {
                 startActivity(showAuthor);
             }
         });
+
+        if(data.getString(getString(R.string.book_type)).equals("saved")) {
+
+            saveBookButton.setBackgroundResource(R.drawable.trash);
+
+            saveBookButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteBook();
+                }
+            });
+        }
+    }
+
+    public void deleteBook() {
+
+        ArrayList<BookDB> toDeleteBookList = new ArrayList<>();
+        toDeleteBookList.add(DbUtils.convertBookToBookDB(bookObj,sharedPreferences.getInt(getString(R.string.user_id_setting), -1), false, false));
+
+        DeleteBookTask deleteBookTask = new DeleteBookTask(this, toDeleteBookList);
+        deleteBookTask.execute();
     }
 
     public void saveBook(View v) {
@@ -94,11 +127,31 @@ public class ShowBookActivity extends Activity {
 
         bookTitle.setText(b.getTitle());
         bookAuthor.setText(b.getAuthor().getName());
-        bookPublishDate.setText(String.valueOf(b.getPublicationYear()));
-        bookDescription.setHint("");
-        bookDescription.setEms(b.getDescription().length());
-        bookDescription.setText(Html.fromHtml(b.getDescription()));
+
+        if(!b.getPublicationYear().isEmpty())
+            bookPublishDate.setText(String.valueOf(b.getPublicationYear()));
+        else
+            findViewById(R.id.bookPublishDateFather).setVisibility(View.GONE);
+
+        if(!String.valueOf(b.getAverageRating()).isEmpty())
+            bookRating.setText(String.valueOf(b.getAverageRating()));
+        else
+            findViewById(R.id.bookRatingFather).setVisibility(View.GONE);
+
+        if(!b.getDescription().isEmpty()) {
+            bookDescription.setHint("");
+            bookDescription.setEms(b.getDescription().length());
+            bookDescription.setText(Html.fromHtml(b.getDescription()));
+        }
+        else
+            findViewById(R.id.bookDescriptionFather).setVisibility(View.GONE);
+
         Picasso.get().load(b.getImageUrl()).into(bookCover);
+    }
+
+    public void handleBookDeletionSuccess() {
+
+        Toast.makeText(this, "book deleted successfully!", Toast.LENGTH_SHORT).show();
     }
 
     public void handleBookSavingSuccess() {

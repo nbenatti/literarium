@@ -56,7 +56,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             if(bookAuthor != null)
                 bookAuthor.setText("by " + book.getAuthor().getName());
             if(bookRating != null) {
-                bookRating.setText(book.getAverageRating()+"/10");
+                bookRating.setText(book.getAverageRating()+"/5");
             }
             if(bookCover != null) {
                 Picasso.get().load(book.getImageUrl()).into(bookCover);
