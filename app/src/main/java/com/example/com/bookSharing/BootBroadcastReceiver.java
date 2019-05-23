@@ -40,6 +40,10 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         b.putString(context.getString(R.string.user_token_setting), userToken);
         i.putExtras(b);
 
-        ListenForSharesService.enqueueWork(context, i);
+        //JobInfo jobInfo = JobInfo.Builder(context.getString(R.string.job_id_lfs),);
+
+        //TODO: finish...
+
+        //ListenForSharesService.enqueueWork(context, i);
     }
 }

@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.com.parsingData.parseType.Book;
 
@@ -20,15 +23,31 @@ import java.util.ArrayList;
 public class SearchActivity extends Activity {
 
     private EditText keyword;
+
     private ArrayList<Book> resultListData;
     private ListView resultList;
     private BookListAdapter bookListAdapter;
+
     private Context ctx;
 
     private RadioGroup rg;
     private RadioButton selectedRb;
 
+    private Button loadMoreButton;
+
     private ProgressBar progressBar;
+
+    /* == data == */
+    private int searchResultsPageIndex;
+
+    private int selectedRadioid;
+
+    private String searchString;
+
+    /**
+     * previous last item of the list
+     */
+    private int prvLastItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +57,13 @@ public class SearchActivity extends Activity {
 
         ctx = this;
 
+        searchResultsPageIndex = 0;
+
         keyword = findViewById(R.id.search_bar);
         resultList = findViewById(R.id.resultList);
+
+        /*loadMoreButton = findViewById(R.id.loadMoreButton);
+        loadMoreButton.setVisibility(View.INVISIBLE);*/
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
@@ -64,27 +88,65 @@ public class SearchActivity extends Activity {
             }
         });
 
+        resultList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                int lwId = absListView.getId();
+
+                if(lwId == resultList.getId() && resultListData.size() > 0) {
+                    int lastItem = firstVisibleItem + visibleItemCount;
+
+                    if (lastItem == totalItemCount) {
+                        Log.d("SearchActivity", "list reached end of scrolling");
+
+                        if(lastItem != prvLastItem) {
+                            loadMore();
+                            prvLastItem = lastItem;
+                        }
+                    }
+                }
+            }
+        });
+
         rg = findViewById(R.id.fieldselection);
-
     }
 
-    public void goToBookSHow(View v) {
-
-        Intent i = new Intent(this, ShowBookActivity.class);
-        startActivity(i);
-    }
 
     public void performSearch(View v) {
 
-        String keyword = this.keyword.getText().toString();
+        searchString = this.keyword.getText().toString();
+
+        searchResultsPageIndex = 1;
+
+        // delete all data from the list, if there is any
+        if(resultListData.size() > 0) {
+            resultListData.clear();
+            bookListAdapter.notifyDataSetChanged();
+        }
 
         // getting selected radio button
-        int selectedRadioid = rg.getCheckedRadioButtonId();
+        selectedRadioid = rg.getCheckedRadioButtonId();
         selectedRb = findViewById(selectedRadioid);
 
-        SearchBooksTask searchBooksTask = new SearchBooksTask(this, keyword, computeSearchFilters(selectedRadioid));
+        SearchBooksTask searchBooksTask = new SearchBooksTask(this, searchString, computeSearchFilters(selectedRadioid), searchResultsPageIndex);
         searchBooksTask.execute();
+        startLoadingRing();
+    }
 
+    public void loadMore() {
+
+        searchResultsPageIndex++;
+
+        Log.d("SearchActivity", "page #" + searchResultsPageIndex);
+
+        SearchBooksTask searchBooksTask = new SearchBooksTask(this, searchString, computeSearchFilters(selectedRadioid), searchResultsPageIndex);
+        searchBooksTask.execute();
         startLoadingRing();
     }
 
@@ -110,13 +172,19 @@ public class SearchActivity extends Activity {
             resultListData.add(bookResult);
         }*/
 
-        bookListAdapter.clear();
+        if(searchResultsPageIndex == 1)
+            bookListAdapter.clear();
 
         resultListData.addAll(result);
 
         Log.d("SearchActivity", "DONE LOADING BOOKS");
 
         bookListAdapter.notifyDataSetChanged();
+    }
+
+    public void handleNoResults() {
+
+        Toast.makeText(this, "no results :(", Toast.LENGTH_SHORT).show();
     }
 
     public void startLoadingRing() {

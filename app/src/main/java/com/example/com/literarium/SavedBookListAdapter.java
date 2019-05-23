@@ -52,7 +52,7 @@ public class SavedBookListAdapter extends ArrayAdapter<BookDB> {
             bookAuthor = v.findViewById(R.id.bookAuthor);
             bookRating = v.findViewById(R.id.rating);
             bookCover = v.findViewById(R.id.bookCover);
-            ssIcon = v.findViewById(R.id.ssIcon);
+            //ssIcon = v.findViewById(R.id.ssIcon);
 
             if(bookTitle != null)
                 bookTitle.setText(book.getTitle());

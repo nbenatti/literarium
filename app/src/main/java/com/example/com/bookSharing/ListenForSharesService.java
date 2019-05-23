@@ -2,12 +2,12 @@ package com.example.com.bookSharing;
 
 import android.app.ActivityManager;
 import android.app.PendingIntent;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+import android.os.PersistableBundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -30,7 +30,7 @@ import java.util.List;
 
 import javax.xml.xpath.XPathExpressionException;
 
-public class ListenForSharesService extends JobIntentService {
+public class ListenForSharesService extends JobService {
 
     private final int SLEEPTIME = 10000;
 
@@ -71,27 +71,98 @@ public class ListenForSharesService extends JobIntentService {
         super();
     }
 
+    @Override
+    public boolean onStartJob(JobParameters jobParameters) {
+
+        Log.d("ListenForSharesService", "service started");
+
+        // === fetch user data from preferences ===
+
+        PersistableBundle b = jobParameters.getExtras();
+
+        timestamp = b.getString(getString(R.string.last_access_setting));
+        Log.d("ListenForSharesService", "last access timestamp " + timestamp);
+
+        userId = b.getInt(getString(R.string.user_id_setting));
+        Log.d("ListenForSharesService", "user id " + userId);
+
+        userToken = b.getString(getString(R.string.user_token_setting));
+        Log.d("ListenForSharesService", "user token " + userToken);
+
+        try {
+            requestUrl = RequestManager.formatRequest(RequestType.GET_NEW_SHARES, userToken, userId, timestamp);
+            Log.d("ListenForSharesService", requestUrl);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        HttpRequest httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
+        httpRequest.send();
+        response = httpRequest.getResult();
+
+        // get the list of shares
+        List<Node> shares = null;
+        try {
+            NodeList nl = XMLUtils.executeXpath(response, "response/share");
+            if (nl == null)
+                numShares = 0;
+            else {
+                shares = XMLUtils.NodeListToListNode(nl);
+                numShares = shares.size();
+
+                List<ShareData> shareDataList = new ArrayList<>();
+
+                // get data
+                for(int i = 0; i < numShares; ++i) {
+
+                    Element el = ((Element)shares.get(i));
+
+                    String userId = el.getElementsByTagName("userId").item(0).getTextContent();
+                    String bookId = el.getElementsByTagName("bookId").item(0).getTextContent();
+                    shareDataList.add(new ShareData(userId, bookId));
+                }
+
+                Log.d("ListenForSharesService", response.getDocumentElement().getTextContent());
+
+                if(numShares > 0) {
+
+                    notifyUser(shareDataList);
+                }
+            }
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters jobParameters) {
+        updateLastAccessTimestamp();
+        return true;
+    }
+
     public ListenForSharesService(String name) {
         super();
 
         stop = false;
     }
 
-    public static void enqueueWork(Context context, Intent work) {
+    /*public static void enqueueWork(Context context, Intent work) {
         Log.d("ListenForSharesService", "work enqueued");
 
         sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
 
         enqueueWork(context, ListenForSharesService.class, SERVICE_JOB_ID, work);
-    }
+    }*/
 
-    @Override
+    /*@Override
     protected void onHandleWork(@NonNull Intent intent) {
         onHandleIntent(intent);
-    }
+    }*/
 
-    protected void onHandleIntent(Intent intent) {
+    /*protected void onHandleIntent(Intent intent) {
 
         Log.d("ListenForSharesService", "service started");
 
@@ -161,26 +232,24 @@ public class ListenForSharesService extends JobIntentService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            /*stop = isMyServiceRunning(ListenForSharesService.class);
-            Log.d("ListenForSharesService", "is my service running: " + stop);*/
         }
 
         updateLastAccessTimestamp();
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onStopCurrentWork() {
 
         updateLastAccessTimestamp();
         return true;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onDestroy() {
 
         updateLastAccessTimestamp();
         super.onDestroy();
-    }
+    }*/
 
     private void updateLastAccessTimestamp() {
         String timestamp = Globals.getTimestamp();

@@ -27,6 +27,8 @@ public class SavedBooksActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.savedbooks_layout);
 
+        Log.d("SavedBooksActivity", "oncreate()");
+
         ctx = this;
 
         sbList = findViewById(R.id.savedBooksList);
@@ -60,12 +62,23 @@ public class SavedBooksActivity extends Activity {
             }
         });
 
+        /*FetchSavedBooksTask fetchSavedBooksTask = new FetchSavedBooksTask(this);
+        fetchSavedBooksTask.execute();*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("SavedBooksActivity", "onresume()");
+
+        // refresh the list
         FetchSavedBooksTask fetchSavedBooksTask = new FetchSavedBooksTask(this);
         fetchSavedBooksTask.execute();
     }
 
     public void populate(ArrayList<BookDB> bookList) {
 
+        bookListData.clear();
         bookListData.addAll(bookList);
         sbAdapter.notifyDataSetChanged();
     }

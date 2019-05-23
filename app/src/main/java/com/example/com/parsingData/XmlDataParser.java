@@ -113,6 +113,11 @@ public final class XmlDataParser {
 
         return books;*/
 
+        int numResults = Integer.parseInt(getStringValueFromPath(doc, "/search/total-results"));
+        if(numResults == 0) {
+            return new ArrayList<>();
+        }
+
         List<Book> books = Collections.synchronizedList(new ArrayList<Book>());
         NodeList bookList = XMLUtils.executeXpath(doc, BASE_TAG + "/search/results/work/best_book/id");
 

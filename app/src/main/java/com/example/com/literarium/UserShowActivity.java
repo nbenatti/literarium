@@ -59,6 +59,7 @@ public class UserShowActivity extends Activity {
 
         chart = findViewById(R.id.user_chart);
 
+
         GetUserInfoTask getUserInfoTask = new GetUserInfoTask(this,
                 sharedPreferences.getString(getString(R.string.username_setting), ""));
         getUserInfoTask.execute();
@@ -79,17 +80,24 @@ public class UserShowActivity extends Activity {
         // setting the pie chart
         List <PieEntry> entries = new ArrayList<PieEntry>();
 
+        int count = 0;
+
         Shelf [] shelves = u.getShelves();
-        for(int i = 0; i < shelves.length; i++){
-            PieEntry pe = new PieEntry(shelves[i].getBook_count(), shelves[i].getName());
-            entries.add(pe);
+        for(int i = 0; i < shelves.length; i++) {
+            if (shelves[i].getBook_count() != 0){
+                count++;
+                PieEntry pe = new PieEntry(shelves[i].getBook_count(), shelves[i].getName());
+                entries.add(pe);
+            }
         }
 
         PieDataSet pds = new PieDataSet(entries, "Label");
-        ColorGenerator cg = new ColorGenerator(.99, .99);
+        pds.setSliceSpace(3);
+        pds.setSelectionShift(5);
+        ColorGenerator cg = new ColorGenerator(.9, .9);
 
-        String [] colorsStr = cg.getRandomColorStrings(5);
-        List <Integer> colors = new ArrayList<Integer>();
+        String [] colorsStr = cg.getRandomColorStrings(count);
+        List <Integer> colors = new ArrayList<>();
 
         for(String cs : colorsStr)
             colors.add(Color.parseColor(cs));
@@ -97,7 +105,17 @@ public class UserShowActivity extends Activity {
         pds.setColors(colors);
 
         PieData pd = new PieData(pds);
+        pd.setValueTextSize(20f);
+        pd.setValueTextColor(Color.WHITE);
+
         PieChart chart = (PieChart) findViewById(R.id.user_chart);
+        chart.animateXY(1000, 1000);
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.setTransparentCircleRadius(35f);
+        chart.setDragDecelerationFrictionCoef(0.95f);
+        chart.setHoleRadius(35f);
+        chart.setHoleColor(R.color.litGrey);
         chart.setData(pd);
         chart.setCenterText("Book statistics");
         chart.invalidate();

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.com.parsingData.URLRequestFormatter;
+import com.example.com.parsingData.parseType.Book;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -26,17 +27,18 @@ public class SearchBooksTask extends AsyncTask {
 
     private HttpRequest httpRequest;
 
-    private ArrayList<com.example.com.parsingData.parseType.Book> result;
-
     private String searchFilter;
+
+    private String pageIndex;
 
     private SearchActivity act;
 
-    public SearchBooksTask(Context ctx, String keyword, String searchFilter) {
+    public SearchBooksTask(Context ctx, String keyword, String searchFilter, int pageIndex) {
         this.ctx = ctx;
         act = (SearchActivity)ctx;
         this.keyword = keyword;
         this.searchFilter = searchFilter;
+        this.pageIndex = String.valueOf(pageIndex);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class SearchBooksTask extends AsyncTask {
 
         String reqUrl = null;
         try {
-            reqUrl = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.SEARCH_BOOKS, searchFilter, keyword, "1");
+            reqUrl = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.SEARCH_BOOKS, searchFilter, keyword, pageIndex);
             Log.d("SearchBooksTask", reqUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -53,6 +55,8 @@ public class SearchBooksTask extends AsyncTask {
         httpRequest = new HttpRequest(reqUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();
         Document doc = httpRequest.getResult();
+
+        ArrayList<Book> result = null;
 
         try {
             result = new ArrayList<>(parseSearch(doc));
@@ -72,10 +76,16 @@ public class SearchBooksTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
 
+        ArrayList<Book> result = (ArrayList<Book>)o;
+
         SearchActivity act = (SearchActivity)ctx;
 
         act.stopLoadingRing();
 
-        act.loadData(result);
+        if(result.isEmpty()) {
+            act.handleNoResults();
+        }
+        else
+            act.loadData(result);
     }
 }

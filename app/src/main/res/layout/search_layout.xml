@@ -154,12 +154,32 @@
         android:indeterminate="false"
         android:layout_gravity="center"/>
 
-    <ListView
-        android:id="@+id/resultList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-    </ListView>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ListView
+                android:id="@+id/resultList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </ListView>
+
+            <!--<Button
+                android:id="@+id/loadMoreButton"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/roundcorner_lityellow"
+                android:textColor="@color/litBlue"
+                android:layout_weight=".1"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="load more"
+                android:onClick="loadMore"
+                />-->
+    </LinearLayout>
 
     <!--</ScrollView>-->
 
