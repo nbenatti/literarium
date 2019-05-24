@@ -7,7 +7,7 @@ public final class ColorUtils {
     }
 
     public static boolean similar(ColorTriplet c1, ColorTriplet c2) {
-        return !difference(c1.getR(), c2.getR()) && !difference(c1.getG(), c2.getG()) && !difference(c1.getB(), c2.getB());
+        return (!difference(c1.getR(), c2.getR()) && !difference(c1.getG(), c2.getG())) || (!difference(c1.getR(), c2.getR()) && !difference(c1.getB(), c2.getB())) || (!difference(c1.getB(), c2.getB()) && !difference(c1.getG(), c2.getG()));
     }
 
     private static boolean difference(int v1, int v2) {
