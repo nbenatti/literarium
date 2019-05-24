@@ -37,6 +37,7 @@ public class LoginActivity extends Activity {
             Log.d("LoginActivity", "user already logged in");
 
             Intent skipToMain = new Intent(this, MainActivity.class);
+            skipToMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(skipToMain);
         }
 
@@ -77,6 +78,7 @@ public class LoginActivity extends Activity {
     public void handleLoginSuccess() {
 
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

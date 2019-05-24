@@ -40,10 +40,13 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         b.putString(context.getString(R.string.user_token_setting), userToken);
         i.putExtras(b);
 
-        //JobInfo jobInfo = JobInfo.Builder(context.getString(R.string.job_id_lfs),);
+        /*JobInfo.Builder jobInfoBuilder = new JobInfo.Builder(Integer.parseInt(context.getString(R.string.job_id_lfs)), new ComponentName(context, ListenForSharesService.class));
 
-        //TODO: finish...
+        JobInfo jobInfo = jobInfoBuilder.setPersisted(true).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY).setRequiresCharging(true).setExtras(b).setPeriodic(10000).build();
 
-        //ListenForSharesService.enqueueWork(context, i);
+        JobScheduler jobScheduler = (JobScheduler)context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(jobInfo);*/
+
+        ListenForSharesService.enqueueWork(context, i);
     }
 }

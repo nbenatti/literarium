@@ -2,12 +2,11 @@ package com.example.com.bookSharing;
 
 import android.app.ActivityManager;
 import android.app.PendingIntent;
-import android.app.job.JobParameters;
-import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.PersistableBundle;
+import android.os.Bundle;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -30,7 +29,7 @@ import java.util.List;
 
 import javax.xml.xpath.XPathExpressionException;
 
-public class ListenForSharesService extends JobService {
+public class ListenForSharesService extends JobIntentService {
 
     private final int SLEEPTIME = 10000;
 
@@ -67,12 +66,31 @@ public class ListenForSharesService extends JobService {
      */
     private int numShares;
 
-    public ListenForSharesService() {
-        super();
-    }
-
-    @Override
+    /*@Override
     public boolean onStartJob(JobParameters jobParameters) {
+
+
+        // otherwise the code would run on the UI thread...
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                doWork(jobParameters);
+            }
+        });
+
+        t.start();
+
+        return true;
+    }*/
+
+    /*@Override
+    public boolean onStopJob(JobParameters jobParameters) {
+        updateLastAccessTimestamp();
+        Log.d("ListenForSharesService", "service stopped");
+        return true;
+    }*/
+
+    /*private void doWork(JobParameters jobParameters) {
 
         Log.d("ListenForSharesService", "service started");
 
@@ -132,14 +150,10 @@ public class ListenForSharesService extends JobService {
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         }
+    }*/
 
-        return true;
-    }
-
-    @Override
-    public boolean onStopJob(JobParameters jobParameters) {
-        updateLastAccessTimestamp();
-        return true;
+    public ListenForSharesService() {
+        super();
     }
 
     public ListenForSharesService(String name) {
@@ -148,21 +162,21 @@ public class ListenForSharesService extends JobService {
         stop = false;
     }
 
-    /*public static void enqueueWork(Context context, Intent work) {
+    public static void enqueueWork(Context context, Intent work) {
         Log.d("ListenForSharesService", "work enqueued");
 
         sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
 
         enqueueWork(context, ListenForSharesService.class, SERVICE_JOB_ID, work);
-    }*/
+    }
 
-    /*@Override
-    protected void onHandleWork(@NonNull Intent intent) {
+    @Override
+    protected void onHandleWork(Intent intent) {
         onHandleIntent(intent);
-    }*/
+    }
 
-    /*protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(Intent intent) {
 
         Log.d("ListenForSharesService", "service started");
 
@@ -235,7 +249,7 @@ public class ListenForSharesService extends JobService {
         }
 
         updateLastAccessTimestamp();
-    }*/
+    }
 
     /*@Override
     public boolean onStopCurrentWork() {
@@ -309,6 +323,7 @@ public class ListenForSharesService extends JobService {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(notifText)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setAutoCancel(true)
                 .addAction(R.drawable.accept_icon, getString(R.string.accept_share), acceptSharePendingIntent)
                 .addAction(R.drawable.deny_icon, getString(R.string.discard_share), discardSharePendingIntent);
 

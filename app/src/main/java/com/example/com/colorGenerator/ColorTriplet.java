@@ -2,8 +2,7 @@ package com.example.com.colorGenerator;
 
 public final class ColorTriplet {
 
-    private final int r, g, b;
-    private final String[] table = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+    private int r, g, b;
 
     public ColorTriplet(int r, int g, int b) {
         this.r = r;
@@ -11,23 +10,22 @@ public final class ColorTriplet {
         this.b = b;
     }
 
-    @Override
-    public String toString() {
-        return "#" + convertToHex(r) + convertToHex(g) + convertToHex(b);
+    public ColorTriplet(String s) {
+        this.r = Integer.parseInt(s.substring(1, 3), 16);
+        this.g = Integer.parseInt(s.substring(3, 5), 16);
+        this.b = Integer.parseInt(s.substring(5, 7), 16);
     }
 
-    private String convertToHex(int n) {
-        String s = "";
-
-        while (n > 0) {
-            s = table[n % 16] + s;
-            n /= 16;
-        }
-
-        if (s.length() == 1) {
-            s = "0" + s;
-        }
-
-        return s;
+    public int getR() {
+        return r;
     }
+
+    public int getG() {
+        return g;
+    }
+
+    public int getB() {
+        return b;
+    }
+
 }

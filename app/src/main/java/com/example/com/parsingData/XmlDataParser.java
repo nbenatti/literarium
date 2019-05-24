@@ -53,18 +53,28 @@ public final class XmlDataParser {
         String born_at = getStringValueFromPath(doc, "/author/born_at");
         String died_at = getStringValueFromPath(doc, "/author/died_at");
 
-        List<Book> books = new ArrayList<>();
-        /*NodeList bookList = com.example.com.parsingData.XMLUtils.executeXpath(doc, BASE_TAG + "/author/books/book/id");
+        List<Book> books = Collections.synchronizedList(new ArrayList<Book>());
+        NodeList bookList = XMLUtils.executeXpath(doc, BASE_TAG + "/author/books/book/id");
+
+        BookParserThread[] threads = new BookParserThread[bookList.getLength()];
+
         for (int i = 0; i < bookList.getLength(); ++i) {
             String bookId = bookList.item(i).getTextContent();
-            String url = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.BOOK_SHOW, bookId);
-            httpRequest = new HttpRequest(url, HttpRequest.HttpRequestMethod.GET);
-            httpRequest.send();
-            com.example.com.parsingData.parseType.Book book = parseBook(httpRequest.getResult());
-            books.add(book);
-        }*/
+            threads[i] = new BookParserThread(bookId);
+            threads[i].start();
+        }
 
-        return new com.example.com.parsingData.parseType.Author(Integer.valueOf(id), name, Integer.valueOf(fans_count), image_url, about, Integer.valueOf(works_count), gender, homeTown, born_at, died_at, /*(Book[]) books.toArray()*/new Book[]{});
+        for (int i = 0; i < bookList.getLength(); ++i) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            books.add(threads[i].getBook());
+        }
+
+
+        return new com.example.com.parsingData.parseType.Author(Integer.valueOf(id), name, Integer.valueOf(fans_count), image_url, about, Integer.valueOf(works_count), gender, homeTown, born_at, died_at, books.toArray(new Book[]{}));
     }
 
     public static com.example.com.parsingData.parseType.Book parseBook(Document doc) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {

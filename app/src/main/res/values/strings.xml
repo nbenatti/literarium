@@ -16,7 +16,7 @@
     <string name="book_data">com.example.com.literarium.BOOK_DATA</string>
     <string name="author_info_data">com.example.com.literarium.AUTHOR_DATA</string>
     <string name="user_name">com.example.com.literarium.USERNAME</string>
-    <string name="job_id_lfs">com.example.com.literarium.JOB_ID</string> <!-- lfs = listen for shares -->
+    <string name="job_id_lfs">120</string> <!-- lfs = listen for shares -->
 
     <!-- shared data keys -->
     <string name="last_access_setting">com.example.com.literarium.LAST_ACCESS_TIMESTAMP</string>

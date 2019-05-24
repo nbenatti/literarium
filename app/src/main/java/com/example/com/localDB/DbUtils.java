@@ -35,7 +35,7 @@ public class DbUtils {
         return convertBookDBToBook(tmp).get(0);
     }
 
-    public static BookDB convertBookToBookDB(Book book, int userid, boolean seen, boolean status) {
+    public static BookDB convertBookToBookDB(Book book, int userid, boolean status, boolean seen) {
 
         return new BookDB(book.getId(),
                 String.valueOf(userid),

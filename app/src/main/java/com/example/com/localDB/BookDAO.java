@@ -24,6 +24,9 @@ public interface BookDAO {
     public List<BookDB> getAllSavedBooks(String userId);
     @Query("SELECT * FROM books WHERE status = 0 AND userId = :userId")
     public List<BookDB> getAllReceivedBooks(String userId);
-    @Query("SELECT * FROM books WHERE status = 1 AND userId = :userId AND seen = 0")
+    @Query("SELECT * FROM books WHERE userId = :userId AND seen = 0")
     public List<BookDB> getUnseenSavedBooks(String userId);
+
+    @Query("UPDATE books SET seen = 1 WHERE userId = :userId AND seen = 0")
+    public void toggleSeenBooks(String userId);
 }

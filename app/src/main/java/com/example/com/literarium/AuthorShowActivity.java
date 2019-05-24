@@ -1,18 +1,29 @@
 package com.example.com.literarium;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.com.parsingData.parseType.Author;
 import com.example.com.parsingData.parseType.AuthorInfo;
+import com.example.com.parsingData.parseType.Book;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class AuthorShowActivity extends Activity {
+
+    private Context ctx;
 
     private Author authorObj;
 
@@ -25,10 +36,16 @@ public class AuthorShowActivity extends Activity {
     private TextView biography;
     private ImageView image;
 
+    private ArrayList<Book> bookListData;
+    private ListView bookList;
+    private BookListAdapter bookListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.author_layout);
+
+        ctx = this;
 
         Bundle data = getIntent().getExtras();
 
@@ -42,6 +59,27 @@ public class AuthorShowActivity extends Activity {
         image = findViewById(R.id.authorImage);
 
         AuthorInfo authorInfo = data.getParcelable(getString(R.string.author_info_data));
+
+        bookList = findViewById(R.id.authorBooks);
+        bookListData = new ArrayList<>();
+        bookListAdapter = new BookListAdapter(this, R.layout.book_item, bookListData);
+        bookList.setAdapter(bookListAdapter);
+
+        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // show the book
+                Intent showBook = new Intent(ctx, ShowBookActivity.class);
+
+                Bundle bookData = new Bundle();
+                bookData.putParcelable(getString(R.string.book_data), bookListData.get(i));
+                bookData.putString(getString(R.string.book_type), "searched");
+
+                showBook.putExtras(bookData);
+
+                startActivity(showBook);
+            }
+        });
 
         GetAuthorDataTask getAuthorDataTask = new GetAuthorDataTask(this, authorInfo.getId());
         getAuthorDataTask.execute();
@@ -85,6 +123,18 @@ public class AuthorShowActivity extends Activity {
             findViewById(R.id.aboutFather).setVisibility(View.GONE);
 
         Picasso.get().load(a.getImage_url()).into(image);
+
+        // load books
+        populateBookList(new ArrayList<>(Arrays.asList(a.getBooks())));
+    }
+
+    private void populateBookList(List<Book> bookList) {
+
+        Log.d("AuthorShowActivity", bookList.toString());
+
+        bookListData.addAll(bookList);
+
+        bookListAdapter.notifyDataSetChanged();
     }
 
     public void goToSearchLayout(View v) {

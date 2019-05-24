@@ -1,8 +1,6 @@
 package com.example.com.literarium;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,16 +10,17 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.com.geoLocalization.Constants;
 import com.example.com.geoLocalization.FetchAddressIntentService;
-import com.example.com.geoLocalization.GeoLocalizationActivity;
 import com.example.com.geoLocalization.LocationResultReceiver;
 import com.example.com.localDB.BookDAO;
 import com.example.com.localDB.LocalDatabase;
+import com.example.com.localDB.ModifyBookTask;
 import com.example.com.parsingData.parseType.Book;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -30,7 +29,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class MainActivity extends Activity {
@@ -86,6 +84,10 @@ public class MainActivity extends Activity {
 
     private BookListAdapter bookListAdapter;
 
+    private ImageButton clearAll;
+
+    private LinearLayout noConnectionBanner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,11 +99,14 @@ public class MainActivity extends Activity {
         sharedPreferences = ctx.getSharedPreferences(getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
 
-        LinearLayout noConnectionBanner = findViewById(R.id.noConnectionBanner);
+        noConnectionBanner = findViewById(R.id.noConnectionBanner);
         noConnectionBanner.setVisibility(View.INVISIBLE);
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText(sharedPreferences.getString(getString(R.string.username_setting), ""));
+
+        clearAll = findViewById(R.id.clearAll);
+        clearAll.setVisibility(View.INVISIBLE);
 
         locationClient = LocationServices.getFusedLocationProviderClient(this);
         resultReceiver = new LocationResultReceiver(this, new Handler());
@@ -140,6 +145,7 @@ public class MainActivity extends Activity {
 
                 Bundle bookData = new Bundle();
                 bookData.putParcelable(getString(R.string.book_data), newSharesListData.get(i));
+                bookData.putString(getString(R.string.book_type), "saved");
 
                 showBook.putExtras(bookData);
 
@@ -153,8 +159,30 @@ public class MainActivity extends Activity {
     }
 
     public void populate(ArrayList<Book> books) {
+        if(books.size() > 0)
+            clearAll.setVisibility(View.VISIBLE);
+
+        for(Book runner : books)
+            Log.d("Main", runner.toString());
+
         newSharesListData.addAll(books);
         bookListAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * clears all new shares
+     * @param v the current view.
+     */
+    public void clearAll(View v) {
+
+        newSharesListData.clear();
+        bookListAdapter.notifyDataSetChanged();
+        // set the button invisible again
+        clearAll.setVisibility(View.INVISIBLE);
+
+        // modify the seen status of the books
+        ModifyBookTask modifyBookTask = new ModifyBookTask(ctx, newSharesListData, true, true);
+        modifyBookTask.execute();
     }
 
     public void handleNoShares() {
@@ -163,32 +191,8 @@ public class MainActivity extends Activity {
         noConnectionBanner.setVisibility(View.VISIBLE);
     }
 
-    public void startGeolocalization(View b) {
-
-        Intent geoLocalizationIntent = new Intent(this, GeoLocalizationActivity.class);
-        startActivity(geoLocalizationIntent);
-    }
-
-    /**
-     * starts the service scheduling it
-     * to start every N minutes.
-     */
-    private void scheduleService(int minutes, Class serviceClass) {
-
-        Intent serviceIntent = new Intent(this, serviceClass);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
-
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, minutes);
-
-        // start the scheduled service
-        alarmManager.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                minutes*1000,
-                pendingIntent);
+    public void spawnNoConnBanner() {
+        noConnectionBanner.setVisibility(View.VISIBLE);
     }
 
     @Override

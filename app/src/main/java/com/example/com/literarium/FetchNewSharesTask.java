@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.com.localDB.BookDAO;
 import com.example.com.localDB.BookDB;
@@ -43,6 +44,11 @@ public class FetchNewSharesTask extends AsyncTask {
 
         List<BookDB> unseenBookList = bookDao.getUnseenSavedBooks(userId);
 
+        for(BookDB runner : unseenBookList)
+            Log.d("FetchNewSharesTask", runner.toString());
+
+        //dumpDb();
+
         closeDb();
 
         return unseenBookList;
@@ -64,6 +70,10 @@ public class FetchNewSharesTask extends AsyncTask {
             ArrayList<Book> books = (ArrayList<Book>) DbUtils.convertBookDBToBook(dbBooks);
 
             act.populate(books);
+
+            if(books.size() == 0) {
+                act.spawnNoConnBanner();
+            }
         }
     }
 
@@ -74,5 +84,11 @@ public class FetchNewSharesTask extends AsyncTask {
 
     private void closeDb() {
         db.close();
+    }
+
+    private void dumpDb() {
+        List<BookDB> res = bookDao.getAllBooks(String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)));
+        for(BookDB bookDB : res)
+            Log.d("LOCAL_DB", bookDB.toString());
     }
 }

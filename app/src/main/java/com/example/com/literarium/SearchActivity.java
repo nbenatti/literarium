@@ -90,9 +90,7 @@ public class SearchActivity extends Activity {
 
         resultList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-            }
+            public void onScrollStateChanged(AbsListView absListView, int i) {}
 
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
