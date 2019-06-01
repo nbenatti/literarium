@@ -10,4 +10,5 @@
     <dimen name="biographyDimension">130dp</dimen>
     <dimen name="searchBarWidth">50dp</dimen>
     <dimen name="searchBarHeigth">15</dimen>
+    <dimen name="fabMargin">16dp</dimen>
 </resources>
