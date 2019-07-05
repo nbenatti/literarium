@@ -20,6 +20,8 @@ import java.util.Locale;
  */
 public class FetchAddressIntentService extends IntentService {
 
+    private static final String TAG = FetchAddressIntentService.class.getSimpleName();
+
     protected ResultReceiver resultReceiver;
 
     public FetchAddressIntentService() {
@@ -81,7 +83,7 @@ public class FetchAddressIntentService extends IntentService {
             if(errorMessage.isEmpty())
                 errorMessage = getString(R.string.error_no_address_found);
 
-            Log.d("rev_geocoding_debug", "errore: " + errorMessage);
+            Log.d(TAG, "errore: " + errorMessage);
 
             // deliver result
             deliverErrorToReceiver(Constants.FAILURE_RESULT, errorMessage);
@@ -92,7 +94,7 @@ public class FetchAddressIntentService extends IntentService {
             Address fetchedAddress = addressList.get(0);
             //ArrayList<String> addrFragments = new ArrayList<>();
 
-            Log.d("rev_geocoding_debug", "indirizzo: " + fetchedAddress.toString());
+            Log.d(TAG, "indirizzo: " + fetchedAddress.toString());
 
             //TODO: some addresses may be more than 1 line long...
             String encodedAddress = fetchedAddress.getAddressLine(0).trim();

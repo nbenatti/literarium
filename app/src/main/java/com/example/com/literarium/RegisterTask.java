@@ -10,10 +10,10 @@ import java.io.UnsupportedEncodingException;
 
 public class RegisterTask  extends AsyncTask {
 
+    private static final String TAG = RegisterActivity.class.getSimpleName();
+
     private Context ctx;
-
     private HttpRequest httpRequest;
-
     private String userName, password, grUsername;
 
     public RegisterTask(Context ctx, String userName, String grUsername, String password) {
@@ -33,12 +33,10 @@ public class RegisterTask  extends AsyncTask {
             httpRequest.send();
             Document doc = httpRequest.getResult();
 
-            Log.d("RegisterTask", doc.getDocumentElement().getTextContent());
+            Log.d(TAG, doc.getDocumentElement().getTextContent());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-
 
         return null;
     }

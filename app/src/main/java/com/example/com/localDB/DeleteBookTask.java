@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class DeleteBookTask extends AsyncTask {
 
-    private Context ctx;
+    private static final String TAG = DeleteBookTask.class.getSimpleName();
 
+    private Context ctx;
     private LocalDatabase db;
     private BookDAO bookDao;
-
     private List<BookDB> booksToBeDeleted;
 
     private ShowBookActivity act;

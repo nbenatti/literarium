@@ -23,8 +23,9 @@ import java.util.List;
 
 public class AuthorShowActivity extends Activity {
 
-    private Context ctx;
+    private static final String TAG = AuthorShowActivity.class.getSimpleName();
 
+    private Context ctx;
     private Author authorObj;
 
     private TextView name;
@@ -130,7 +131,7 @@ public class AuthorShowActivity extends Activity {
 
     private void populateBookList(List<Book> bookList) {
 
-        Log.d("AuthorShowActivity", bookList.toString());
+        Log.d(TAG, bookList.toString());
 
         bookListData.addAll(bookList);
 

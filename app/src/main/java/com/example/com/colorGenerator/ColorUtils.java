@@ -2,6 +2,8 @@ package com.example.com.colorGenerator;
 
 public final class ColorUtils {
 
+    private static final String TAG = ColorUtils.class.getSimpleName();
+
     public static boolean similar(String s1, String s2) {
         return similar(new ColorTriplet(s1), new ColorTriplet(s2));
     }

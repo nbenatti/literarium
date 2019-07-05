@@ -21,16 +21,13 @@ import static com.example.com.parsingData.XmlDataParser.parseSearch;
 
 public class SearchBooksTask extends AsyncTask {
 
+    private static final String TAG = SearchBooksTask.class.getSimpleName();
+
     private Context ctx;
-
     private String  keyword;
-
     private HttpRequest httpRequest;
-
     private String searchFilter;
-
     private String pageIndex;
-
     private SearchActivity act;
 
     public SearchBooksTask(Context ctx, String keyword, String searchFilter, int pageIndex) {
@@ -47,7 +44,7 @@ public class SearchBooksTask extends AsyncTask {
         String reqUrl = null;
         try {
             reqUrl = URLRequestFormatter.format(com.example.com.parsingData.enumType.RequestType.SEARCH_BOOKS, searchFilter, keyword, pageIndex);
-            Log.d("SearchBooksTask", reqUrl);
+            Log.d(TAG, reqUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

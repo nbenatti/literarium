@@ -22,26 +22,20 @@ import java.util.ArrayList;
 
 public class SearchActivity extends Activity {
 
-    private EditText keyword;
+    private static final String TAG = SearchActivity.class.getSimpleName();
 
+    private EditText keyword;
     private ArrayList<Book> resultListData;
     private ListView resultList;
     private BookListAdapter bookListAdapter;
-
     private Context ctx;
-
     private RadioGroup rg;
     private RadioButton selectedRb;
-
     private Button loadMoreButton;
-
     private ProgressBar progressBar;
 
-    /* == data == */
     private int searchResultsPageIndex;
-
     private int selectedRadioid;
-
     private String searchString;
 
     /**
@@ -101,7 +95,7 @@ public class SearchActivity extends Activity {
                     int lastItem = firstVisibleItem + visibleItemCount;
 
                     if (lastItem == totalItemCount) {
-                        Log.d("SearchActivity", "list reached end of scrolling");
+                        Log.d(TAG, "list reached end of scrolling");
 
                         if(lastItem != prvLastItem) {
                             loadMore();
@@ -141,7 +135,7 @@ public class SearchActivity extends Activity {
 
         searchResultsPageIndex++;
 
-        Log.d("SearchActivity", "page #" + searchResultsPageIndex);
+        Log.d(TAG, "page #" + searchResultsPageIndex);
 
         SearchBooksTask searchBooksTask = new SearchBooksTask(this, searchString, computeSearchFilters(selectedRadioid), searchResultsPageIndex);
         searchBooksTask.execute();
@@ -160,7 +154,7 @@ public class SearchActivity extends Activity {
 
     public void loadData(ArrayList<Book> result) {
 
-        Log.d("SearchActivity", result.toString());
+        Log.d(TAG, result.toString());
 
         // carica i libri nella lista
         /*for(Book bookResult : result) {
@@ -175,7 +169,7 @@ public class SearchActivity extends Activity {
 
         resultListData.addAll(result);
 
-        Log.d("SearchActivity", "DONE LOADING BOOKS");
+        Log.d(TAG, "DONE LOADING BOOKS");
 
         bookListAdapter.notifyDataSetChanged();
     }

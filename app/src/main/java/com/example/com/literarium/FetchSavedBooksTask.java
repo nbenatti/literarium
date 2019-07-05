@@ -14,13 +14,12 @@ import java.util.List;
 
 public class FetchSavedBooksTask extends AsyncTask {
 
-    private Context ctx;
+    private static final String TAG = FetchSavedBooksTask.class.getSimpleName();
 
+    private Context ctx;
     private LocalDatabase db;
     private BookDAO bookDao;
-
     private String userId;
-
     private SharedPreferences sharedPreferences;
 
     public FetchSavedBooksTask(Context ctx) {

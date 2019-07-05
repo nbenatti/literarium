@@ -21,6 +21,8 @@ import static android.content.Context.WIFI_SERVICE;
  */
 public class NetworkManager {
 
+    private static final String TAG = NetworkManager.class.getSimpleName();
+
     /**
      * returns the IP address of the phone<br>
      * whether it's connected to WiFi or cellular network.
@@ -43,7 +45,7 @@ public class NetworkManager {
         }
 
 
-        Log.d("NETSTATE", netState);
+        Log.d(TAG, netState);
 
         if(netState.equalsIgnoreCase("WIFI")) {
             res = GetDeviceipWiFiData(ctx);
@@ -67,7 +69,7 @@ public class NetworkManager {
                 for (Enumeration<InetAddress> enumIpAddr = networkinterface.getInetAddresses(); enumIpAddr.hasMoreElements();) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
 
-                    Log.d("POSSIBLE_IP", inetAddress.getHostAddress());
+                    Log.d(TAG, inetAddress.getHostAddress());
 
                     if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address)) {
 
@@ -82,8 +84,7 @@ public class NetworkManager {
         return null;
     }
 
-    private static String GetDeviceipWiFiData(Context ctx)
-    {
+    private static String GetDeviceipWiFiData(Context ctx) {
 
         WifiManager wm = (WifiManager) ctx.getApplicationContext().getSystemService(WIFI_SERVICE);
 

@@ -31,10 +31,9 @@ import javax.xml.xpath.XPathExpressionException;
 
 public class ListenForSharesService extends JobIntentService {
 
+    private static final String TAG = ListenForSharesService.class.getSimpleName();
     private final int SLEEPTIME = 10000;
-
     private static final int SERVICE_JOB_ID = 100;
-
     private final int NOTIFICATION_ID = 72;
 
     private Context ctx;
@@ -163,7 +162,7 @@ public class ListenForSharesService extends JobIntentService {
     }
 
     public static void enqueueWork(Context context, Intent work) {
-        Log.d("ListenForSharesService", "work enqueued");
+        Log.d(TAG, "work enqueued");
 
         sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);

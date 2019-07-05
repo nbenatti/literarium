@@ -20,12 +20,11 @@ import javax.xml.xpath.XPathExpressionException;
 
 public class GetUserInfoTask extends AsyncTask {
 
+    private static final String TAG = GetUserInfoTask.class.getSimpleName();
+
     private Context ref;
-
     private Document xmlContent;  // content returned by the server
-
     private HttpRequest httpRequest;
-
     private String userName;
 
     public GetUserInfoTask(Context ref, String userName) {
@@ -36,7 +35,7 @@ public class GetUserInfoTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
 
-        Log.d("GetUserInfoTask", "task started");
+        Log.d(TAG, "task started");
 
         String requestUrl = null;
         try {
@@ -44,7 +43,7 @@ public class GetUserInfoTask extends AsyncTask {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.d("GetUserInfoTask", requestUrl);
+        Log.d(TAG, requestUrl);
 
         httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();

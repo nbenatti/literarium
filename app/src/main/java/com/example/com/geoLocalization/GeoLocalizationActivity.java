@@ -36,6 +36,8 @@ import java.util.List;
  */
 public class GeoLocalizationActivity extends Activity implements IListableActivity {
 
+    private static final String TAG = GeoLocalizationActivity.class.getSimpleName();
+
     private MapView map;
     private MapboxMap mapBox;
 
@@ -59,7 +61,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d("GeoLocalizationActivity", "activity created");
+        Log.d(TAG, "activity created");
 
         super.onCreate(savedInstanceState);
         MapQuest.start(getApplicationContext());
@@ -92,7 +94,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         map.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
-                Log.d("GeoLocalizationActivity", "map initialized");
+                Log.d(TAG, "map initialized");
                 mapBox = mapboxMap;
                 map.setStreetMode();
 
@@ -137,6 +139,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 mapBox.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(itemLocation), 13));
             }
         });
+
         // when item gets pressed for a long time, share the book
         usersList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -144,7 +147,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
 
                 Toast.makeText(getApplicationContext(), "long press!", Toast.LENGTH_SHORT).show();
 
-                Log.d("GeoLocalizationActivity", "selected user: " + list.get(i).toString());
+                Log.d(TAG, "selected user: " + list.get(i).toString());
 
                 // do something only if the user has a book to share (should be 100% of the times)
                 if(toShare != null) {
@@ -163,7 +166,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     protected void onResume() {
         super.onResume();
         map.onResume();
-        Log.d("GeoLocalizationActivity", "activity resumed, map" + ((mapBox==null)?" null":" not null"));
+        Log.d(TAG, "activity resumed, map" + ((mapBox==null)?" null":" not null"));
 
         //while(mapBox == null);
     }
@@ -172,7 +175,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     protected void onPause() {
         super.onPause();
         map.onPause();
-        Log.d("GeoLocalizationActivity", "activity paused, map" + ((mapBox==null)?" null":" not null"));
+        Log.d(TAG, "activity paused, map" + ((mapBox==null)?" null":" not null"));
     }
 
     /*@Override
@@ -186,7 +189,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
     protected void onDestroy() {
         super.onDestroy();
         map.onDestroy();
-        Log.d("GeoLocalizationActivity", "activity destroyed, map" + ((mapBox==null)?" null":" not null"));
+        Log.d(TAG, "activity destroyed, map" + ((mapBox==null)?" null":" not null"));
     }
 
     @Override
@@ -208,7 +211,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
                 if(grantResults.length > 0) {
                     int i = 0;
                     for(Integer res : grantResults) {
-                        Log.d("PERMISSION", permissions[i]+": " + ((res == PermissionChecker.PERMISSION_GRANTED) ? "granted" : "denied"));
+                        Log.d(TAG, permissions[i]+": " + ((res == PermissionChecker.PERMISSION_GRANTED) ? "granted" : "denied"));
                         i++;
                     }
                 }
@@ -234,12 +237,12 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         if(dataList.get(0) instanceof UserData)
             userDataList = (List<UserData>)dataList;
 
-        Log.d("GeoLocalizationActivity", "populating list");
+        Log.d(TAG, "populating list");
         for(UserData ud : userDataList) {
             list.add(ud);
         }
 
-        Log.d("GeoLocalizationActivity", "data in the list" + list.toString());
+        Log.d(TAG, "data in the list" + list.toString());
 
         ((UserListAdapter)(usersList.getAdapter())).notifyDataSetChanged();
     }
@@ -260,7 +263,7 @@ public class GeoLocalizationActivity extends Activity implements IListableActivi
         }
 
         if(mapBox == null) {
-            Log.d("GeoLocalizationActivity", "map is null");
+            Log.d(TAG, "map is null");
         }
 
         for(UserData ud : list) {

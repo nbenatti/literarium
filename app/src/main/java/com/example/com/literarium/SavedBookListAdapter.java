@@ -16,14 +16,14 @@ import java.util.List;
 
 public class SavedBookListAdapter extends ArrayAdapter<BookDB> {
 
+    private static final String TAG = SavedBookListAdapter.class.getSimpleName();
+
     private int layoutId;
     private Context ctx;
-
     private TextView bookTitle;
     private TextView bookAuthor;
     private TextView bookRating;
     private ImageView ssIcon;
-
     private ImageView bookCover;
 
     public SavedBookListAdapter(Context context, int resource, List<BookDB> books) {
@@ -63,7 +63,7 @@ public class SavedBookListAdapter extends ArrayAdapter<BookDB> {
             if(bookCover != null)
                 Picasso.get().load(book.getImage_url()).into(bookCover);
             if(ssIcon != null){
-                Log.d("SavedBookListAdapter", "status: " + book.isStatus());
+                Log.d(TAG, "status: " + book.isStatus());
                 if(!book.isStatus())
                     ssIcon.setImageResource(R.drawable.savedbook_icon);
                 else

@@ -21,10 +21,10 @@ import javax.xml.xpath.XPathExpressionException;
 
 public class ShareBookTask extends AsyncTask<Integer, Void, Void> {
 
+    private static final String TAG = ShareBookTask.class.getSimpleName();
+
     private Context ctx;
-
     private String requestUrl;
-
     private SharedPreferences sharedPreferences;
 
     public ShareBookTask(Context ctx) {
@@ -32,7 +32,7 @@ public class ShareBookTask extends AsyncTask<Integer, Void, Void> {
 
         sharedPreferences = Globals.getSharedPreferences(this.ctx);
 
-        Log.d("ShareBookTask", "task started");
+        Log.d(TAG, "task started");
     }
 
     @Override
@@ -47,9 +47,9 @@ public class ShareBookTask extends AsyncTask<Integer, Void, Void> {
             e.printStackTrace();
         }
 
-        Log.d("ShareBookTask", "share the book " + integers[1] + " to the user " + integers[0]);
+        Log.d(TAG, "share the book " + integers[1] + " to the user " + integers[0]);
 
-        Log.d("ShareBookTask", requestUrl);
+        Log.d(TAG, requestUrl);
 
         HttpRequest httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();
@@ -65,7 +65,7 @@ public class ShareBookTask extends AsyncTask<Integer, Void, Void> {
 
         if(statusCode == 200) {
 
-            Log.d("ShareBookTask", "book correctly shared");
+            Log.d(TAG, "book correctly shared");
         }
 
         return null;

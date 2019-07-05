@@ -17,13 +17,12 @@ import java.util.List;
 
 public class FetchNewSharesTask extends AsyncTask {
 
-    private Context ctx;
+    private static final String TAG = FetchNewSharesTask.class.getSimpleName();
 
+    private Context ctx;
     private LocalDatabase db;
     private BookDAO bookDao;
-
     private String userId;
-
     private SharedPreferences sharedPreferences;
 
     public FetchNewSharesTask(Context ctx) {
@@ -45,7 +44,7 @@ public class FetchNewSharesTask extends AsyncTask {
         List<BookDB> unseenBookList = bookDao.getUnseenSavedBooks(userId);
 
         for(BookDB runner : unseenBookList)
-            Log.d("FetchNewSharesTask", runner.toString());
+            Log.d(TAG, runner.toString());
 
         //dumpDb();
 
@@ -89,6 +88,6 @@ public class FetchNewSharesTask extends AsyncTask {
     private void dumpDb() {
         List<BookDB> res = bookDao.getAllBooks(String.valueOf(sharedPreferences.getInt(ctx.getString(R.string.user_id_setting), -1)));
         for(BookDB bookDB : res)
-            Log.d("LOCAL_DB", bookDB.toString());
+            Log.d(TAG, bookDB.toString());
     }
 }

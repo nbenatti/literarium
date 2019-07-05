@@ -4,6 +4,8 @@ import android.location.Location;
 
 public class LocationPackage {
 
+    private static final String TAG = LocationPackage.class.getSimpleName();
+
     private Location location;
 
     private String streetAddress;

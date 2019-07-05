@@ -11,6 +11,8 @@ import org.w3c.dom.Document;
  */
 public class SyncSharingsTask extends AsyncTask<String, Void, Integer> {
 
+    private static final String TAG = SyncSharingsTask.class.getSimpleName();
+
     private Context ctx;
 
     private String requestUrl;
@@ -25,7 +27,7 @@ public class SyncSharingsTask extends AsyncTask<String, Void, Integer> {
     @Override
     protected Integer doInBackground(String... strings) {
 
-        Log.d("SyncSharingsTask", "task started");
+        Log.d(TAG, "task started");
 
         return 0;
     }

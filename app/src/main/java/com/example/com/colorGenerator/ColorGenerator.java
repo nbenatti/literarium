@@ -7,6 +7,8 @@ import java.util.Random;
 
 public final class ColorGenerator {
 
+    private static final String TAG = ColorGenerator.class.getSimpleName();
+
     private final double GOLDEN_RATIO = 1.6180339887498948482;
     private final double s, v;
 

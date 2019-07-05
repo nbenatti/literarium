@@ -14,15 +14,13 @@ import java.util.List;
 
 public class ModifyBookTask extends AsyncTask {
 
-    private Context ctx;
+    private static final String TAG = ModifyBookTask.class.getSimpleName();
 
+    private Context ctx;
     private LocalDatabase db;
     private BookDAO bookDao;
-
     private List<Book> booksToBeModified;
-
     private ShowBookActivity act;
-
     private SharedPreferences sharedPreferences;
 
     private boolean status;

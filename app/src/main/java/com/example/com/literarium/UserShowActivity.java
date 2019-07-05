@@ -25,6 +25,8 @@ import java.util.List;
 
 public class UserShowActivity extends Activity {
 
+    private static final String TAG = UserShowActivity.class.getSimpleName();
+
     private TextView name;
     private TextView username;
     private TextView gender;
@@ -34,9 +36,7 @@ public class UserShowActivity extends Activity {
     private TextView interests;
     private TextView about;
     private ImageView profilePic;
-
     private PieChart chart;
-
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -142,7 +142,7 @@ public class UserShowActivity extends Activity {
 
     public void logout(View v) {
 
-        Log.d("CIAONE", "logout called");
+        Log.d(TAG, "logout called");
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(getString(R.string.user_id_setting));

@@ -17,19 +17,17 @@ import java.util.List;
 
 public class DiscardShare extends JobIntentService {
 
+    private static final String TAG = DiscardShare.class.getSimpleName();
     private static final int SERVICE_JOB_ID = 102;
 
     private List<ShareData> shareDataList;
-
     private HttpRequest httpRequest;
-
     private String authToken;
 
-    public DiscardShare() {
-    }
+    public DiscardShare() {}
 
     public static void enqueueWork(Context context, Intent work) {
-        Log.d("ListenForSharesService", "deny task started");
+        Log.d(TAG, "deny task started");
         enqueueWork(context, DiscardShare.class, SERVICE_JOB_ID, work);
     }
 
@@ -39,7 +37,7 @@ public class DiscardShare extends JobIntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
-        Log.d("ListenForSharesService", "share denied");
+        Log.d(TAG, "share denied");
 
         Bundle b = intent.getExtras();
 
@@ -53,7 +51,7 @@ public class DiscardShare extends JobIntentService {
                         sd.getUserId(),
                         sd.getBookId());
 
-                Log.d("ListenForSharesService", reqUrl);
+                Log.d(TAG, reqUrl);
 
                 httpRequest = new HttpRequest(reqUrl, HttpRequest.HttpRequestMethod.GET);
                 httpRequest.send();

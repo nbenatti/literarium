@@ -14,6 +14,8 @@ import java.util.List;
 
 public class UserListAdapter extends ArrayAdapter<UserData> {
 
+    private static final String TAG = UserListAdapter.class.getSimpleName();
+
     private int layoutId;
     private Context ctx;
 

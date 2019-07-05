@@ -10,21 +10,18 @@ import java.util.HashMap;
 
 public class SettingsReader {
 
+    private static final String TAG = SettingsReader.class.getSimpleName();
+
     private static SettingsReader instance = null;
-
-    private HashMap<String, String> options;
-
     private static String configFilePath;
-
     private static File configFileHandler;
-
     private static String separator = ":";
-
     private static HashMap<String, String> defaultSettings = new HashMap<String, String>() {{
 
         put("SERVER_IP", "87.4.93.101");
         put("SERVER_PORT", "6000");
     }};
+    private HashMap<String, String> options;
 
     private SettingsReader() throws IOException {
 

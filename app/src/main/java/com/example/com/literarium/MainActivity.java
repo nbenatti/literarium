@@ -33,6 +33,10 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class MainActivity extends Activity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private final int MINUTE = 1000*60;
+    private final int SECOND = MINUTE / 60;
+
     /**
      * activity context.
      */
@@ -48,9 +52,6 @@ public class MainActivity extends Activity {
      * application settings.
      */
     private SharedPreferences sharedPreferences;
-
-    private final int MINUTE = 1000*60;
-    private final int SECOND = MINUTE / 60;
 
     /**
      * client to interact with the GPS module of the phone
@@ -121,7 +122,7 @@ public class MainActivity extends Activity {
 
                 Location loc = locationResult.getLocations().get(0);
 
-                Log.d("LocationSenderService", "got location: " + loc);
+                Log.d(TAG, "got location: " + loc);
 
                 // start reverse geocoding service (auto-closes)
                 startRevGeocodingIntentService(loc);
@@ -163,7 +164,7 @@ public class MainActivity extends Activity {
             clearAll.setVisibility(View.VISIBLE);
 
         for(Book runner : books)
-            Log.d("Main", runner.toString());
+            Log.d(TAG, runner.toString());
 
         newSharesListData.addAll(books);
         bookListAdapter.notifyDataSetChanged();
@@ -216,7 +217,7 @@ public class MainActivity extends Activity {
         editor.putString(getString(R.string.last_access_setting), timestamp);
         editor.commit();
 
-        Log.d("MainActivity", "timestamp saved in preferences");
+        Log.d(TAG, "timestamp saved in preferences");
     }
 
     public static FusedLocationProviderClient getLocationClient() {

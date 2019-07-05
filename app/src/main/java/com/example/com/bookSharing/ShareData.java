@@ -5,7 +5,10 @@ import android.os.Parcelable;
 
 public class ShareData implements Parcelable {
 
-    private String userId, bookId;
+    private static final String TAG = ShareData.class.getSimpleName();
+
+    private String userId;
+    private String bookId;
 
     public ShareData(String userId, String bookId) {
         this.userId = userId;

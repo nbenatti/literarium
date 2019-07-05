@@ -13,12 +13,13 @@ import com.example.com.literarium.R;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
+    private static final String TAG = BootBroadcastReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         Toast.makeText(context, "phone booted up", Toast.LENGTH_LONG).show();
-        Log.d("BootBroadcastReceiver", "phone booted up");
+        Log.d(TAG, "phone booted up");
 
         /*ComponentName comp = new ComponentName(context.getPackageName(),
                                                 ListenForSharesService.class.getName());*/

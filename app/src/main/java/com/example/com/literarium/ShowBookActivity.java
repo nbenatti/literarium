@@ -25,18 +25,16 @@ import java.util.ArrayList;
 
 public class ShowBookActivity extends Activity {
 
-    private Context ctx;
+    private static final String TAG = ShowBookActivity.class.getSimpleName();
 
+    private Context ctx;
     private TextView bookTitle;
     private TextView bookAuthor;
     private TextView bookRating;
     private TextView bookPublishDate;
     private TextView bookDescription;
-
     private ImageView bookCover;
-
     private ImageButton saveBookButton;
-
     private SharedPreferences sharedPreferences;
 
     /**

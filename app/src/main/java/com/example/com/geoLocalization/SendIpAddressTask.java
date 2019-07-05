@@ -11,15 +11,14 @@ import java.net.Socket;
 
 public class SendIpAddressTask extends AsyncTask {
 
+    private static final String TAG = SendIpAddressTask.class.getSimpleName();
+    private final String REQUEST_NAME = "PHONE_IP_UPDATE";
+
     private Context ref;
-
     private Exception lastThrownException;
-
     private Socket s;
 
     //private SettingsReader settingsReader;
-
-    private final String REQUEST_NAME = "PHONE_IP_UPDATE";
 
     public SendIpAddressTask(Context ref) {
 
@@ -31,7 +30,7 @@ public class SendIpAddressTask extends AsyncTask {
             lastThrownException = e;
         }*/
 
-        Log.d("SendIpAddressTask", "task started");
+        Log.d(TAG, "task started");
     }
 
     @Override
@@ -46,7 +45,7 @@ public class SendIpAddressTask extends AsyncTask {
             return null;
         }
 
-        Log.d("SendIpAddressTask", "phone IP is " + phoneIp);
+        Log.d(TAG, "phone IP is " + phoneIp);
 
         try {
 
@@ -58,7 +57,7 @@ public class SendIpAddressTask extends AsyncTask {
             pw.println(phoneIp);
             pw.close();
 
-            Log.d("SendIpAddressTask", "data sent");
+            Log.d(TAG, "data sent");
 
             s.close();
         }
@@ -78,6 +77,6 @@ public class SendIpAddressTask extends AsyncTask {
             // manage exception in UI
         }
 
-        Log.d("SendIpAddressTask", "task finished");
+        Log.d(TAG, "task finished");
     }
 }

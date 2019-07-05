@@ -1,6 +1,5 @@
 package com.example.com.geoLocalization;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,7 +27,8 @@ import javax.xml.xpath.XPathExpressionException;
 
 public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserData>> {
 
-    @SuppressLint("StaticFieldLeak")
+    private static final String TAG = RetrieveUsersLocationTask.class.getSimpleName();
+
     private Context ref;
 
     private Exception lastThrown;
@@ -46,7 +46,7 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
     @Override
     protected List<UserData> doInBackground(Void... voids) {
 
-        Log.d("RetrieveUsrLocationTask", "background service started");
+        Log.d(TAG, "background service started");
 
         List<UserData> userDataList = new ArrayList<>();
 
@@ -66,18 +66,18 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
         String requestUrl = null;
         try {
             requestUrl = RequestManager.formatRequest(RequestType.GEO_REPORT, sharedPreferences.getInt(ref.getString(R.string.user_id_setting), -1));
-            Log.d("RetrieveUsrLocationTask", requestUrl);
+            Log.d(TAG, requestUrl);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         HttpRequest request = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
-        Log.d("RetrieveUsrLocationTask", requestUrl);
+        Log.d(TAG, requestUrl);
         request.send();
         Document xmlResponse = request.getResult();
 
 
-        Log.d("RetrieveUsrLocationTask", "xml response: " + xmlResponse.getDocumentElement().getTextContent());
-        Log.d("RetrieveUsrLocationTask", "url: " + requestUrl);
+        Log.d(TAG, "xml response: " + xmlResponse.getDocumentElement().getTextContent());
+        Log.d(TAG, "url: " + requestUrl);
 
         // process data
         if(ref instanceof Activity) {
@@ -108,13 +108,13 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
 
                 for(int i = 0; i < addressList.size(); ++i) {
 
-                    Log.d("RetrieveUsrLocationTask", "address: " + addressList.get(i).getTextContent());
-                    Log.d("RetrieveUsrLocationTask", "location: " + locationList.get(i).getTextContent());
+                    Log.d(TAG, "address: " + addressList.get(i).getTextContent());
+                    Log.d(TAG, "location: " + locationList.get(i).getTextContent());
 
                     Element locationNode = (Element)locationList.get(i);
                     String lat = locationNode.getElementsByTagName("latitude").item(0).getTextContent();
                     String lon = locationNode.getElementsByTagName("longitude").item(0).getTextContent();
-                    Log.d("RetrieveUsrLocationTask", "raw location: " + lat+", "+lon);
+                    Log.d(TAG, "raw location: " + lat+", "+lon);
 
                     Location tmpLoc = new Location("");
                     tmpLoc.setLatitude(Double.parseDouble(lat));
@@ -127,11 +127,11 @@ public class RetrieveUsersLocationTask extends AsyncTask<Void, Void, List<UserDa
                     userDataList.add(new UserData(userId, username, tmpLoc, addressList.get(i).getTextContent()));
                 }
 
-                Log.d("RetrieveUsrLocationTask", "final data: " + userDataList.toString());
+                Log.d(TAG, "final data: " + userDataList.toString());
             }
         }
         else {
-            Log.d("RetrieveUsrLocationTask", "ERROR: the passed context is not a listableActivity, or is not possible to cast");
+            Log.d(TAG, "ERROR: the passed context is not a listableActivity, or is not possible to cast");
             lastThrown = new InvalidClassException("ERROR: the passed context is not a listableActivity, or is not possible to cast");
         }
 

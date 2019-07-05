@@ -26,6 +26,7 @@ import javax.xml.transform.TransformerException;
 
 public class LocationSenderService extends IntentService {
 
+    private static final String TAG = LocationSenderService.class.getSimpleName();
     private final String WEBSERVICE_URL = "https://192.168.1.7/literarium_api/insert_geo_data.php";
     private final int MINUTE = 1000*60;
     private final int SECOND = MINUTE / 60;
@@ -34,7 +35,6 @@ public class LocationSenderService extends IntentService {
     private LocationCallback locationCallback;
     private LocationRequest lr;
     private LocationResultReceiver resultReceiver;
-
     private SharedPreferences sharedPreferences;
 
     /**
@@ -58,7 +58,7 @@ public class LocationSenderService extends IntentService {
 
         sharedPreferences = Globals.getSharedPreferences(this);
 
-        Log.d("LocationSenderService", "service started");
+        Log.d(TAG, "service started");
 
         // fetch data coming from the location module
         locationPackage = new LocationPackage(
@@ -89,7 +89,7 @@ public class LocationSenderService extends IntentService {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            Log.d("LocationSenderService", requestUrl);
+            Log.d(TAG, requestUrl);
 
             HttpRequest request = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
             request.send();
@@ -103,7 +103,7 @@ public class LocationSenderService extends IntentService {
 
             response = XMLUtils.getNewDocFromStream(webServiceStream);*/
             response = request.getResult();
-            Log.d("LocationSenderService", "webservice response: \n" + XMLUtils.docToString(response));
+            Log.d(TAG, "webservice response: \n" + XMLUtils.docToString(response));
 
         } catch (TransformerException e) {
             e.printStackTrace();
@@ -115,7 +115,7 @@ public class LocationSenderService extends IntentService {
 
     @Override
     public void onDestroy() {
-        Log.d("LocationSenderService", "service destroyed");
+        Log.d(TAG, "service destroyed");
     }
 
     protected void startRevGeocodingIntentService(Location location) {

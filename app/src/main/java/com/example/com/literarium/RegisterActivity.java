@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 
+    private static final String TAG = RegisterActivity.class.getSimpleName();
+
     private EditText grUsername;
     private EditText lUsername;
     private EditText lPassword;

@@ -18,17 +18,16 @@ import java.util.concurrent.ExecutionException;
 
 public class AcceptShare extends JobIntentService {
 
+    private static final String TAG = AcceptShare.class.getSimpleName();
     private static final int SERVICE_JOB_ID = 102;
 
     private List<ShareData> shareDataList;
-
     private List<com.example.com.parsingData.parseType.Book> fullBookData;
 
-    public AcceptShare() {
-    }
+    public AcceptShare() {}
 
     public static void enqueueWork(Context context, Intent work) {
-        Log.d("ListenForSharesService", "accept task started");
+        Log.d(TAG, "accept task started");
         enqueueWork(context, AcceptShare.class, SERVICE_JOB_ID, work);
     }
 
@@ -38,7 +37,7 @@ public class AcceptShare extends JobIntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
-        Log.d("ListenForSharesService", "share accepted");
+        Log.d(TAG, "share accepted");
 
         Bundle b = intent.getExtras();
 

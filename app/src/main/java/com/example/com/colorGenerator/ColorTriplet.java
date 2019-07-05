@@ -2,6 +2,8 @@ package com.example.com.colorGenerator;
 
 public final class ColorTriplet {
 
+    private static final String TAG = ColorTriplet.class.getSimpleName();
+
     private int r, g, b;
 
     public ColorTriplet(int r, int g, int b) {

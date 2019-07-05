@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class UserData implements Cloneable, XMLSerializable {
 
+    private static final String TAG = UserData.class.getSimpleName();
+
     /**
      * geographical coordinates of user's location
      */

@@ -25,40 +25,40 @@ public class RequestManager {
 
 
         if(type == RequestType.GEO_REPORT) {
-            req = "http://95.232.94.118/literarium_api/geo_report.php?userid=" + URLEncoder.encode(urlEncodedArgs[0], java.nio.charset.StandardCharsets.UTF_8.toString());
+            req = "http://literariumapp.000webhostapp.com/geo_report.php?userid=" + URLEncoder.encode(urlEncodedArgs[0], java.nio.charset.StandardCharsets.UTF_8.toString());
         } else if(type == RequestType.LOG_POSITION) {
-            req = "http://95.232.94.118/literarium_api/insert_geo_data.php?"
+            req = "http://literariumapp.000webhostapp.com/insert_geo_data.php?"
                     + "userid=" + urlEncodedArgs[0]
                     + "&latitudine=" + urlEncodedArgs[1]
                     + "&longitudine=" + urlEncodedArgs[2]
                     + "&indirizzo=" + urlEncodedArgs[3];
         } else if(type == com.example.com.literarium.RequestType.AUTH_USER) {
 
-            req = "http://95.232.94.118/literarium_api/auth.php?"
+            req = "http://literariumapp.000webhostapp.com/auth.php?"
                     +"nomeutente=" + urlEncodedArgs[0]
                     +"&password=" + urlEncodedArgs[1];
         } else if(type == RequestType.SHARE_BOOK) {
 
-            req = "http://95.232.94.118/literarium_api/share_book.php?"
+            req = "http://literariumapp.000webhostapp.com/share_book.php?"
                     + "token=" + urlEncodedArgs[0]
                     + "&userid=" + urlEncodedArgs[1]
                     + "&receiverid=" + urlEncodedArgs[2]
                     + "&bookid=" + urlEncodedArgs[3];
         } else if(type == RequestType.GET_NEW_SHARES) {
 
-            req = "http://95.232.94.118/literarium_api/get_new_shares.php?"
+            req = "http://literariumapp.000webhostapp.com/get_new_shares.php?"
                     + "token=" + urlEncodedArgs[0]
                     + "&userid=" + urlEncodedArgs[1]
                     + "&timestamp=" + urlEncodedArgs[2];
         } else if(type == RequestType.DELETE_SHARE) {
 
-            req = "http://95.232.94.118/literarium_api/delete_share.php?"
+            req = "http://literariumapp.000webhostapp.com/delete_share.php?"
                     + "token=" + urlEncodedArgs[0]
                     + "&receiverid=" + urlEncodedArgs[1]
                     + "&bookid=" + urlEncodedArgs[2];
         } else if(type == RequestType.REGISTER) {
 
-            req = "http://95.232.94.118/literarium_api/register.php?"
+            req = "http://literariumapp.000webhostapp.com/register.php?"
                     + "username=" + urlEncodedArgs[0]
                     + "&grusername=" + urlEncodedArgs[1]
                     + "&password=" + urlEncodedArgs[2];

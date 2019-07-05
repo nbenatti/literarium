@@ -20,12 +20,11 @@ import javax.xml.xpath.XPathExpressionException;
 
 public class GetBookDataTask extends AsyncTask {
 
+    private static final String TAG = GetBookDataTask.class.getSimpleName();
+
     private Context ref;
-
     private Document xmlContent;  // content returned by the server
-
     private HttpRequest httpRequest;
-
     private int bookId;
 
     public GetBookDataTask(Context ref, int bookId) {
@@ -43,7 +42,7 @@ public class GetBookDataTask extends AsyncTask {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.d("GetBookDataTask", requestUrl);
+        Log.d(TAG, requestUrl);
 
         httpRequest = new HttpRequest(requestUrl, HttpRequest.HttpRequestMethod.GET);
         httpRequest.send();

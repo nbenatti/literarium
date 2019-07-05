@@ -20,15 +20,13 @@ import java.util.List;
  */
 public class SaveBookTask extends AsyncTask {
 
-    private Context ctx;
+    private static final String TAG = SaveBookTask.class.getSimpleName();
 
+    private Context ctx;
     private LocalDatabase db;
     private BookDAO bookDao;
-
     private List<BookDB> booksToBeSaved;
-
     private ShowBookActivity act;
-
     private SharedPreferences sharedPreferences;
 
     public SaveBookTask(Context ctx, List<Book> b, BookType bt) {

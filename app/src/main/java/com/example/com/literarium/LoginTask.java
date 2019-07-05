@@ -16,10 +16,11 @@ import javax.xml.xpath.XPathExpressionException;
 
 public class LoginTask extends AsyncTask {
 
+    private static final String TAG = LoginTask.class.getSimpleName();
+
     private Context ref;
-
-    private String userName, password;
-
+    private String userName;
+    private String password;
     private SharedPreferences sharedPreferences;
 
     public LoginTask(Context ref, String userName, String password) {
@@ -38,12 +39,12 @@ public class LoginTask extends AsyncTask {
         try {
             HttpRequest httpRequest = new HttpRequest(RequestManager.formatRequest(RequestType.AUTH_USER, userName, password),
                     HttpRequest.HttpRequestMethod.GET);
-            Log.d("LoginTask", RequestManager.formatRequest(RequestType.AUTH_USER, userName, password));
+            Log.d(TAG, RequestManager.formatRequest(RequestType.AUTH_USER, userName, password));
             httpRequest.send();
             Document response = httpRequest.getResult();
 
             String stringifiedXml = XMLUtils.docToString(response);
-            Log.d("LoginTask", stringifiedXml);
+            Log.d(TAG, stringifiedXml);
 
             // get authentication esit
             String authEsit = XMLUtils.NodeListToListNode(XMLUtils.executeXpath(response, "response/responseCode")).get(0).getTextContent();

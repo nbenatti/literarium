@@ -16,8 +16,9 @@ import java.util.ArrayList;
 
 public class SavedBooksActivity extends Activity {
 
-    private Context ctx;
+    private static final String TAG = SavedBooksActivity.class.getSimpleName();
 
+    private Context ctx;
     private ListView sbList; // listview component
     private SavedBookListAdapter sbAdapter;
     private ArrayList<BookDB> bookListData; // saved books list
@@ -27,7 +28,7 @@ public class SavedBooksActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.savedbooks_layout);
 
-        Log.d("SavedBooksActivity", "oncreate()");
+        Log.d(TAG, "oncreate()");
 
         ctx = this;
 
@@ -69,7 +70,7 @@ public class SavedBooksActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("SavedBooksActivity", "onresume()");
+        Log.d(TAG, "onresume()");
 
         // refresh the list
         FetchSavedBooksTask fetchSavedBooksTask = new FetchSavedBooksTask(this);
@@ -85,7 +86,7 @@ public class SavedBooksActivity extends Activity {
 
     public void removeSavedBooks() {
 
-        Log.d("SavedBooksActivity", "LONG PRESS");
+        Log.d(TAG, "LONG PRESS");
     }
 
     public void goToSearchLayout(View v) {

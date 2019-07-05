@@ -14,10 +14,11 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     private Button loginButton;
     private EditText userName;
     private EditText password;
-
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -34,7 +35,7 @@ public class LoginActivity extends Activity {
                 sharedPreferences.getString(getString(R.string.user_token_setting), "") != "" &&
                 sharedPreferences.getString(getString(R.string.username_setting), "") != "") {
 
-            Log.d("LoginActivity", "user already logged in");
+            Log.d(TAG, "user already logged in");
 
             Intent skipToMain = new Intent(this, MainActivity.class);
             skipToMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

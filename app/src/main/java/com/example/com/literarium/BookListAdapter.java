@@ -15,13 +15,13 @@ import java.util.List;
 
 public class BookListAdapter extends ArrayAdapter<Book> {
 
+    private static final String TAG = BookListAdapter.class.getSimpleName();
+
     private int layoutId;
     private Context ctx;
-
     private TextView bookTitle;
     private TextView bookAuthor;
     private TextView bookRating;
-
     private ImageView bookCover;
 
     public BookListAdapter(Context context, int resource, List<Book> books) {

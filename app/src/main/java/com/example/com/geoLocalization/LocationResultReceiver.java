@@ -10,6 +10,8 @@ import android.util.Log;
 
 public class LocationResultReceiver extends ResultReceiver {
 
+    private static final String TAG = LocationResultReceiver.class.getSimpleName();
+
     private Context context;
 
     private LocationSenderService callingTask;
@@ -39,7 +41,7 @@ public class LocationResultReceiver extends ResultReceiver {
         }
 
         if (resultCode == Constants.SUCCESS_RESULT) {
-            Log.d("REV_GEOCODING_STATUS", "reverse geocoding succesful");
+            Log.d(TAG, "reverse geocoding succesful");
         }
         else {
 
@@ -53,7 +55,7 @@ public class LocationResultReceiver extends ResultReceiver {
         }
         Location location = resultData.getParcelable(Constants.LOCATION_DATA);
 
-        Log.d("REV_GEOCODING_STATUS", "reverse geocoding output is: " + addressOutput);
+        Log.d(TAG, "reverse geocoding output is: " + addressOutput);
 
         // populate users list
         try {
