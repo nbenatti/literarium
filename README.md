@@ -1,2 +1,2 @@
-# literarium
-<em>book sharing</em> app.
+# Literarium
+Book-sharing app.
